@@ -23,8 +23,9 @@
                 @if ($product->images->count() > 1)
                     <div class="flex gap-2 product-gallery-strip">
                         @foreach ($product->images as $image)
-                            <div class="product-thumb-sm" 
-                                 onclick="document.getElementById('main-product-image').src = '{{ asset('storage/' . $image->path) }}'">
+                            <div class="product-thumb-sm"
+                                 data-src="{{ asset('storage/' . $image->path) }}"
+                                 onclick="document.getElementById('main-product-image').src = this.dataset.src">
                                 <img src="{{ asset('storage/' . $image->path) }}">
                             </div>
                         @endforeach
