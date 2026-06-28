@@ -178,21 +178,25 @@
     </div>
 
     <!-- Alpine POS Script -->
+    <script id="products-data" type="application/json">
+        {!! json_encode($products->map(function($p) {
+            return [
+                'id' => $p->id,
+                'name' => $p->name,
+                'sku' => $p->sku,
+                'price_jual' => (float)$p->price_jual,
+                'stock' => $p->stock,
+                'brand_name' => $p->brand?->name ?? 'No Brand',
+            ];
+        })->toArray()) !!}
+    </script>
+
     <script>
         function posApp() {
             return {
                 searchQuery: '',
                 openManualModal: false,
-                products: @json($products->map(function($p) {
-                    return [
-                        'id' => $p->id,
-                        'name' => $p->name,
-                        'sku' => $p->sku,
-                        'price_jual' => (float) $p->price_jual,
-                        'stock' => $p->stock,
-                        'brand_name' => $p->brand->name,
-                    ];
-                })->toArray()),
+                products: JSON.parse(document.getElementById('products-data').textContent),
                 cart: [],
                 manualItem: {
                     item_name: '',

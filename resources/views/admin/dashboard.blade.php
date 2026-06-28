@@ -158,10 +158,17 @@
     </div>
 
     <!-- Charts JavaScript Integration -->
+    <script id="sales-chart-data" type="application/json">
+        @json($stats['monthly_chart_data'])
+    </script>
+    <script id="top-products-chart-data" type="application/json">
+        @json($stats['top_products'])
+    </script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // 1. Sales Chart Configuration
-            const salesData = @json($stats['monthly_chart_data']);
+            const salesData = JSON.parse(document.getElementById('sales-chart-data').textContent);
             const salesLabels = salesData.map(item => item.label);
             const salesAmounts = salesData.map(item => item.amount);
 
@@ -204,7 +211,7 @@
             });
 
             // 2. Top Products Chart Configuration
-            const topProducts = @json($stats['top_products']);
+            const topProducts = JSON.parse(document.getElementById('top-products-chart-data').textContent);
             const topLabels = topProducts.length ? topProducts.map(item => item.item_name) : ['Belum Ada Transaksi'];
             const topQtys = topProducts.length ? topProducts.map(item => item.total_qty) : [0];
 

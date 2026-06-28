@@ -135,22 +135,25 @@
     </div>
 
     <!-- Alpine Order filtering helper script -->
+    <script id="orders-data" type="application/json">
+        {!! json_encode($orders->mapWithKeys(function($order) {
+            return [$order->id => $order->items->filter(function($i) { return !is_null($i->product_id); })->map(function($i) {
+                return [
+                    'product_id' => $i->product_id,
+                    'item_name' => $i->item_name,
+                    'quantity' => $i->quantity
+                ];
+            })];
+        })->toArray()) !!}
+    </script>
+
     <script>
         function returnApp() {
             return {
                 selectedOrderId: '',
                 selectedProductId: '',
                 availableProducts: [],
-                // Load all order items mapping into JSON
-                ordersData: @json($orders->mapWithKeys(function($order) {
-                    return [$order->id => $order->items->filter(function($i) { return !is_null($i->product_id); })->map(function($i) {
-                        return [
-                            'product_id' => $i->product_id,
-                            'item_name' => $i->item_name,
-                            'quantity' => $i->quantity
-                        ];
-                    })];
-                })),
+                ordersData: JSON.parse(document.getElementById('orders-data').textContent),
 
                 onOrderChange() {
                     this.selectedProductId = '';

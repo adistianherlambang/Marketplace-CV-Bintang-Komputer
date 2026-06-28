@@ -118,7 +118,8 @@ class TransactionController extends Controller
     {
         $order->load(['customer', 'user', 'items']);
         $pdf = Pdf::loadView('pdf.invoice', compact('order'))->setPaper('a4', 'portrait');
-        return $pdf->download("invoice-{$order->invoice_number}.pdf");
+        $safeInvoiceNumber = str_replace('/', '-', $order->invoice_number);
+        return $pdf->download("invoice-{$safeInvoiceNumber}.pdf");
     }
 
     /**
@@ -129,6 +130,7 @@ class TransactionController extends Controller
         $order->load(['customer', 'user', 'items']);
         // Custom paper size: 80mm width x 200mm height
         $pdf = Pdf::loadView('pdf.nota', compact('order'))->setPaper([0, 0, 226.77, 566.92], 'portrait');
-        return $pdf->download("nota-{$order->invoice_number}.pdf");
+        $safeInvoiceNumber = str_replace('/', '-', $order->invoice_number);
+        return $pdf->download("nota-{$safeInvoiceNumber}.pdf");
     }
 }
