@@ -4,7 +4,7 @@
     <!-- Action Header -->
     <div class="flex justify-between items-center mb-6">
         <div>
-            <h3 class="font-bold" style="font-size: 1.25rem;">Daftar Invoice Penjualan</h3>
+            <h3 class="font-bold page-title">Daftar Invoice Penjualan</h3>
             <p class="text-secondary text-sm">Cari, cetak, batalkan, atau ubah status pembayaran transaksi toko.</p>
         </div>
         
@@ -16,12 +16,12 @@
     <!-- Filter Bar -->
     <form method="GET" action="{{ route('admin.transactions.index') }}" class="filter-bar">
         <div class="filter-inputs">
-            <div style="position: relative; flex-grow: 1; max-width: 350px;">
-                <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 14px; top: 14px; color: var(--secondary);"></i>
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nomor invoice atau nama pelanggan..." class="form-control" style="padding-left: 40px;">
+            <div class="filter-search-wrapper">
+                <i class="fa-solid fa-magnifying-glass filter-search-icon"></i>
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nomor invoice atau nama pelanggan..." class="form-control filter-input-indent">
             </div>
 
-            <select name="status" class="form-control" style="max-width: 200px;" onchange="this.form.submit()">
+            <select name="status" class="form-control filter-select-sm" onchange="this.form.submit()">
                 <option value="">Semua Status</option>
                 <option value="Lunas" {{ request('status') === 'Lunas' ? 'selected' : '' }}>Lunas</option>
                 <option value="Belum Dibayar" {{ request('status') === 'Belum Dibayar' ? 'selected' : '' }}>Belum Dibayar</option>
@@ -47,9 +47,9 @@
                         <th>Tanggal</th>
                         <th>Pelanggan</th>
                         <th>Total Belanja</th>
-                        <th style="text-align: center;">Status</th>
+                        <th class="th-status">Status</th>
                         <th>Kasir (Admin)</th>
-                        <th style="width: 240px; text-align: center;">Cetak / Aksi</th>
+                        <th class="th-actions-wide">Cetak / Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -73,7 +73,7 @@
                             <td class="font-bold text-primary">
                                 Rp {{ number_format($order->total_amount, 0, ',', '.') }}
                             </td>
-                            <td style="text-align: center;">
+                            <td class="td-center">
                                 @if ($order->status === 'Lunas')
                                     <span class="badge badge-success">Lunas</span>
                                 @elseif ($order->status === 'Belum Dibayar')
@@ -83,17 +83,17 @@
                                 @endif
                             </td>
                             <td>{{ $order->user->name }}</td>
-                            <td style="text-align: center;">
+                            <td class="td-center">
                                 <div class="flex justify-center gap-2">
                                     <a href="{{ route('admin.transactions.show', $order->id) }}" class="btn btn-secondary btn-sm" title="Detail">
                                         <i class="fa-solid fa-eye"></i> Detail
                                     </a>
                                     
                                     @if ($order->status !== 'Dibatalkan')
-                                        <a href="{{ route('admin.transactions.invoice', $order->id) }}" class="btn btn-primary btn-sm" title="Download Invoice PDF" style="padding: 6px 10px;">
+                                        <a href="{{ route('admin.transactions.invoice', $order->id) }}" class="btn btn-primary btn-sm" title="Download Invoice PDF">
                                             <i class="fa-solid fa-file-pdf"></i> Inv
                                         </a>
-                                        <a href="{{ route('admin.transactions.nota', $order->id) }}" class="btn btn-secondary btn-sm" title="Download Nota Receipt PDF" style="padding: 6px 10px; border-color: #cbd5e1;">
+                                        <a href="{{ route('admin.transactions.nota', $order->id) }}" class="btn btn-secondary btn-sm" title="Download Nota Receipt PDF">
                                             <i class="fa-solid fa-receipt text-success"></i> Nota
                                         </a>
                                     @endif
@@ -102,8 +102,8 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" style="text-align: center; padding: 40px; color: var(--secondary);">
-                                <i class="fa-solid fa-file-invoice-dollar" style="font-size: 2.5rem; margin-bottom: 12px; opacity: 0.5;"></i>
+                            <td colspan="7" class="td-empty">
+                                <i class="fa-solid fa-file-invoice-dollar icon-empty-lg"></i>
                                 <p>Belum ada transaksi. Klik 'POS Penjualan Baru' untuk membuat baru.</p>
                             </td>
                         </tr>

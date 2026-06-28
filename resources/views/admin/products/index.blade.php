@@ -9,7 +9,7 @@
         <!-- Action Header & Filters -->
         <div class="flex justify-between items-center mb-6">
             <div>
-                <h3 class="font-bold" style="font-size: 1.25rem;">Daftar Produk / Barang</h3>
+                <h3 class="font-bold page-title">Daftar Produk / Barang</h3>
                 <p class="text-secondary text-sm">Kelola spesifikasi, harga jual, harga modal, dan detail item.</p>
             </div>
             
@@ -21,12 +21,12 @@
         <!-- Filter Bar -->
         <form method="GET" action="{{ route('admin.products.index') }}" class="filter-bar">
             <div class="filter-inputs">
-                <div style="position: relative; flex-grow: 1;">
-                    <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 14px; top: 14px; color: var(--secondary);"></i>
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama barang atau SKU..." class="form-control" style="padding-left: 40px;">
+                <div class="filter-search-wrapper-full">
+                    <i class="fa-solid fa-magnifying-glass filter-search-icon"></i>
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama barang atau SKU..." class="form-control filter-input-indent">
                 </div>
                 
-                <select name="category" class="form-control" style="max-width: 200px;" onchange="this.form.submit()">
+                <select name="category" class="form-control filter-select-sm" onchange="this.form.submit()">
                     <option value="">Semua Kategori</option>
                     @foreach ($categories as $cat)
                         <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
@@ -50,11 +50,11 @@
                             <th>Barang</th>
                             <th>SKU</th>
                             <th>Kategori / Merk</th>
-                            <th style="text-align: right;">Harga Modal</th>
-                            <th style="text-align: right;">Harga Jual</th>
-                            <th style="text-align: center;">Stok</th>
-                            <th style="text-align: center;">Status</th>
-                            <th style="width: 180px; text-align: center;">Aksi</th>
+                            <th class="th-right">Harga Modal</th>
+                            <th class="th-right">Harga Jual</th>
+                            <th class="th-center">Stok</th>
+                            <th class="th-center">Status</th>
+                            <th class="th-actions">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -62,11 +62,11 @@
                             <tr>
                                 <td>
                                     <div class="flex items-center gap-3">
-                                        <div style="width: 48px; height: 48px; border-radius: var(--radius-sm); border: 1px solid var(--border); overflow: hidden; background-color: var(--light); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                        <div class="product-thumb">
                                             @if ($product->primaryImage)
-                                                <img src="{{ asset('storage/' . $product->primaryImage->path) }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                                <img src="{{ asset('storage/' . $product->primaryImage->path) }}" alt="{{ $product->name }}">
                                             @else
-                                                <i class="fa-solid fa-laptop-code text-secondary" style="font-size: 1.5rem;"></i>
+                                                <i class="fa-solid fa-laptop-code text-secondary product-thumb-icon"></i>
                                             @endif
                                         </div>
                                         <div>
@@ -80,26 +80,26 @@
                                     <div>{{ $product->category->name }}</div>
                                     <div class="text-xs text-secondary">{{ $product->brand->name }}</div>
                                 </td>
-                                <td style="text-align: right; color: var(--secondary);">
+                                <td class="td-right text-secondary">
                                     Rp {{ number_format($product->price_modal, 0, ',', '.') }}
                                 </td>
-                                <td style="text-align: right; font-weight: 600; color: var(--primary);">
+                                <td class="td-right font-semibold text-primary">
                                     Rp {{ number_format($product->price_jual, 0, ',', '.') }}
                                 </td>
-                                <td style="text-align: center;">
+                                <td class="td-center">
                                     <span class="font-semibold {{ $product->stock <= $product->min_stock ? 'text-danger' : 'text-success' }}">
                                         {{ $product->stock }} pcs
                                     </span>
                                     <div class="text-xs text-secondary">Min: {{ $product->min_stock }}</div>
                                 </td>
-                                <td style="text-align: center;">
+                                <td class="td-center">
                                     @if ($product->is_active)
                                         <span class="badge badge-success">Aktif</span>
                                     @else
                                         <span class="badge badge-danger">Nonaktif</span>
                                     @endif
                                 </td>
-                                <td style="text-align: center;">
+                                <td class="td-center">
                                     <div class="flex justify-center gap-2">
                                         <button @click="currentProduct = {
                                             id: '{{ $product->id }}',
@@ -131,8 +131,8 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" style="text-align: center; padding: 40px; color: var(--secondary);">
-                                    <i class="fa-solid fa-box-open" style="font-size: 2.5rem; margin-bottom: 12px; opacity: 0.5;"></i>
+                                <td colspan="8" class="td-empty">
+                                    <i class="fa-solid fa-box-open icon-empty-lg"></i>
                                     <p>Belum ada data produk. Klik 'Tambah Produk Baru' untuk membuat baru.</p>
                                 </td>
                             </tr>
@@ -149,14 +149,14 @@
 
         <!-- Create Modal -->
         <div class="modal-backdrop" :class="{ 'show': openCreateModal }">
-            <div class="modal" style="max-width: 750px;">
+            <div class="modal product-modal-lg">
                 <div class="modal-header">
                     <h3 class="modal-title">Tambah Produk Baru</h3>
                     <button @click="openCreateModal = false" class="modal-close">&times;</button>
                 </div>
                 <form method="POST" action="{{ route('admin.products.store') }}" enctype="multipart/form-data">
                     @csrf
-                    <div class="modal-body" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="modal-body product-modal-grid">
                         
                         <div>
                             <div class="form-group">
@@ -201,7 +201,7 @@
                         </div>
 
                         <div>
-                            <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div class="form-group product-price-grid">
                                 <div>
                                     <label class="form-label">Harga Modal (Rp)</label>
                                     <input type="number" name="price_modal" class="form-control" required min="0" placeholder="1000000">
@@ -211,7 +211,7 @@
                                     <input type="number" name="price_jual" class="form-control" required min="0" placeholder="1250000">
                                 </div>
                             </div>
-                            <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div class="form-group product-price-grid">
                                 <div>
                                     <label class="form-label">Jumlah Stok Awal</label>
                                     <input type="number" name="stock" class="form-control" required min="0" placeholder="10">
@@ -246,7 +246,7 @@
 
         <!-- Edit Modal -->
         <div class="modal-backdrop" :class="{ 'show': openEditModal }">
-            <div class="modal" style="max-width: 750px;">
+            <div class="modal product-modal-lg">
                 <div class="modal-header">
                     <h3 class="modal-title">Edit Produk</h3>
                     <button @click="openEditModal = false" class="modal-close">&times;</button>
@@ -254,7 +254,7 @@
                 <form method="POST" :action="'/admin/products/' + currentProduct.id" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    <div class="modal-body" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="modal-body product-modal-grid">
                         
                         <div>
                             <div class="form-group">
@@ -296,7 +296,7 @@
                         </div>
 
                         <div>
-                            <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div class="form-group product-price-grid">
                                 <div>
                                     <label class="form-label">Harga Modal (Rp)</label>
                                     <input type="number" name="price_modal" x-model="currentProduct.price_modal" class="form-control" required min="0">
@@ -306,7 +306,7 @@
                                     <input type="number" name="price_jual" x-model="currentProduct.price_jual" class="form-control" required min="0">
                                 </div>
                             </div>
-                            <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div class="form-group product-price-grid">
                                 <div>
                                     <label class="form-label">Minimum Stok</label>
                                     <input type="number" name="min_stock" x-model="currentProduct.min_stock" class="form-control" required min="0">

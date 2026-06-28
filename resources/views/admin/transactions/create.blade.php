@@ -5,15 +5,15 @@
         
         <!-- Left: Product List & Manual Items -->
         <div class="pos-products">
-            <div style="padding: 20px; border-bottom: 1px solid var(--border); display: flex; gap: 12px; align-items: center; justify-content: space-between;">
+            <div class="pos-search-wrapper">
                 <!-- Product Search -->
-                <div style="position: relative; flex-grow: 1; max-width: 320px;">
-                    <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 14px; top: 12px; color: var(--secondary);"></i>
-                    <input type="text" x-model="searchQuery" placeholder="Cari nama barang atau SKU..." class="form-control" style="padding-left: 40px; padding-top: 8px; padding-bottom: 8px;">
+                <div class="pos-search-inner">
+                    <i class="fa-solid fa-magnifying-glass pos-search-icon"></i>
+                    <input type="text" x-model="searchQuery" placeholder="Cari nama barang atau SKU..." class="form-control pos-search-input">
                 </div>
                 
                 <!-- Manual Add button -->
-                <button type="button" @click="openManualModal = true" class="btn btn-secondary btn-sm" style="height: 38px;">
+                <button type="button" @click="openManualModal = true" class="btn btn-secondary btn-sm pos-add-manual-btn">
                     <i class="fa-solid fa-square-plus text-primary"></i> Barang Manual (Metode 2)
                 </button>
             </div>
@@ -26,7 +26,7 @@
                             <div class="product-meta">
                                 <span class="badge badge-info" x-text="prod.brand_name"></span>
                             </div>
-                            <div class="font-bold" style="font-size: 0.95rem; line-height: 1.3; height: 36px; overflow: hidden;" x-text="prod.name"></div>
+                            <div class="font-bold pos-item-name" x-text="prod.name"></div>
                             <div class="text-xs text-secondary mt-1">SKU: <span x-text="prod.sku"></span></div>
                         </div>
                         <div class="flex justify-between items-center mt-2">
@@ -35,8 +35,8 @@
                         </div>
                     </div>
                 </template>
-                <div x-show="filteredProducts.length === 0" style="grid-column: 1 / -1; text-align: center; padding: 40px 0; color: var(--secondary);">
-                    <i class="fa-solid fa-ban" style="font-size: 2rem; margin-bottom: 8px;"></i>
+                <div x-show="filteredProducts.length === 0" class="pos-empty-product">
+                    <i class="fa-solid fa-ban pos-empty-icon"></i>
                     <p>Produk tidak ditemukan atau habis.</p>
                 </div>
             </div>
@@ -44,13 +44,13 @@
 
         <!-- Right: Active Cart panel -->
         <div class="pos-cart">
-            <div style="padding: 20px; border-bottom: 1px solid var(--border); font-weight: 700; font-size: 1.1rem; display: flex; align-items: center; justify-content: space-between;">
+            <div class="pos-cart-header">
                 <span>Keranjang Belanja</span>
                 <span class="badge badge-info" x-text="cart.length + ' item'"></span>
             </div>
 
             <!-- Main POST form for Checkout -->
-            <form method="POST" action="{{ route('admin.transactions.store') }}" style="display: flex; flex-direction: column; flex-grow: 1; overflow: hidden;">
+            <form method="POST" action="{{ route('admin.transactions.store') }}" class="pos-form-wrapper">
                 @csrf
                 
                 <!-- Cart items list -->
@@ -63,32 +63,32 @@
                             <input type="hidden" :name="'items['+index+'][price]'" :value="item.price">
                             <input type="hidden" :name="'items['+index+'][quantity]'" :value="item.quantity">
 
-                            <div style="flex-grow: 1; padding-right: 12px;">
+                            <div class="pos-item-info">
                                 <div class="font-semibold text-sm" x-text="item.item_name"></div>
                                 <div class="text-xs text-secondary">
                                     <span x-text="formatRupiah(item.price)"></span>
-                                    <span x-show="item.product_id" class="badge badge-info text-xs ml-1" style="font-size: 0.65rem;">DB Product</span>
-                                    <span x-show="!item.product_id" class="badge badge-warning text-xs ml-1" style="font-size: 0.65rem;">Manual</span>
+                                    <span x-show="item.product_id" class="badge badge-info text-xs ml-1 pos-item-badge-sm">DB Product</span>
+                                    <span x-show="!item.product_id" class="badge badge-warning text-xs ml-1 pos-item-badge-sm">Manual</span>
                                 </div>
                             </div>
                             
                             <!-- Quantity adjust buttons -->
-                            <div class="flex items-center gap-2" style="margin-right: 16px;">
-                                <button type="button" @click="decreaseQty(index)" class="btn btn-secondary btn-sm" style="padding: 2px 6px; font-size: 0.75rem;">-</button>
-                                <span class="font-bold text-sm" style="width: 24px; text-align: center;" x-text="item.quantity"></span>
-                                <button type="button" @click="increaseQty(index)" class="btn btn-secondary btn-sm" style="padding: 2px 6px; font-size: 0.75rem;">+</button>
+                            <div class="flex items-center gap-2 pos-qty-wrapper">
+                                <button type="button" @click="decreaseQty(index)" class="btn btn-secondary btn-sm pos-qty-btn">-</button>
+                                <span class="font-bold text-sm pos-qty-val" x-text="item.quantity"></span>
+                                <button type="button" @click="increaseQty(index)" class="btn btn-secondary btn-sm pos-qty-btn">+</button>
                             </div>
 
-                            <div style="text-align: right;">
+                            <div class="pos-subtotal-wrap">
                                 <div class="font-bold text-sm text-primary" x-text="formatRupiah(item.price * item.quantity)"></div>
-                                <button type="button" @click="removeFromCart(index)" class="text-xs font-semibold text-danger" style="border: none; background: none; cursor: pointer; margin-top: 4px;">
+                                <button type="button" @click="removeFromCart(index)" class="text-xs font-semibold text-danger pos-remove-btn">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>
                         </div>
                     </template>
-                    <div x-show="cart.length === 0" style="text-align: center; padding: 60px 0; color: var(--secondary);">
-                        <i class="fa-solid fa-cart-shopping" style="font-size: 3rem; margin-bottom: 12px; opacity: 0.4;"></i>
+                    <div x-show="cart.length === 0" class="pos-empty-cart">
+                        <i class="fa-solid fa-cart-shopping pos-empty-cart-icon"></i>
                         <p>Keranjang kosong. Pilih produk di sebelah kiri atau tambah barang manual.</p>
                     </div>
                 </div>
@@ -107,7 +107,7 @@
                     </div>
 
                     <!-- Payment Status and Method -->
-                    <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+                    <div class="grid pos-payment-row">
                         <div>
                             <label class="form-label">Status Pembayaran</label>
                             <select name="status" class="form-control" required>
@@ -126,19 +126,19 @@
                     </div>
 
                     <!-- Transaction notes -->
-                    <div class="form-group" style="margin-bottom: 20px;">
+                    <div class="form-group pos-notes-group">
                         <label class="form-label">Catatan Tambahan (Opsional)</label>
                         <input type="text" name="notes" class="form-control" placeholder="Contoh: Kirim via Gojek, Garansi 1 tahun">
                     </div>
 
                     <!-- Total Amount Display -->
-                    <div style="border-top: 1px solid var(--border); padding-top: 16px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
+                    <div class="pos-total-row">
                         <span class="font-semibold text-secondary">Total Bayar:</span>
-                        <span class="font-bold" style="font-size: 1.8rem; color: var(--primary);" x-text="formatRupiah(totalCartAmount)"></span>
+                        <span class="font-bold pos-total-val" x-text="formatRupiah(totalCartAmount)"></span>
                     </div>
 
                     <!-- Submit Button -->
-                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 14px 20px; font-size: 1.05rem; font-weight: 700;" :disabled="cart.length === 0">
+                    <button type="submit" class="btn btn-primary invoice-btn-full-pad" :disabled="cart.length === 0">
                         <i class="fa-solid fa-circle-check mr-2"></i> Proses Checkout Transaksi
                     </button>
                 </div>
@@ -157,7 +157,7 @@
                         <label class="form-label">Nama Barang</label>
                         <input type="text" x-model="manualItem.item_name" class="form-control" placeholder="Contoh: Kabel HDMI 5 Meter Custom">
                     </div>
-                    <div class="form-group" style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 12px;">
+                    <div class="form-group pos-manual-grid">
                         <div>
                             <label class="form-label">Harga Barang (Rp)</label>
                             <input type="number" x-model="manualItem.price" class="form-control" placeholder="75000">
@@ -220,13 +220,11 @@
                 },
 
                 addToCart(product) {
-                    // Check if stock is 0
                     if (product.stock <= 0) {
                         alert("Stok produk habis!");
                         return;
                     }
 
-                    // Check if already in cart
                     const index = this.cart.findIndex(item => item.product_id === product.id);
                     if (index > -1) {
                         if (this.cart[index].quantity >= product.stock) {
@@ -251,13 +249,12 @@
                     }
 
                     this.cart.push({
-                        product_id: null, // marks as manual entry
+                        product_id: null,
                         item_name: this.manualItem.item_name,
                         price: parseFloat(this.manualItem.price),
                         quantity: parseInt(this.manualItem.quantity)
                     });
 
-                    // Reset manual item inputs
                     this.manualItem = { item_name: '', price: '', quantity: 1 };
                     this.openManualModal = false;
                 },

@@ -22,7 +22,7 @@
         <!-- Sidebar -->
         <aside class="admin-sidebar">
             <div class="admin-sidebar-header">
-                <a href="{{ route('admin.dashboard') }}" class="brand-logo" style="color: var(--white);">
+                <a href="{{ route('admin.dashboard') }}" class="brand-logo sidebar-brand-logo">
                     <i class="fa-solid fa-laptop-code text-primary"></i>
                     <span>Bintang Jaya</span>
                 </a>
@@ -40,7 +40,7 @@
                     <i class="fa-solid fa-file-invoice-dollar"></i> Transaksi / Invoice
                 </a>
 
-                <div class="sidebar-section-title" style="margin-top: 24px;">Manajemen Data</div>
+                <div class="sidebar-section-title sidebar-section-spacer">Manajemen Data</div>
                 <a href="{{ route('admin.products.index') }}" class="sidebar-link {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
                     <i class="fa-solid fa-box"></i> Produk
                 </a>
@@ -57,7 +57,7 @@
                     <i class="fa-solid fa-users"></i> Pelanggan
                 </a>
 
-                <div class="sidebar-section-title" style="margin-top: 24px;">Logistik & Laporan</div>
+                <div class="sidebar-section-title sidebar-section-spacer">Logistik & Laporan</div>
                 <a href="{{ route('admin.stocks.index') }}" class="sidebar-link {{ request()->routeIs('admin.stocks.*') ? 'active' : '' }}">
                     <i class="fa-solid fa-warehouse"></i> Riwayat & Edit Stok
                 </a>
@@ -75,7 +75,7 @@
             <div class="admin-sidebar-footer">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" class="btn btn-danger btn-sm" style="width: 100%; border-radius: var(--radius);">
+                    <button type="submit" class="btn btn-danger btn-sm logout-btn">
                         <i class="fa-solid fa-right-from-bracket"></i> Logout Admin
                     </button>
                 </form>
@@ -87,17 +87,17 @@
             <!-- Navbar -->
             <header class="admin-navbar">
                 <div class="flex items-center">
-                    <h2 class="font-bold" style="font-size: 1.25rem; color: var(--dark);">
+                    <h2 class="font-bold navbar-title">
                         @yield('header_title', 'Admin Panel')
                     </h2>
                 </div>
                 
                 <div class="flex items-center gap-4">
-                    <div style="text-align: right;">
+                    <div class="td-right">
                         <div class="font-semibold text-sm">{{ Auth::user()->name }}</div>
                         <div class="text-xs text-secondary">Administrator Store</div>
                     </div>
-                    <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 700;">
+                    <div class="navbar-avatar">
                         {{ substr(Auth::user()->name, 0, 1) }}
                     </div>
                 </div>
@@ -120,12 +120,12 @@
                 @endif
 
                 @if ($errors->any())
-                    <div class="alert alert-danger" style="flex-direction: column; align-items: flex-start;">
+                    <div class="alert alert-danger alert-validation">
                         <div class="flex items-center gap-2">
                             <i class="fa-solid fa-circle-exclamation"></i>
                             <strong>Terdapat kesalahan input:</strong>
                         </div>
-                        <ul style="margin-left: 28px; margin-top: 8px; font-size: 0.875rem;">
+                        <ul class="validation-error-list">
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach
