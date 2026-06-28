@@ -14,13 +14,13 @@
             <!-- Graphic element -->
             <div class="catalog-hero-graphic">
                 <div class="catalog-hero-glow"></div>
-                <i class="fa-solid fa-laptop catalog-hero-icon"></i>
+                <img src="{{ asset('img/comp.png') }}" alt="Comp" class="w-1/2">
             </div>
         </div>
     </section>
 
     <!-- Quick Stats Features -->
-    <section class="container catalog-features-section">
+    <!-- <section class="container catalog-features-section">
         <div class="grid catalog-feature-grid">
             <div class="flex items-center gap-4 catalog-feature-card">
                 <div class="catalog-feature-icon catalog-fi-amber">
@@ -59,7 +59,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
     <!-- Catalog Section -->
     <section class="container" id="katalog-produk">
@@ -70,105 +70,119 @@
             </div>
         </div>
 
-        <!-- Filter and Search Bar -->
-        <form method="GET" action="{{ route('catalog.index') }}" class="filter-bar">
-            <div class="filter-inputs">
-                <!-- Search input -->
-                <div class="filter-search-wrapper-full">
-                    <i class="fa-solid fa-magnifying-glass filter-search-icon"></i>
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama, SKU, merk, atau spek..." class="form-control filter-input-indent">
+        <div class="catalog-wrapper">
+            
+            <!-- Filter and Search Bar -->
+            <form method="GET" action="{{ route('catalog.index') }}" class="filter-bar">
+                
+                <div class="filter-inputs">
+                    <p class="font-bold">Filter kategori produk</p>
+                    <!-- Search input -->
+                    <div class="filter-search-wrapper-full">
+                        <i class="fa-solid fa-magnifying-glass filter-search-icon"></i>
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama produk" class="form-control filter-input-indent">
+                    </div>
+                </div>
+
+                <div class="filter-inputs">
+                    <p class="font-bold">Kategori</p>
+
+                    <!-- category list -->
+                    <div class="category-wrapper">
+                        @foreach ($categories as $category)
+                            <div
+                                class="category-normal {{ request('category') == $category->id ? 'category-active' : '' }}"
+                                onclick="window.location.href='{{ request()->fullUrlWithQuery(['category' => $category->id]) }}'">
+                                {{ $category->name }}
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                <div class="filter-inputs">
+                    <p class="font-bold">Brand</p>
+
+                    <div>
+                        @foreach ($brands as $brand)
+                            <div
+                                class="category-normal {{ request('brand') == $brand->id ? 'category-active' : '' }}"
+                                onclick="window.location.href='{{ request()->fullUrlWithQuery(['brand' => $brand->id]) }}'">
+                                {{ $brand->name }}
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                <div class="flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-filter"></i> Filter
+                    </button>
+                    @if (request()->anyFilled(['search', 'category', 'brand']))
+                        <a href="{{ route('catalog.index') }}" class="btn btn-secondary">
+                            Clear
+                        </a>
+                    @endif
+                </div>
+            </form>
+
+            <!-- Product Grid -->
+            @if ($products->isEmpty())
+                <div class="catalog-empty-state">
+                    <i class="fa-solid fa-box-open catalog-empty-icon"></i>
+                    <h3 class="font-bold">Produk Tidak Ditemukan</h3>
+                    <p class="text-secondary text-sm">Coba bersihkan pencarian atau ganti filter Anda.</p>
+                </div>
+            @else
+                <div class="product-grid">
+                    @foreach ($products as $product)
+                        <article class="product-card">
+                            @if ($product->primaryImage)
+                                <img src="{{ asset('storage/' . $product->primaryImage->path) }}" class="product-card-img" alt="{{ $product->name }}">
+                            @else
+                                <!-- Beautiful native gradient fallback image -->
+                                <div class="product-card-img flex items-center justify-center catalog-fallback-img">
+                                    <i class="fa-solid fa-laptop-code catalog-fallback-icon"></i>
+                                </div>
+                            @endif
+                            
+                            <div class="product-card-body">
+                                <div class="product-meta">
+                                    <span class="badge badge-info">{{ $product->category->name }}</span>
+                                    <span class="badge badge-success">{{ $product->brand->name }}</span>
+                                </div>
+                                
+                                <h3 class="product-title" title="{{ $product->name }}">{{ Str::limit($product->name, 48) }}</h3>
+                                <p class="text-secondary text-xs catalog-description-clamp">
+                                    {{ $product->description }}
+                                </p>
+                                
+                                <div class="product-price">
+                                    Rp {{ number_format($product->price_jual, 0, ',', '.') }}
+                                </div>
+                                
+                                <div class="product-card-footer">
+                                    <span class="text-xs font-semibold {{ $product->stock > $product->min_stock ? 'text-success' : 'text-danger' }}">
+                                        @if ($product->stock > 0)
+                                            <i class="fa-solid fa-check mr-1"></i> Ready ({{ $product->stock }} unit)
+                                        @else
+                                            <i class="fa-solid fa-xmark mr-1"></i> Habis
+                                        @endif
+                                    </span>
+                                    
+                                    <a href="{{ route('catalog.show', $product->id) }}" class="btn btn-secondary btn-sm catalog-detail-btn">
+                                        Detail <i class="fa-solid fa-chevron-right text-xs"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+                    @endforeach
                 </div>
                 
-                <!-- Category select -->
-                <select name="category" class="form-control filter-select-sm" onchange="this.form.submit()">
-                    <option value="">Semua Kategori</option>
-                    @foreach ($categories as $category)
-                        <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
-                            {{ $category->name }}
-                        </option>
-                    @endforeach
-                </select>
-
-                <!-- Brand select -->
-                <select name="brand" class="form-control filter-select-sm" onchange="this.form.submit()">
-                    <option value="">Semua Merk / Brand</option>
-                    @foreach ($brands as $brand)
-                        <option value="{{ $brand->id }}" {{ request('brand') == $brand->id ? 'selected' : '' }}>
-                            {{ $brand->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="flex gap-2">
-                <button type="submit" class="btn btn-primary">
-                    <i class="fa-solid fa-filter"></i> Filter
-                </button>
-                @if (request()->anyFilled(['search', 'category', 'brand']))
-                    <a href="{{ route('catalog.index') }}" class="btn btn-secondary">
-                        Clear
-                    </a>
-                @endif
-            </div>
-        </form>
-
-        <!-- Product Grid -->
-        @if ($products->isEmpty())
-            <div class="catalog-empty-state">
-                <i class="fa-solid fa-box-open catalog-empty-icon"></i>
-                <h3 class="font-bold">Produk Tidak Ditemukan</h3>
-                <p class="text-secondary text-sm">Coba bersihkan pencarian atau ganti filter Anda.</p>
-            </div>
-        @else
-            <div class="product-grid">
-                @foreach ($products as $product)
-                    <article class="product-card">
-                        @if ($product->primaryImage)
-                            <img src="{{ asset('storage/' . $product->primaryImage->path) }}" class="product-card-img" alt="{{ $product->name }}">
-                        @else
-                            <!-- Beautiful native gradient fallback image -->
-                            <div class="product-card-img flex items-center justify-center catalog-fallback-img">
-                                <i class="fa-solid fa-laptop-code catalog-fallback-icon"></i>
-                            </div>
-                        @endif
-                        
-                        <div class="product-card-body">
-                            <div class="product-meta">
-                                <span class="badge badge-info">{{ $product->category->name }}</span>
-                                <span class="badge badge-success">{{ $product->brand->name }}</span>
-                            </div>
-                            
-                            <h3 class="product-title" title="{{ $product->name }}">{{ Str::limit($product->name, 48) }}</h3>
-                            <p class="text-secondary text-xs catalog-description-clamp">
-                                {{ $product->description }}
-                            </p>
-                            
-                            <div class="product-price">
-                                Rp {{ number_format($product->price_jual, 0, ',', '.') }}
-                            </div>
-                            
-                            <div class="product-card-footer">
-                                <span class="text-xs font-semibold {{ $product->stock > $product->min_stock ? 'text-success' : 'text-danger' }}">
-                                    @if ($product->stock > 0)
-                                        <i class="fa-solid fa-check mr-1"></i> Ready ({{ $product->stock }} unit)
-                                    @else
-                                        <i class="fa-solid fa-xmark mr-1"></i> Habis
-                                    @endif
-                                </span>
-                                
-                                <a href="{{ route('catalog.show', $product->id) }}" class="btn btn-secondary btn-sm catalog-detail-btn">
-                                    Detail <i class="fa-solid fa-chevron-right text-xs"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </article>
-                @endforeach
-            </div>
-            
-            <!-- Pagination Links -->
-            <div class="flex justify-center">
-                {{ $products->links() }}
-            </div>
-        @endif
+                <!-- Pagination Links -->
+                <div class="flex justify-center">
+                    {{ $products->links() }}
+                </div>
+            @endif
+        </div>
     </section>
 </x-catalog-layout>

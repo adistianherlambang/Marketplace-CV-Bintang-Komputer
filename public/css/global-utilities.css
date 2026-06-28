@@ -7,7 +7,7 @@
     --primary-gradient: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
     --secondary: #64748b;
     --dark: #0f172a;
-    --light: #f8fafc;
+    --light: #fcfcfc;
     --white: #ffffff;
     --border: #e2e8f0;
     --success: #10b981;
@@ -181,6 +181,7 @@ textarea {
 }
 
 .btn-primary {
+    width: 100%;
     background-color: var(--primary);
     color: var(--white);
 }
@@ -681,10 +682,12 @@ tr:hover td {
    Keyframes
    ============================ */
 @keyframes pulse {
+
     0%,
     100% {
         transform: scale(1);
     }
+
     50% {
         transform: scale(1.05);
     }

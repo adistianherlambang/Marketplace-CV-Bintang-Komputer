@@ -33,6 +33,11 @@
     position: relative;
 }
 
+.catalog-wrapper {
+    display: flex;
+    gap: 1rem;
+}
+
 .hero-content {
     max-width: 600px;
     z-index: 2;
@@ -162,23 +167,15 @@
     padding: 16px 24px;
     box-shadow: var(--shadow);
     border: 1px solid var(--border);
-    margin-bottom: 32px;
     display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 2rem;
 }
 
 .filter-inputs {
     display: flex;
+    flex-direction: column;
     gap: 12px;
-    flex-grow: 1;
-}
-
-.filter-search-wrapper-full {
-    position: relative;
-    flex-grow: 1;
 }
 
 .filter-search-icon {
@@ -188,12 +185,20 @@
     color: var(--secondary);
 }
 
-.filter-input-indent {
-    padding-left: 40px;
+.filter-select-sm {
+    width: 100%;
 }
 
-.filter-select-sm {
-    max-width: 200px;
+.category-normal {
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 0.5rem;
+}
+
+.category-active {
+    cursor: pointer;
+    padding: 8px 12px;
+    border: solid #DBE2ED 1px;
 }
 
 /* --- Product Cards Grid --- */
@@ -202,6 +207,7 @@
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 30px;
     margin-bottom: 48px;
+    height: fit-content;
 }
 
 .product-card {
@@ -212,6 +218,8 @@
     border: 1px solid var(--border);
     transition: var(--transition);
     display: flex;
+    height: 100%;
+    cursor: pointer;
     flex-direction: column;
 }
 
@@ -271,6 +279,7 @@
 
 /* --- Empty State --- */
 .catalog-empty-state {
+    width: 100%;
     text-align: center;
     padding: 60px 20px;
     background-color: var(--white);
