@@ -1,6 +1,10 @@
 <x-admin-layout>
     @section('header_title', 'Kelola Retur Barang & Pengembalian')
 
+    @push('styles')
+    <link rel="stylesheet" href="{{ asset('css/modules/returns.module.css') }}">
+    @endpush
+
     <div class="grid grid-1-2" x-data="returnApp()">
         
         <!-- Left: Log Return Form -->

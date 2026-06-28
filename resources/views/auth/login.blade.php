@@ -7,11 +7,12 @@
 
     <title>Login Admin - CV Bintang Jaya Komputer</title>
 
-    <!-- FontAwesome & Custom CSS -->
+    <!-- FontAwesome & Modular CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/global-utilities.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/modules/auth.module.css') }}">
 </head>
-<body style="background-color: var(--white); overflow: hidden;">
+<body class="auth-body">
     <div class="auth-split-container">
         
         <!-- Left Side Pane -->
@@ -24,7 +25,7 @@
                 <p class="auth-subheading">Kelola transaksi kasir, pantau persediaan stok barang, tangani retur/komplain, dan buat laporan keuangan bulanan dalam satu sistem informasi terintegrasi.</p>
             </div>
             
-            <div style="position: absolute; bottom: 40px; left: 80px; font-size: 0.875rem; opacity: 0.7; z-index: 2;">
+            <div class="auth-copyright">
                 &copy; {{ date('Y') }} CV Bintang Jaya Komputer
             </div>
         </div>
@@ -33,9 +34,9 @@
         <div class="auth-right-pane">
             <div class="auth-form-container">
                 <!-- Store Name / Logo -->
-                <div class="brand-logo" style="margin-bottom: 40px;">
+                <div class="brand-logo auth-brand-logo-spacer">
                     <i class="fa-solid fa-laptop-code text-primary"></i>
-                    <span style="color: var(--dark); font-weight: 800;">Bintang Komputer</span>
+                    <span class="auth-brand-name">Bintang Komputer</span>
                 </div>
 
                 <h2 class="auth-form-title">Selamat Datang</h2>
@@ -43,7 +44,7 @@
 
                 <!-- Session Status / Errors -->
                 @if ($errors->any())
-                    <div class="alert alert-danger" style="margin-bottom: 24px; font-size: 0.875rem; padding: 10px 14px;">
+                    <div class="alert alert-danger auth-error-alert">
                         <i class="fa-solid fa-triangle-exclamation"></i>
                         <span>Email atau password salah.</span>
                     </div>
@@ -59,29 +60,29 @@
                     </div>
 
                     <!-- Password -->
-                    <div class="form-group" style="margin-bottom: 24px;">
-                        <div class="flex justify-between items-center" style="margin-bottom: 6px;">
-                            <label for="password" class="form-label" style="margin-bottom: 0;">Password</label>
+                    <div class="form-group auth-password-group">
+                        <div class="flex justify-between items-center auth-password-label-row">
+                            <label for="password" class="form-label auth-password-label-nomargin">Password</label>
                             @if (Route::has('password.request'))
-                                <a href="{{ route('password.request') }}" class="text-xs font-semibold" style="color: var(--primary);">Lupa Password?</a>
+                                <a href="{{ route('password.request') }}" class="text-xs font-semibold auth-forgot-link">Lupa Password?</a>
                             @endif
                         </div>
                         <input id="password" class="form-control" type="password" name="password" required autocomplete="current-password" placeholder="••••••••">
                     </div>
 
                     <!-- Remember Me -->
-                    <div class="form-group" style="display: flex; align-items: center; gap: 8px; margin-bottom: 24px;">
-                        <input id="remember_me" type="checkbox" name="remember" style="width: 16px; height: 16px; accent-color: var(--primary);">
-                        <label for="remember_me" class="text-xs text-secondary font-semibold" style="cursor: pointer; user-select: none;">Ingat saya di perangkat ini</label>
+                    <div class="form-group auth-remember-group">
+                        <input id="remember_me" type="checkbox" name="remember" class="auth-remember-checkbox">
+                        <label for="remember_me" class="text-xs text-secondary font-semibold auth-remember-label">Ingat saya di perangkat ini</label>
                     </div>
 
                     <!-- Actions -->
-                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px 18px; border-radius: var(--radius); font-weight: 700;">
+                    <button type="submit" class="btn btn-primary auth-login-btn">
                         <i class="fa-solid fa-right-to-bracket mr-2"></i> Masuk Sekarang
                     </button>
                 </form>
 
-                <div style="margin-top: 40px; text-align: center;">
+                <div class="auth-back-link">
                     <a href="{{ route('catalog.index') }}" class="text-sm font-semibold text-secondary hover:text-primary">
                         <i class="fa-solid fa-arrow-left-long mr-1"></i> Kembali ke Katalog Guest
                     </a>

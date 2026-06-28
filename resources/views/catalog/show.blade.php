@@ -1,4 +1,8 @@
 <x-catalog-layout>
+    @push('styles')
+    <link rel="stylesheet" href="{{ asset('css/modules/catalog-show.module.css') }}">
+    @endpush
+
     <div class="container catalog-show-wrap">
         <!-- Breadcrumb / Back button -->
         <div class="catalog-back-btn">

@@ -1,0 +1,110 @@
+/* ============================
+   Transactions Show Module
+   transactions-show.module.css
+   ============================ */
+
+/* --- Invoice Header --- */
+.invoice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 16px;
+    margin-bottom: 20px;
+}
+
+.invoice-number-label {
+    text-transform: uppercase;
+}
+
+.invoice-number-val {
+    font-size: 1.5rem;
+    color: var(--dark);
+}
+
+.invoice-date-block {
+    text-align: right;
+    margin-left: auto;
+}
+
+/* --- Invoice Items --- */
+.invoice-items-title {
+    font-size: 1rem;
+}
+
+.invoice-items-container {
+    box-shadow: none;
+    border-radius: var(--radius-sm);
+    margin-bottom: 24px;
+}
+
+/* --- Invoice Summary --- */
+.invoice-summary-wrap {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+.invoice-summary-inner {
+    width: 300px;
+}
+
+.invoice-total-row {
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+}
+
+.invoice-total-label {
+    font-size: 1.1rem;
+}
+
+.invoice-total-val {
+    font-size: 1.25rem;
+}
+
+/* --- Invoice Notes --- */
+.invoice-notes-box {
+    background-color: var(--light);
+    padding: 16px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    margin-top: 20px;
+}
+
+.invoice-notes-label {
+    font-size: 0.875rem;
+}
+
+/* --- Invoice Status & Actions --- */
+.invoice-status-badge {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+    width: 100%;
+    justify-content: center;
+}
+
+.invoice-action-divider {
+    border-top: 1px solid var(--border);
+    margin-top: 12px;
+    padding-top: 12px;
+}
+
+.invoice-form-label-sm {
+    font-size: 0.75rem;
+}
+
+.invoice-btn-full {
+    width: 100%;
+}
+
+.invoice-btn-full-pad {
+    width: 100%;
+    padding: 14px 20px;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.invoice-cancelled-msg {
+    padding: 16px 0;
+}

@@ -4,34 +4,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Preview Laporan - CV Bintang Jaya Komputer</title>
-    <!-- FontAwesome & Style -->
+    <!-- FontAwesome & Modular CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <style>
-        body { background-color: #f1f5f9; padding: 40px 0; }
-        .preview-box {
-            background-color: var(--white);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow-lg);
-            padding: 40px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        .header-section {
-            border-bottom: 2px solid var(--dark);
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/global-utilities.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/modules/reports-preview.module.css') }}">
 </head>
-<body>
+<body class="preview-body">
     <div class="container">
         
-        <div style="max-width: 900px; margin: 0 auto 20px auto; display: flex; justify-content: space-between;">
+        <div class="preview-toolbar">
             <button onclick="window.close()" class="btn btn-secondary btn-sm">
                 <i class="fa-solid fa-xmark"></i> Tutup Preview
             </button>
@@ -43,13 +24,13 @@
 
         <div class="preview-box">
             <!-- Header -->
-            <div class="header-section">
+            <div class="preview-header-section">
                 <div>
-                    <h1 class="font-bold" style="font-size: 1.5rem; text-transform: uppercase;">CV BINTANG JAYA KOMPUTER</h1>
-                    <p style="font-size: 0.85rem; color: var(--secondary);">Jl. Ahmad Yani No.68, Iringmulyo, Kota Metro, Lampung | Telp: (0725) 45678</p>
+                    <h1 class="font-bold preview-company-name">CV BINTANG JAYA KOMPUTER</h1>
+                    <p class="preview-company-address">Jl. Ahmad Yani No.68, Iringmulyo, Kota Metro, Lampung | Telp: (0725) 45678</p>
                 </div>
-                <div style="text-align: right;">
-                    <span class="badge badge-info" style="font-size: 0.875rem;">Laporan Preview</span>
+                <div class="td-right">
+                    <span class="badge badge-info preview-badge-lg">Laporan Preview</span>
                 </div>
             </div>
 
@@ -57,20 +38,20 @@
             
             <!-- 1. Daily Report -->
             @if ($data['type'] === 'daily')
-                <div style="margin-bottom: 24px;">
-                    <h3 class="font-bold text-center" style="font-size: 1.25rem;">LAPORAN PENJUALAN HARIAN</h3>
+                <div class="preview-report-section">
+                    <h3 class="font-bold text-center preview-report-title">LAPORAN PENJUALAN HARIAN</h3>
                     <p class="text-center text-secondary text-sm">Tanggal Laporan: {{ $data['date'] }}</p>
                 </div>
 
-                <div class="table-container" style="box-shadow: none; border-radius: var(--radius-sm);">
-                    <table style="width: 100%;">
+                <div class="table-container preview-table-container">
+                    <table>
                         <thead>
                             <tr>
                                 <th>No. Invoice</th>
                                 <th>Pelanggan</th>
                                 <th>Kasir</th>
-                                <th style="text-align: center;">Status</th>
-                                <th style="text-align: right;">Total Transaksi</th>
+                                <th class="th-center">Status</th>
+                                <th class="th-right">Total Transaksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -79,31 +60,31 @@
                                     <td><strong>{{ $order->invoice_number }}</strong></td>
                                     <td>{{ $order->customer ? $order->customer->name : 'Guest' }}</td>
                                     <td>{{ $order->user->name }}</td>
-                                    <td style="text-align: center;">
+                                    <td class="td-center">
                                         <span class="badge {{ $order->status === 'Lunas' ? 'badge-success' : 'badge-warning' }}">{{ $order->status }}</span>
                                     </td>
-                                    <td style="text-align: right; font-weight: 600; color: var(--primary);">
+                                    <td class="preview-td-amount">
                                         Rp {{ number_format($order->total_amount, 0, ',', '.') }}
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" style="text-align: center; padding: 24px; color: var(--secondary);">Tidak ada transaksi pada tanggal ini.</td>
+                                    <td colspan="5" class="td-empty">Tidak ada transaksi pada tanggal ini.</td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
 
-                <div style="margin-top: 30px; display: flex; justify-content: flex-end;">
-                    <div style="width: 320px; border-top: 1px solid var(--border); padding-top: 16px;">
+                <div class="preview-summary-wrap">
+                    <div class="preview-summary-inner">
                         <div class="flex justify-between mb-2">
                             <span>Jml Transaksi:</span>
                             <span class="font-semibold">{{ $data['total_transactions'] }}</span>
                         </div>
-                        <div class="flex justify-between mb-2" style="font-size: 1.15rem; font-weight: 700;">
+                        <div class="flex justify-between mb-2 preview-summary-total-row">
                             <span>Total Penjualan:</span>
-                            <span style="color: var(--primary);">Rp {{ number_format($data['total_sales'], 0, ',', '.') }}</span>
+                            <span class="preview-summary-total-val">Rp {{ number_format($data['total_sales'], 0, ',', '.') }}</span>
                         </div>
                     </div>
                 </div>
@@ -111,20 +92,20 @@
 
             <!-- 2. Monthly Report -->
             @if ($data['type'] === 'monthly')
-                <div style="margin-bottom: 24px;">
-                    <h3 class="font-bold text-center" style="font-size: 1.25rem;">LAPORAN PENJUALAN BULANAN</h3>
+                <div class="preview-report-section">
+                    <h3 class="font-bold text-center preview-report-title">LAPORAN PENJUALAN BULANAN</h3>
                     <p class="text-center text-secondary text-sm">Bulan Laporan: {{ $data['month'] }}</p>
                 </div>
 
-                <div class="table-container" style="box-shadow: none; border-radius: var(--radius-sm);">
-                    <table style="width: 100%;">
+                <div class="table-container preview-table-container">
+                    <table>
                         <thead>
                             <tr>
                                 <th>No. Invoice</th>
                                 <th>Tanggal</th>
                                 <th>Pelanggan</th>
-                                <th style="text-align: center;">Status</th>
-                                <th style="text-align: right;">Total Belanja</th>
+                                <th class="th-center">Status</th>
+                                <th class="th-right">Total Belanja</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -133,31 +114,31 @@
                                     <td><strong>{{ $order->invoice_number }}</strong></td>
                                     <td>{{ $order->created_at->format('d/m/Y') }}</td>
                                     <td>{{ $order->customer ? $order->customer->name : 'Guest' }}</td>
-                                    <td style="text-align: center;">
+                                    <td class="td-center">
                                         <span class="badge {{ $order->status === 'Lunas' ? 'badge-success' : 'badge-warning' }}">{{ $order->status }}</span>
                                     </td>
-                                    <td style="text-align: right; font-weight: 600; color: var(--primary);">
+                                    <td class="preview-td-amount">
                                         Rp {{ number_format($order->total_amount, 0, ',', '.') }}
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" style="text-align: center; padding: 24px; color: var(--secondary);">Tidak ada transaksi pada bulan ini.</td>
+                                    <td colspan="5" class="td-empty">Tidak ada transaksi pada bulan ini.</td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
 
-                <div style="margin-top: 30px; display: flex; justify-content: flex-end;">
-                    <div style="width: 320px; border-top: 1px solid var(--border); padding-top: 16px;">
+                <div class="preview-summary-wrap">
+                    <div class="preview-summary-inner">
                         <div class="flex justify-between mb-2">
                             <span>Jml Transaksi:</span>
                             <span class="font-semibold">{{ $data['total_transactions'] }}</span>
                         </div>
-                        <div class="flex justify-between mb-2" style="font-size: 1.15rem; font-weight: 700;">
+                        <div class="flex justify-between mb-2 preview-summary-total-row">
                             <span>Total Penjualan:</span>
-                            <span style="color: var(--primary);">Rp {{ number_format($data['total_sales'], 0, ',', '.') }}</span>
+                            <span class="preview-summary-total-val">Rp {{ number_format($data['total_sales'], 0, ',', '.') }}</span>
                         </div>
                     </div>
                 </div>
@@ -165,21 +146,21 @@
 
             <!-- 3. Stock Report -->
             @if ($data['type'] === 'stock')
-                <div style="margin-bottom: 24px;">
-                    <h3 class="font-bold text-center" style="font-size: 1.25rem;">LAPORAN PERSERDIAAN STOK BARANG GUDANG</h3>
+                <div class="preview-report-section">
+                    <h3 class="font-bold text-center preview-report-title">LAPORAN PERSERDIAAN STOK BARANG GUDANG</h3>
                     <p class="text-center text-secondary text-sm">Dicetak Pada: {{ now()->format('d F Y H:i') }}</p>
                 </div>
 
-                <div class="table-container" style="box-shadow: none; border-radius: var(--radius-sm);">
-                    <table style="width: 100%;">
+                <div class="table-container preview-table-container">
+                    <table>
                         <thead>
                             <tr>
                                 <th>Nama Barang / SKU</th>
                                 <th>Merk</th>
                                 <th>Supplier</th>
-                                <th style="text-align: right;">Harga Modal</th>
-                                <th style="text-align: center;">Min. Stok</th>
-                                <th style="text-align: center;">Sisa Stok</th>
+                                <th class="th-right">Harga Modal</th>
+                                <th class="th-center">Min. Stok</th>
+                                <th class="th-center">Sisa Stok</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -191,9 +172,9 @@
                                     </td>
                                     <td>{{ $product->brand->name }}</td>
                                     <td>{{ $product->supplier->name }}</td>
-                                    <td style="text-align: right;">Rp {{ number_format($product->price_modal, 0, ',', '.') }}</td>
-                                    <td style="text-align: center;">{{ $product->min_stock }}</td>
-                                    <td style="text-align: center; font-weight: 700; color: {{ $product->stock <= $product->min_stock ? 'var(--danger)' : 'var(--dark)' }};">
+                                    <td class="td-right">Rp {{ number_format($product->price_modal, 0, ',', '.') }}</td>
+                                    <td class="td-center">{{ $product->min_stock }}</td>
+                                    <td class="{{ $product->stock <= $product->min_stock ? 'preview-td-stock-danger' : 'preview-td-stock-normal' }}">
                                         {{ $product->stock }} pcs
                                     </td>
                                 </tr>
@@ -202,15 +183,15 @@
                     </table>
                 </div>
 
-                <div style="margin-top: 30px; display: flex; justify-content: flex-end;">
-                    <div style="width: 320px; border-top: 1px solid var(--border); padding-top: 16px;">
+                <div class="preview-summary-wrap">
+                    <div class="preview-summary-inner">
                         <div class="flex justify-between mb-2">
                             <span>Total Unit Stok:</span>
                             <span class="font-semibold">{{ $data['total_stock'] }} unit</span>
                         </div>
-                        <div class="flex justify-between mb-2" style="font-size: 1.15rem; font-weight: 700;">
+                        <div class="flex justify-between mb-2 preview-summary-total-row">
                             <span>Total Nilai Aset:</span>
-                            <span style="color: var(--primary);">Rp {{ number_format($data['total_value'], 0, ',', '.') }}</span>
+                            <span class="preview-summary-total-val">Rp {{ number_format($data['total_value'], 0, ',', '.') }}</span>
                         </div>
                     </div>
                 </div>
@@ -218,20 +199,20 @@
 
             <!-- 4. Return Report -->
             @if ($data['type'] === 'return')
-                <div style="margin-bottom: 24px;">
-                    <h3 class="font-bold text-center" style="font-size: 1.25rem;">LAPORAN RETUR BARANG RUSAK / RETUR PENJUALAN</h3>
+                <div class="preview-report-section">
+                    <h3 class="font-bold text-center preview-report-title">LAPORAN RETUR BARANG RUSAK / RETUR PENJUALAN</h3>
                     <p class="text-center text-secondary text-sm">Dicetak Pada: {{ now()->format('d F Y H:i') }}</p>
                 </div>
 
-                <div class="table-container" style="box-shadow: none; border-radius: var(--radius-sm);">
-                    <table style="width: 100%;">
+                <div class="table-container preview-table-container">
+                    <table>
                         <thead>
                             <tr>
                                 <th>Nomor Invoice</th>
                                 <th>Nama Barang</th>
-                                <th style="text-align: center;">Qty</th>
+                                <th class="th-center">Qty</th>
                                 <th>Alasan Kerusakan</th>
-                                <th style="text-align: center;">Status</th>
+                                <th class="th-center">Status</th>
                                 <th>Tanggal</th>
                             </tr>
                         </thead>
@@ -240,16 +221,16 @@
                                 <tr>
                                     <td><strong>{{ $ret->order->invoice_number }}</strong></td>
                                     <td>{{ $ret->product->name }}</td>
-                                    <td style="text-align: center; font-weight: 600;">{{ $ret->quantity }} pcs</td>
-                                    <td style="font-size: 0.85rem;">{{ $ret->reason }}</td>
-                                    <td style="text-align: center;">
+                                    <td class="preview-td-qty">{{ $ret->quantity }} pcs</td>
+                                    <td class="preview-td-reason">{{ $ret->reason }}</td>
+                                    <td class="td-center">
                                         <span class="badge {{ $ret->status === 'Disetujui' ? 'badge-success' : 'badge-danger' }}">{{ $ret->status }}</span>
                                     </td>
                                     <td>{{ $ret->date->format('d/m/Y') }}</td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" style="text-align: center; padding: 24px; color: var(--secondary);">Tidak ada data retur.</td>
+                                    <td colspan="6" class="td-empty">Tidak ada data retur.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -259,34 +240,34 @@
 
             <!-- 5. Top Products Report -->
             @if ($data['type'] === 'top_products')
-                <div style="margin-bottom: 24px;">
-                    <h3 class="font-bold text-center" style="font-size: 1.25rem;">LAPORAN PRODUK TERLARIS</h3>
+                <div class="preview-report-section">
+                    <h3 class="font-bold text-center preview-report-title">LAPORAN PRODUK TERLARIS</h3>
                     <p class="text-center text-secondary text-sm">Dicetak Pada: {{ now()->format('d F Y H:i') }}</p>
                 </div>
 
-                <div class="table-container" style="box-shadow: none; border-radius: var(--radius-sm);">
-                    <table style="width: 100%;">
+                <div class="table-container preview-table-container">
+                    <table>
                         <thead>
                             <tr>
-                                <th style="width: 80px;">Peringkat</th>
+                                <th class="preview-th-rank">Peringkat</th>
                                 <th>Nama Barang</th>
-                                <th style="text-align: center;">Total Unit Terjual</th>
-                                <th style="text-align: right;">Total Nilai Penjualan</th>
+                                <th class="th-center">Total Unit Terjual</th>
+                                <th class="th-right">Total Nilai Penjualan</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse ($data['products'] as $index => $item)
                                 <tr>
-                                    <td style="text-align: center; font-weight: 800; color: var(--primary);">#{{ $index + 1 }}</td>
+                                    <td class="preview-td-rank">#{{ $index + 1 }}</td>
                                     <td><strong>{{ $item->item_name }}</strong></td>
-                                    <td style="text-align: center; font-weight: 700;">{{ $item->total_qty }} pcs</td>
-                                    <td style="text-align: right; font-weight: 700; color: var(--success);">
+                                    <td class="preview-td-qty">{{ $item->total_qty }} pcs</td>
+                                    <td class="preview-td-sales">
                                         Rp {{ number_format($item->total_sales, 0, ',', '.') }}
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" style="text-align: center; padding: 24px; color: var(--secondary);">Tidak ada data penjualan produk.</td>
+                                    <td colspan="4" class="td-empty">Tidak ada data penjualan produk.</td>
                                 </tr>
                             @endforelse
                         </tbody>

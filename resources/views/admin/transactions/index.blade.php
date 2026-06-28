@@ -1,6 +1,10 @@
 <x-admin-layout>
     @section('header_title', 'Riwayat Transaksi & Penjualan')
 
+    @push('styles')
+    <link rel="stylesheet" href="{{ asset('css/modules/transactions-index.module.css') }}">
+    @endpush
+
     <!-- Action Header -->
     <div class="flex justify-between items-center mb-6">
         <div>

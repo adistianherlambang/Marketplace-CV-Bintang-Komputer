@@ -1,6 +1,10 @@
 <x-admin-layout>
     @section('header_title', 'POS Kasir - Penjualan Baru')
 
+    @push('styles')
+    <link rel="stylesheet" href="{{ asset('css/modules/transactions-create.module.css') }}">
+    @endpush
+
     <div class="pos-wrapper" x-data="posApp()">
         
         <!-- Left: Product List & Manual Items -->

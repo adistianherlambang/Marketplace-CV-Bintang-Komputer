@@ -1,0 +1,51 @@
+/* ============================
+   Transactions Index Module
+   transactions-index.module.css
+   ============================ */
+
+/* --- Filter Bar --- */
+.filter-bar {
+    background-color: var(--white);
+    border-radius: var(--radius);
+    padding: 16px 24px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    margin-bottom: 32px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.filter-inputs {
+    display: flex;
+    gap: 12px;
+    flex-grow: 1;
+}
+
+.filter-search-wrapper {
+    position: relative;
+    flex-grow: 1;
+    max-width: 350px;
+}
+
+.filter-search-wrapper-full {
+    position: relative;
+    flex-grow: 1;
+}
+
+.filter-search-icon {
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    color: var(--secondary);
+}
+
+.filter-input-indent {
+    padding-left: 40px;
+}
+
+.filter-select-sm {
+    max-width: 200px;
+}

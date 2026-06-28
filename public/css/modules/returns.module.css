@@ -1,0 +1,42 @@
+/* ============================
+   Returns Module
+   returns.module.css
+   ============================ */
+
+.returns-form-btn {
+    width: 100%;
+}
+
+.returns-history-card {
+    padding: 24px 0;
+}
+
+.returns-history-title {
+    font-size: 1.1rem;
+    padding: 0 24px;
+}
+
+.returns-pagination {
+    padding: 0 24px;
+}
+
+.returns-checkbox {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary);
+}
+
+.returns-checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.returns-check-label {
+    cursor: pointer;
+}
+
+.returns-btn-sm-action {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+}

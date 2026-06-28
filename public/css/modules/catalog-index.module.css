@@ -1,0 +1,326 @@
+/* ============================
+   Catalog Index Module
+   catalog-index.module.css
+   ============================ */
+
+/* --- Guest Header & Navbar --- */
+.guest-header {
+    background-color: var(--white);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.guest-navbar {
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* --- Hero Section --- */
+.guest-hero {
+    background: var(--primary-gradient);
+    border-radius: var(--radius-xl);
+    padding: 60px 48px;
+    color: var(--white);
+    margin: 32px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.hero-content {
+    max-width: 600px;
+    z-index: 2;
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 16px;
+}
+
+.hero-subtitle {
+    font-size: 1.125rem;
+    opacity: 0.9;
+    margin-bottom: 24px;
+}
+
+/* --- Catalog Section --- */
+.catalog-section-top {
+    margin-top: 32px;
+}
+
+.catalog-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.catalog-heading {
+    font-size: 1.5rem;
+}
+
+/* --- Catalog Hero Extras --- */
+.catalog-hero-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.825rem;
+    font-weight: 600;
+}
+
+.catalog-hero-cta {
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.catalog-hero-graphic {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.catalog-hero-glow {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    filter: blur(40px);
+}
+
+.catalog-hero-icon {
+    font-size: 8rem;
+    color: rgba(255, 255, 255, 0.3);
+    z-index: 2;
+}
+
+/* --- Feature Cards Strip --- */
+.catalog-features-section {
+    margin-bottom: 32px;
+}
+
+.catalog-feature-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.catalog-feature-card {
+    background-color: var(--white);
+    border-radius: var(--radius);
+    padding: 20px;
+    border: 1px solid var(--border);
+}
+
+.catalog-feature-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.catalog-fi-amber {
+    background-color: #fef3c7;
+    color: #d97706;
+}
+
+.catalog-fi-blue {
+    background-color: #dbeafe;
+    color: #2563eb;
+}
+
+.catalog-fi-green {
+    background-color: #d1fae5;
+    color: #059669;
+}
+
+.catalog-fi-pink {
+    background-color: #fce7f3;
+    color: #db2777;
+}
+
+/* --- Filter Bar (shared with transactions-index) --- */
+.filter-bar {
+    background-color: var(--white);
+    border-radius: var(--radius);
+    padding: 16px 24px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    margin-bottom: 32px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.filter-inputs {
+    display: flex;
+    gap: 12px;
+    flex-grow: 1;
+}
+
+.filter-search-wrapper-full {
+    position: relative;
+    flex-grow: 1;
+}
+
+.filter-search-icon {
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    color: var(--secondary);
+}
+
+.filter-input-indent {
+    padding-left: 40px;
+}
+
+.filter-select-sm {
+    max-width: 200px;
+}
+
+/* --- Product Cards Grid --- */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    margin-bottom: 48px;
+}
+
+.product-card {
+    background-color: var(--white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: #cbd5e1;
+}
+
+.product-card-img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    background-color: var(--light);
+    border-bottom: 1px solid var(--border);
+}
+
+.product-card-body {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-meta {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    display: flex;
+    gap: 8px;
+}
+
+.product-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 8px;
+    line-height: 1.3;
+}
+
+.product-price {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-top: auto;
+    margin-bottom: 12px;
+}
+
+.product-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* --- Empty State --- */
+.catalog-empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: var(--white);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+
+.catalog-empty-icon {
+    font-size: 3rem;
+    color: #cbd5e1;
+    margin-bottom: 16px;
+}
+
+/* --- Fallback Image --- */
+.catalog-fallback-img {
+    background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
+}
+
+.catalog-fallback-icon {
+    font-size: 4rem;
+    color: #94a3b8;
+}
+
+.catalog-description-clamp {
+    margin-bottom: 12px;
+    height: 36px;
+    overflow: hidden;
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.catalog-detail-btn {
+    border-radius: 20px;
+}
+
+/* --- Footer --- */
+.catalog-footer {
+    background-color: var(--white);
+    border-top: 1px solid var(--border);
+    padding: 40px 0;
+    margin-top: 60px;
+    text-align: center;
+    color: var(--secondary);
+    font-size: 0.875rem;
+}
+
+.catalog-footer-address {
+    margin-top: 8px;
+    font-size: 0.75rem;
+    opacity: 0.8;
+}

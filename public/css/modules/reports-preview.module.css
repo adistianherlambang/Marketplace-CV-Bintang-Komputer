@@ -1,0 +1,136 @@
+/* ============================
+   Reports Preview Module
+   reports-preview.module.css
+   ============================ */
+
+/* --- Preview Page Body --- */
+.preview-body {
+    background-color: #f1f5f9;
+    padding: 40px 0;
+}
+
+/* --- Preview Box --- */
+.preview-box {
+    background-color: var(--white);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-lg);
+    padding: 40px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* --- Header Section --- */
+.preview-header-section {
+    border-bottom: 2px solid var(--dark);
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* --- Preview Toolbar --- */
+.preview-toolbar {
+    max-width: 900px;
+    margin: 0 auto 20px auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* --- Report Title --- */
+.preview-report-title {
+    font-size: 1.25rem;
+}
+
+/* --- Report Subtitle Section --- */
+.preview-report-section {
+    margin-bottom: 24px;
+}
+
+/* --- Company Title --- */
+.preview-company-name {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+}
+
+.preview-company-address {
+    font-size: 0.85rem;
+    color: var(--secondary);
+}
+
+.preview-badge-lg {
+    font-size: 0.875rem;
+}
+
+/* --- Table in preview --- */
+.preview-table-container {
+    box-shadow: none;
+    border-radius: var(--radius-sm);
+}
+
+/* --- Summary Footer --- */
+.preview-summary-wrap {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.preview-summary-inner {
+    width: 320px;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+}
+
+.preview-summary-total-row {
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.preview-summary-total-val {
+    color: var(--primary);
+}
+
+/* --- Report cell helpers --- */
+.preview-td-amount {
+    text-align: right;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.preview-td-reason {
+    font-size: 0.85rem;
+}
+
+.preview-td-rank {
+    text-align: center;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.preview-td-qty {
+    text-align: center;
+    font-weight: 700;
+}
+
+.preview-td-sales {
+    text-align: right;
+    font-weight: 700;
+    color: var(--success);
+}
+
+.preview-td-stock-danger {
+    text-align: center;
+    font-weight: 700;
+    color: var(--danger);
+}
+
+.preview-td-stock-normal {
+    text-align: center;
+    font-weight: 700;
+    color: var(--dark);
+}
+
+.preview-th-rank {
+    width: 80px;
+}

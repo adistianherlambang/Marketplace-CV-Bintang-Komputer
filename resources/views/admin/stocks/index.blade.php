@@ -1,6 +1,10 @@
 <x-admin-layout>
     @section('header_title', 'Kelola & Riwayat Stok Barang')
 
+    @push('styles')
+    <link rel="stylesheet" href="{{ asset('css/modules/stocks.module.css') }}">
+    @endpush
+
     <div class="grid stocks-layout">
         
         <!-- Left: Quick Stock Adjustment Form -->

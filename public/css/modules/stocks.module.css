@@ -1,0 +1,31 @@
+/* ============================
+   Stocks Module
+   stocks.module.css
+   ============================ */
+
+.stocks-layout {
+    grid-template-columns: 1fr 2fr;
+    gap: 24px;
+    align-items: start;
+}
+
+.stocks-history-card {
+    padding: 24px 0;
+}
+
+.stocks-history-title {
+    font-size: 1.10rem;
+    padding: 0 24px;
+}
+
+.stocks-pagination {
+    padding: 0 24px;
+}
+
+.stocks-label {
+    font-size: 1.10rem;
+}
+
+.stocks-form-btn {
+    width: 100%;
+}

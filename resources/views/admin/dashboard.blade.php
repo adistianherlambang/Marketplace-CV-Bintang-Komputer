@@ -1,6 +1,9 @@
 <x-admin-layout>
     @section('header_title', 'Dashboard Ringkasan Toko')
 
+    @push('styles')
+    <link rel="stylesheet" href="{{ asset('css/modules/dashboard.module.css') }}">
+    @endpush
     <!-- Metrics Cards -->
     <div class="metrics-grid">
         <!-- Sales Today -->

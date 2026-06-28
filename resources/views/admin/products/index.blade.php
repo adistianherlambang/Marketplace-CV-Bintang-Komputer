@@ -1,6 +1,10 @@
 <x-admin-layout>
     @section('header_title', 'Kelola Produk & Barang')
 
+    @push('styles')
+    <link rel="stylesheet" href="{{ asset('css/modules/products.module.css') }}">
+    @endpush
+
     <div x-data="{ openCreateModal: false, openEditModal: false, currentProduct: {
         id: '', name: '', sku: '', barcode: '', category_id: '', brand_id: '', supplier_id: '',
         price_modal: '', price_jual: '', min_stock: '', description: '', specs: '', is_active: '1'

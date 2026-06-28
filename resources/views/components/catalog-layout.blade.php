@@ -9,7 +9,9 @@
 
     <!-- FontAwesome & Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/global-utilities.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/modules/catalog-index.module.css') }}">
+    @stack('styles')
 </head>
 <body>
     <!-- Header -->
@@ -44,11 +46,12 @@
     </main>
 
     <!-- Footer -->
-    <footer style="background-color: var(--white); border-top: 1px solid var(--border); padding: 40px 0; margin-top: 60px; text-align: center; color: var(--secondary); font-size: 0.875rem;">
+    <footer class="catalog-footer">
         <div class="container">
             <p>&copy; {{ date('Y') }} CV Bintang Jaya Komputer. All rights reserved.</p>
-            <p style="margin-top: 8px; font-size: 0.75rem; opacity: 0.8;">Jl. Ahmad Yani No.68, Iringmulyo, Kota Metro, Lampung</p>
+            <p class="catalog-footer-address">Jl. Ahmad Yani No.68, Iringmulyo, Kota Metro, Lampung</p>
         </div>
     </footer>
 </body>
 </html>
+

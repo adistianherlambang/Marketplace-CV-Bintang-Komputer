@@ -1,0 +1,241 @@
+/* ============================
+   Transactions Create (POS) Module
+   transactions-create.module.css
+   ============================ */
+
+/* --- POS Wrapper --- */
+.pos-wrapper {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 24px;
+    height: calc(100vh - 136px);
+}
+
+.pos-products {
+    background-color: var(--white);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.pos-cart {
+    background-color: var(--white);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.pos-product-list {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+    align-content: start;
+}
+
+.pos-item-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    cursor: pointer;
+    transition: var(--transition);
+    background-color: var(--light);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 160px;
+}
+
+.pos-item-card:hover {
+    border-color: var(--primary);
+    background-color: var(--primary-light);
+}
+
+.pos-cart-list {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.pos-cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding: 12px 0;
+}
+
+.pos-cart-item:last-child {
+    border-bottom: none;
+}
+
+.pos-cart-footer {
+    background-color: var(--light);
+    border-top: 1px solid var(--border);
+    padding: 24px;
+}
+
+/* --- POS Search --- */
+.pos-search-wrapper {
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.pos-search-inner {
+    position: relative;
+    flex-grow: 1;
+    max-width: 320px;
+}
+
+.pos-search-icon {
+    position: absolute;
+    left: 14px;
+    top: 12px;
+    color: var(--secondary);
+}
+
+.pos-search-input {
+    padding-left: 40px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.pos-add-manual-btn {
+    height: 38px;
+}
+
+/* --- POS Cart Header --- */
+.pos-cart-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
+    font-weight: 700;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.pos-form-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+/* --- POS Item Details --- */
+.pos-item-name {
+    font-size: 0.95rem;
+    line-height: 1.3;
+    height: 36px;
+    overflow: hidden;
+}
+
+.pos-item-badge-sm {
+    font-size: 0.65rem;
+}
+
+.pos-item-info {
+    flex-grow: 1;
+    padding-right: 12px;
+}
+
+/* --- POS Quantity --- */
+.pos-qty-wrapper {
+    margin-right: 16px;
+}
+
+.pos-qty-btn {
+    padding: 2px 6px;
+    font-size: 0.75rem;
+}
+
+.pos-qty-val {
+    width: 24px;
+    text-align: center;
+}
+
+/* --- POS Subtotal & Remove --- */
+.pos-subtotal-wrap {
+    text-align: right;
+}
+
+.pos-remove-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+/* --- POS Empty States --- */
+.pos-empty-cart {
+    text-align: center;
+    padding: 60px 0;
+    color: var(--secondary);
+}
+
+.pos-empty-cart-icon {
+    font-size: 3rem;
+    margin-bottom: 12px;
+    opacity: 0.4;
+}
+
+.pos-empty-product {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px 0;
+    color: var(--secondary);
+}
+
+.pos-empty-icon {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+/* --- POS Payment & Totals --- */
+.pos-payment-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.pos-total-row {
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pos-total-val {
+    font-size: 1.8rem;
+    color: var(--primary);
+}
+
+.pos-manual-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 12px;
+}
+
+.pos-notes-group {
+    margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    .pos-wrapper {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+}

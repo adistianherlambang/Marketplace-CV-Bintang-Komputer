@@ -1,6 +1,10 @@
 <x-admin-layout>
     @section('header_title', 'Detail Invoice Transaksi')
 
+    @push('styles')
+    <link rel="stylesheet" href="{{ asset('css/modules/transactions-show.module.css') }}">
+    @endpush
+
     <div class="page-back-btn">
         <a href="{{ route('admin.transactions.index') }}" class="btn btn-secondary btn-sm">
             <i class="fa-solid fa-arrow-left"></i> Kembali ke Riwayat Transaksi
