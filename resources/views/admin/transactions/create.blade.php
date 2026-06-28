@@ -188,11 +188,11 @@
                         'id' => $p->id,
                         'name' => $p->name,
                         'sku' => $p->sku,
-                        'price_jual' => (float)$p->price_jual,
+                        'price_jual' => (float) $p->price_jual,
                         'stock' => $p->stock,
                         'brand_name' => $p->brand->name,
                     ];
-                })),
+                })->toArray()),
                 cart: [],
                 manualItem: {
                     item_name: '',

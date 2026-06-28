@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Product;
 use App\Models\StockHistory;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class StockService
 {
@@ -24,7 +25,7 @@ class StockService
 
         // Update product stock
         $product->update([
-            'stock' => $newStock
+            'stock' => $newStock,
         ]);
 
         // Log to stock history
@@ -45,6 +46,6 @@ class StockService
      */
     public function getLowStockProducts()
     {
-        return Product::where('stock', '<=', \DB::raw('min_stock'))->get();
+        return Product::where('stock', '<=', DB::raw('min_stock'))->get();
     }
 }
