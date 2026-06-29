@@ -25,7 +25,6 @@
         <aside class="admin-sidebar">
             <div class="admin-sidebar-header">
                 <a href="{{ route('admin.dashboard') }}" class="brand-logo sidebar-brand-logo">
-                    <i class="fa-solid fa-laptop-code text-primary"></i>
                     <span>Bintang Jaya</span>
                 </a>
             </div>

@@ -8,45 +8,45 @@
     <div class="metrics-grid">
         <!-- Sales Today -->
         <div class="metric-card">
+            <div class="metric-icon metric-icon-blue">
+                <i class="fa-solid fa-coins"></i>
+            </div>
             <div class="metric-info">
                 <h4>Penjualan Hari Ini</h4>
                 <div class="metric-val">Rp {{ number_format($stats['sales_today'], 0, ',', '.') }}</div>
-            </div>
-            <div class="metric-icon metric-icon-blue">
-                <i class="fa-solid fa-coins"></i>
             </div>
         </div>
 
         <!-- Sales Month -->
         <div class="metric-card">
+            <div class="metric-icon metric-icon-green">
+                <i class="fa-solid fa-money-bill-trend-up"></i>
+            </div>
             <div class="metric-info">
                 <h4>Penjualan Bulan Ini</h4>
                 <div class="metric-val">Rp {{ number_format($stats['sales_this_month'], 0, ',', '.') }}</div>
-            </div>
-            <div class="metric-icon metric-icon-green">
-                <i class="fa-solid fa-money-bill-trend-up"></i>
             </div>
         </div>
 
         <!-- Total Products -->
         <div class="metric-card">
+            <div class="metric-icon metric-icon-amber">
+                <i class="fa-solid fa-box-open"></i>
+            </div>
             <div class="metric-info">
                 <h4>Total Produk Aktif</h4>
                 <div class="metric-val">{{ $stats['total_products'] }}</div>
-            </div>
-            <div class="metric-icon metric-icon-amber">
-                <i class="fa-solid fa-box-open"></i>
             </div>
         </div>
 
         <!-- Total Stocks -->
         <div class="metric-card">
+            <div class="metric-icon metric-icon-pink">
+                <i class="fa-solid fa-warehouse"></i>
+            </div>
             <div class="metric-info">
                 <h4>Total Unit Stok</h4>
                 <div class="metric-val">{{ $stats['total_stock'] }} pcs</div>
-            </div>
-            <div class="metric-icon metric-icon-pink">
-                <i class="fa-solid fa-warehouse"></i>
             </div>
         </div>
     </div>
@@ -58,16 +58,6 @@
                 <h4 class="metric-label-sm">Total Transaksi</h4>
                 <div class="metric-val metric-val-sm">{{ $stats['invoice_count'] }}</div>
             </div>
-            <span class="badge badge-info">Invoices</span>
-        </div>
-
-        <!-- Low stock warning -->
-        <div class="metric-card metric-card-sm">
-            <div class="metric-info">
-                <h4 class="metric-label-sm">Stok Hampir Habis</h4>
-                <div class="metric-val metric-val-sm metric-val-danger">{{ $stats['low_stock_count'] }}</div>
-            </div>
-            <span class="badge badge-danger">Tinjau</span>
         </div>
 
         <!-- Categories -->
@@ -76,7 +66,6 @@
                 <h4 class="metric-label-sm">Total Kategori</h4>
                 <div class="metric-val metric-val-sm">{{ $stats['total_categories'] }}</div>
             </div>
-            <span class="badge badge-warning">Kategori</span>
         </div>
 
         <!-- Returns count -->
@@ -85,7 +74,6 @@
                 <h4 class="metric-label-sm">Total Retur</h4>
                 <div class="metric-val metric-val-sm">{{ $stats['return_count'] }}</div>
             </div>
-            <span class="badge badge-danger">Retur</span>
         </div>
     </div>
 
@@ -93,7 +81,7 @@
     <div class="charts-grid">
         <!-- Monthly Sales Chart -->
         <div class="chart-card">
-            <h3 class="font-bold mb-4 chart-title"><i class="fa-solid fa-chart-line text-primary mr-2"></i>Grafik Penjualan Bulanan (Lunas)</h3>
+            <p class="font-bold mb-4 chart-title">Grafik Penjualan Bulanan (Lunas)</p>
             <div class="chart-canvas-wrapper">
                 <canvas id="salesChart"></canvas>
             </div>
@@ -101,7 +89,7 @@
 
         <!-- Top Selling Products Chart -->
         <div class="chart-card">
-            <h3 class="font-bold mb-4 chart-title"><i class="fa-solid fa-chart-pie text-success mr-2"></i>Produk Terlaris</h3>
+            <h3 class="font-bold mb-4 chart-title">Produk Terlaris</h3>
             <div class="chart-canvas-wrapper">
                 <canvas id="topProductsChart"></canvas>
             </div>
@@ -112,7 +100,7 @@
     <div class="charts-grid low-stock-section">
         <div class="chart-card low-stock-card">
             <div class="low-stock-header">
-                <h3 class="font-bold low-stock-title"><i class="fa-solid fa-triangle-exclamation mr-2"></i>Peringatan Produk Hampir Habis</h3>
+                <h3 class="font-bold low-stock-title">Peringatan Produk Hampir Habis</h3>
                 <a href="{{ route('admin.stocks.index') }}" class="btn btn-secondary btn-sm">Kelola Stok <i class="fa-solid fa-arrow-right"></i></a>
             </div>
             
@@ -198,7 +186,7 @@
                         y: {
                             beginAtZero: true,
                             ticks: {
-                                callback: v => 'Rp ' + Number(v).toLocaleString('id-ID')
+                                callback: v => Number(v).toLocaleString('id-ID')
                             }
                         }
                     }
@@ -221,7 +209,7 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: { position: 'bottom', labels: { padding: 16, font: { size: 12 } } }
+                        legend: { position: 'bottom', align: 'start', labels: { padding: 16, font: { size: 12 } } }
                     }
                 }
             });

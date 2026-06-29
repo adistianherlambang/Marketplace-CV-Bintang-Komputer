@@ -15,24 +15,17 @@
     background-color: var(--white);
     border-radius: var(--radius-lg);
     padding: 24px;
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow);
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
+    gap: 1rem;
     transition: var(--transition);
-}
-
-.metric-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
 }
 
 .metric-info h4 {
     font-size: 0.875rem;
     color: var(--secondary);
     font-weight: 500;
-    margin-bottom: 8px;
     text-transform: uppercase;
 }
 
@@ -108,8 +101,6 @@
     background-color: var(--white);
     border-radius: var(--radius-lg);
     padding: 24px;
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow);
 }
 
 .chart-title {
