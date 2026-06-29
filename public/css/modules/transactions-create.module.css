@@ -14,7 +14,6 @@
 .pos-products {
     background-color: var(--white);
     border-radius: var(--radius-lg);
-    border: 1px solid var(--border);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -23,7 +22,6 @@
 .pos-cart {
     background-color: var(--white);
     border-radius: var(--radius-lg);
-    border: 1px solid var(--border);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -220,7 +218,6 @@
 
 .pos-total-val {
     font-size: 1.8rem;
-    color: var(--primary);
 }
 
 .pos-manual-grid {

@@ -27,15 +27,12 @@
                 <template x-for="prod in filteredProducts" :key="prod.id">
                     <div class="pos-item-card" @click="addToCart(prod)">
                         <div>
-                            <div class="product-meta">
-                                <span class="badge badge-info" x-text="prod.brand_name"></span>
-                            </div>
                             <div class="font-bold pos-item-name" x-text="prod.name"></div>
                             <div class="text-xs text-secondary mt-1">SKU: <span x-text="prod.sku"></span></div>
                         </div>
                         <div class="flex justify-between items-center mt-2">
                             <span class="font-bold text-primary text-sm" x-text="formatRupiah(prod.price_jual)"></span>
-                            <span class="badge badge-success text-xs" x-text="'Stok: ' + prod.stock"></span>
+                            <span x-text="'Stok: ' + prod.stock"></span>
                         </div>
                     </div>
                 </template>
@@ -50,7 +47,7 @@
         <div class="pos-cart">
             <div class="pos-cart-header">
                 <span>Keranjang Belanja</span>
-                <span class="badge badge-info" x-text="cart.length + ' item'"></span>
+                <span x-text="cart.length + ' item'"></span>
             </div>
 
             <!-- Main POST form for Checkout -->
@@ -71,9 +68,12 @@
                                 <div class="font-semibold text-sm" x-text="item.item_name"></div>
                                 <div class="text-xs text-secondary">
                                     <span x-text="formatRupiah(item.price)"></span>
-                                    <span x-show="item.product_id" class="badge badge-info text-xs ml-1 pos-item-badge-sm">DB Product</span>
-                                    <span x-show="!item.product_id" class="badge badge-warning text-xs ml-1 pos-item-badge-sm">Manual</span>
                                 </div>
+                                <div>
+                                    <span x-show="item.product_id" class="text-xs ml-1 pos-item-badge-sm">Barang Stok</span>
+                                    <span x-show="!item.product_id" class="text-xs ml-1 pos-item-badge-sm">Barang Manual</span>
+                                </div>
+                                <div class="font-bold text-sm text-primary" x-text="formatRupiah(item.price * item.quantity)"></div>
                             </div>
                             
                             <!-- Quantity adjust buttons -->
@@ -84,7 +84,6 @@
                             </div>
 
                             <div class="pos-subtotal-wrap">
-                                <div class="font-bold text-sm text-primary" x-text="formatRupiah(item.price * item.quantity)"></div>
                                 <button type="button" @click="removeFromCart(index)" class="text-xs font-semibold text-danger pos-remove-btn">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
@@ -143,7 +142,7 @@
 
                     <!-- Submit Button -->
                     <button type="submit" class="btn btn-primary invoice-btn-full-pad" :disabled="cart.length === 0">
-                        <i class="fa-solid fa-circle-check mr-2"></i> Proses Checkout Transaksi
+                        Proses Checkout Transaksi
                     </button>
                 </div>
             </form>

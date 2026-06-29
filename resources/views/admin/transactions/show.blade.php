@@ -65,7 +65,7 @@
             </div>
 
             <!-- Total Summary Info -->
-            <div class="invoice-summary-wrap">
+            <!-- <div class="invoice-summary-wrap">
                 <div class="invoice-summary-inner">
                     <div class="flex justify-between mb-2">
                         <span class="text-secondary">Subtotal:</span>
@@ -76,7 +76,7 @@
                         <span class="font-bold text-primary invoice-total-val">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</span>
                     </div>
                 </div>
-            </div>
+            </div> -->
             
             @if ($order->notes)
                 <div class="invoice-notes-box">
@@ -96,16 +96,16 @@
                     <div>
                         <div class="text-xs text-secondary mb-1">Status Pembayaran:</div>
                         @if ($order->status === 'Lunas')
-                            <span class="badge badge-success invoice-status-badge">
-                                <i class="fa-solid fa-circle-check mr-1"></i> LUNAS (Paid)
+                            <span class="font-bold">
+                                Lunas
                             </span>
                         @elseif ($order->status === 'Belum Dibayar')
-                            <span class="badge badge-warning invoice-status-badge">
-                                <i class="fa-solid fa-clock mr-1"></i> BELUM DIBAYAR (Unpaid)
+                            <span class="font-bold">
+                                Belum Dibayar
                             </span>
                         @else
-                            <span class="badge badge-danger invoice-status-badge">
-                                <i class="fa-solid fa-circle-xmark mr-1"></i> DIBATALKAN (Cancelled)
+                            <span class="font-bold">
+                                Dibatalkan
                             </span>
                         @endif
                     </div>
@@ -124,6 +124,11 @@
                         <div class="font-bold">{{ $order->user->name }}</div>
                         <div class="text-xs text-secondary">{{ $order->user->email }}</div>
                     </div>
+
+                    <div>
+                        <div class="text-xs text-secondary mb-1">Subtotal:</div>
+                        <span class="font-bold text-primary invoice-total-val">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</span>
+                    </div>
                 </div>
             </div>
 
@@ -134,10 +139,10 @@
                 <div class="flex flex-col gap-2">
                     @if ($order->status !== 'Dibatalkan')
                         <a href="{{ route('admin.transactions.invoice', $order->id) }}" class="btn btn-primary invoice-btn-full">
-                            <i class="fa-solid fa-file-pdf"></i> Download Invoice PDF (A4)
+                            Download Invoice PDF (A4)
                         </a>
                         <a href="{{ route('admin.transactions.nota', $order->id) }}" class="btn btn-secondary invoice-btn-full">
-                            <i class="fa-solid fa-receipt text-success"></i> Download Nota Receipt (80mm)
+                            Download Nota Receipt (80mm)
                         </a>
                         
                         @if ($order->status === 'Belum Dibayar')
@@ -163,7 +168,7 @@
                             <form method="POST" action="{{ route('admin.transactions.cancel', $order->id) }}" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan transaksi ini? Stok barang akan dikembalikan secara otomatis.')">
                                 @csrf
                                 <button type="submit" class="btn btn-danger invoice-btn-full">
-                                    <i class="fa-solid fa-ban"></i> Batalkan Transaksi (Refund)
+                                    Batalkan Transaksi (Refund)
                                 </button>
                             </form>
                         </div>
