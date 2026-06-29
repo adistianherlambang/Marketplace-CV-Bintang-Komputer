@@ -135,7 +135,11 @@
             @else
                 <div class="product-grid">
                     @foreach ($products as $product)
-                        <article class="product-card">
+                        <article
+                            class="product-card"
+                            data-url="{{ route('catalog.show', $product->id) }}"
+                            onclick="window.location.href=this.dataset.url"    
+                        >
                             @if ($product->primaryImage)
                                 <img src="{{ asset('storage/' . $product->primaryImage->path) }}" class="product-card-img" alt="{{ $product->name }}">
                             @else
@@ -147,8 +151,8 @@
                             
                             <div class="product-card-body">
                                 <div class="product-meta">
-                                    <span class="badge badge-info">{{ $product->category->name }}</span>
-                                    <span class="badge badge-success">{{ $product->brand->name }}</span>
+                                    <span>{{ $product->category->name }}</span>
+                                    <span>{{ $product->brand->name }}</span>
                                 </div>
                                 
                                 <h3 class="product-title" title="{{ $product->name }}">{{ Str::limit($product->name, 48) }}</h3>
@@ -156,22 +160,23 @@
                                     {{ $product->description }}
                                 </p>
                                 
-                                <div class="product-price">
-                                    Rp {{ number_format($product->price_jual, 0, ',', '.') }}
-                                </div>
-                                
-                                <div class="product-card-footer">
-                                    <span class="text-xs font-semibold {{ $product->stock > $product->min_stock ? 'text-success' : 'text-danger' }}">
-                                        @if ($product->stock > 0)
-                                            <i class="fa-solid fa-check mr-1"></i> Ready ({{ $product->stock }} unit)
-                                        @else
-                                            <i class="fa-solid fa-xmark mr-1"></i> Habis
-                                        @endif
-                                    </span>
-                                    
-                                    <a href="{{ route('catalog.show', $product->id) }}" class="btn btn-secondary btn-sm catalog-detail-btn">
-                                        Detail <i class="fa-solid fa-chevron-right text-xs"></i>
-                                    </a>
+                                <div class="product-price-container">
+                                    <div class="product-price-wrapper">
+                                        <p class="text-xs">Harga</p>
+                                        <div class="product-price">
+                                            Rp {{ number_format($product->price_jual, 0, ',', '.') }}
+                                        </div>
+                                    </div>
+                                    <div class="product-price-wrapper">
+                                        <p class="text-xs">Stok</p>
+                                        <div class="product-price">
+                                            @if ($product->stock > 0)
+                                                {{ $product->stock }} unit
+                                            @else
+                                                Habis
+                                            @endif
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </article>

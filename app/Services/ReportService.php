@@ -66,8 +66,8 @@ class ReportService
                 ->sum('total_amount');
 
             $monthlyChartData[] = [
-                'label' => $monthLabel,
-                'amount' => (float)$amount
+                'month' => $monthLabel,
+                'total' => (float)$amount
             ];
         }
 
@@ -77,7 +77,14 @@ class ReportService
             ->groupBy('product_id', 'item_name')
             ->orderByDesc('total_qty')
             ->limit(5)
-            ->get();
+            ->get()
+            ->map(function($p) {
+                return [
+                    'name' => $p->item_name,
+                    'total_sold' => (int) $p->total_qty,
+                ];
+            })
+            ->toArray();
 
         return [
             'total_products' => $totalProducts,
