@@ -16,7 +16,7 @@
     <div class="auth-split-container">
         
         <!-- Left Side Pane -->
-        <div class="auth-left-pane">
+        <!-- <div class="auth-left-pane">
             <div class="auth-left-content">
                 <div class="auth-star-icon">
                     <i class="fa-solid fa-laptop-code"></i>
@@ -28,19 +28,18 @@
             <div class="auth-copyright">
                 &copy; {{ date('Y') }} CV Bintang Jaya Komputer
             </div>
-        </div>
+        </div> -->
 
         <!-- Right Side Pane (Form) -->
         <div class="auth-right-pane">
             <div class="auth-form-container">
                 <!-- Store Name / Logo -->
-                <div class="brand-logo auth-brand-logo-spacer">
-                    <i class="fa-solid fa-laptop-code text-primary"></i>
+                <!-- <div class="brand-logo auth-brand-logo-spacer">
                     <span class="auth-brand-name">Bintang Komputer</span>
-                </div>
+                </div> -->
 
                 <h2 class="auth-form-title">Selamat Datang</h2>
-                <p class="auth-form-subtitle">Silakan login untuk mengakses dashboard administrator.</p>
+                <p class="auth-form-subtitle">Silakan login untuk mengakses dashboard admin</p>
 
                 <!-- Session Status / Errors -->
                 @if ($errors->any())
@@ -61,12 +60,13 @@
 
                     <!-- Password -->
                     <div class="form-group auth-password-group">
-                        <div class="flex justify-between items-center auth-password-label-row">
+                        <!-- <div class="flex justify-between items-center auth-password-label-row">
                             <label for="password" class="form-label auth-password-label-nomargin">Password</label>
                             @if (Route::has('password.request'))
                                 <a href="{{ route('password.request') }}" class="text-xs font-semibold auth-forgot-link">Lupa Password?</a>
                             @endif
-                        </div>
+                        </div> -->
+                        <label for="email" class="form-label">Password</label>
                         <input id="password" class="form-control" type="password" name="password" required autocomplete="current-password" placeholder="••••••••">
                     </div>
 
@@ -78,7 +78,7 @@
 
                     <!-- Actions -->
                     <button type="submit" class="btn btn-primary auth-login-btn">
-                        <i class="fa-solid fa-right-to-bracket mr-2"></i> Masuk Sekarang
+                        Masuk Sekarang
                     </button>
                 </form>
 

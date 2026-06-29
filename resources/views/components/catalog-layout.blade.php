@@ -18,7 +18,6 @@
     <header class="guest-header">
         <div class="container guest-navbar">
             <a href="{{ route('catalog.index') }}" class="brand-logo">
-                <i class="fa-solid fa-laptop-code"></i>
                 <span>Bintang Komputer</span>
             </a>
             
