@@ -6,7 +6,7 @@
     <div class="container catalog-show-wrap">
         <!-- Breadcrumb / Back button -->
         <div class="catalog-back-btn">
-            <a href="{{ route('catalog.index') }}" class="btn btn-secondary btn-sm">
+            <a href="{{ route('catalog.index') }}">
                 <i class="fa-solid fa-arrow-left"></i> Kembali ke Katalog
             </a>
         </div>
@@ -40,8 +40,8 @@
             <!-- Right Pane: Product Details -->
             <div class="flex flex-col">
                 <div class="product-meta product-info-meta">
-                    <span class="badge badge-info">{{ $product->category->name }}</span>
-                    <span class="badge badge-success">{{ $product->brand->name }}</span>
+                    <span>{{ $product->category->name }}</span>
+                    <span>{{ $product->brand->name }}</span>
                 </div>
 
                 <h1 class="font-bold product-detail-title">{{ $product->name }}</h1>
@@ -51,31 +51,22 @@
                     @if ($product->barcode)
                         <span><strong>Barcode:</strong> {{ $product->barcode }}</span>
                     @endif
+                    @if ($product->stock > 0)
+                        <span><strong>Stok: </strong>{{ $product->stock }} unit</span>
+                    @else
+                        <span><strong>Stok: </strong> Habis</span>
+                    @endif
+                    
                 </div>
 
-                <!-- Price and Stock Details -->
-                <div class="product-price-box">
-                    <div class="text-secondary text-xs font-semibold product-price-label">Harga Jual Terbaik</div>
-                    <div class="product-price-val">
-                        Rp {{ number_format($product->price_jual, 0, ',', '.') }}
-                    </div>
-                    
-                    <div class="flex items-center gap-2 mt-4">
-                        <span class="badge {{ $product->stock > $product->min_stock ? 'badge-success' : ($product->stock > 0 ? 'badge-warning' : 'badge-danger') }}">
-                            @if ($product->stock > 0)
-                                Ready ({{ $product->stock }} unit)
-                            @else
-                                Stok Habis
-                            @endif
-                        </span>
-                        <span class="text-xs text-secondary">Merk: {{ $product->brand->name }} | Supplier: {{ $product->supplier->name }}</span>
-                    </div>
+                <div class="product-price-val">
+                    Rp {{ number_format($product->price_jual, 0, ',', '.') }}
                 </div>
 
                 <!-- Tabs/Accordions for description & specs -->
                 <div class="product-tabs">
                     <div>
-                        <h4 class="font-bold mb-4 product-section-heading">Deskripsi Produk</h4>
+                        <h4 class="font-bold product-section-heading">Deskripsi Produk</h4>
                         <p class="product-description">
                             {{ $product->description ?: 'Tidak ada deskripsi untuk produk ini.' }}
                         </p>
@@ -84,9 +75,9 @@
                     @if ($product->specs)
                         <div class="product-specs-block">
                             <h4 class="font-bold mb-4 product-section-heading">Spesifikasi Detail</h4>
-                            <div class="product-specs-content">
-                                {{ $product->specs }}
-                            </div>
+                            <article class="product-specs-content">
+                                {!! nl2br(e(str_replace('\n', "\n", $product->specs))) !!}
+                            </article>
                         </div>
                     @endif
                 </div>
