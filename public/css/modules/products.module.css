@@ -3,6 +3,28 @@
    products.module.css
    ============================ */
 
+.title {
+    margin-bottom: 2rem;
+}
+
+.table {
+    width: max-content;
+}
+
+.table th {
+    text-align: center;
+}
+
+.table td {
+    text-align: center;
+}
+
+.product {
+    display: flex;
+    gap: 1rem;
+    text-align: left;
+}
+
 .product-thumb {
     width: 48px;
     height: 48px;
@@ -40,4 +62,51 @@
 
 .product-modal-lg {
     max-width: 750px;
+}
+
+/*filter*/
+
+
+.button {
+    width: fit-content;
+}
+
+/* --- Filter Bar --- */
+.filter-bar {
+    background-color: var(--white);
+    border-radius: var(--radius);
+    margin-bottom: 32px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.filter-inputs {
+    display: flex;
+    gap: 12px;
+    flex-grow: 1;
+}
+
+.filter-search-wrapper {
+    position: relative;
+    flex-grow: 1;
+    max-width: 350px;
+}
+
+.filter-search-wrapper-full {
+    position: relative;
+    flex-grow: 1;
+}
+
+.filter-search-icon {
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    color: var(--secondary);
+}
+
+.filter-input-indent {
+    padding-left: 40px;
 }

@@ -12,12 +12,12 @@
         
         <!-- Action Header & Filters -->
         <div class="flex justify-between items-center mb-6">
-            <div>
+            <div class="title">
                 <h3 class="font-bold page-title">Daftar Produk / Barang</h3>
                 <p class="text-secondary text-sm">Kelola spesifikasi, harga jual, harga modal, dan detail item.</p>
             </div>
             
-            <button @click="openCreateModal = true" class="btn btn-primary">
+            <button @click="openCreateModal = true" class="btn btn-primary button">
                 <i class="fa-solid fa-plus"></i> Tambah Produk Baru
             </button>
         </div>
@@ -27,7 +27,7 @@
             <div class="filter-inputs">
                 <div class="filter-search-wrapper-full">
                     <i class="fa-solid fa-magnifying-glass filter-search-icon"></i>
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama barang atau SKU..." class="form-control filter-input-indent">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama atau SKU" class="form-control filter-input-indent">
                 </div>
                 
                 <select name="category" class="form-control filter-select-sm" onchange="this.form.submit()">
@@ -48,7 +48,7 @@
         <!-- Table Grid -->
         <div class="table-container">
             <div class="table-responsive">
-                <table>
+                <table class="table">
                     <thead>
                         <tr>
                             <th>Barang</th>
@@ -65,7 +65,7 @@
                         @forelse ($products as $product)
                             <tr>
                                 <td>
-                                    <div class="flex items-center gap-3">
+                                    <div class="flex items-center gap-3 product">
                                         <div class="product-thumb">
                                             @if ($product->primaryImage)
                                                 <img src="{{ asset('storage/' . $product->primaryImage->path) }}" alt="{{ $product->name }}">
