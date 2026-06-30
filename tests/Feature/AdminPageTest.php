@@ -109,4 +109,36 @@ class AdminPageTest extends TestCase
         $notaResponse->assertStatus(200);
         $notaResponse->assertHeader('content-disposition', 'attachment; filename=nota-INV-20260628-0001.pdf');
     }
+
+    public function test_product_stock_can_be_adjusted_on_update(): void
+    {
+        $product = Product::first();
+        $this->assertEquals(10, $product->stock);
+
+        $response = $this->actingAs($this->admin)->put("/admin/products/{$product->id}", [
+            'name' => 'MacBook Pro Updated',
+            'sku' => $product->sku,
+            'category_id' => $product->category_id,
+            'brand_id' => $product->brand_id,
+            'supplier_id' => $product->supplier_id,
+            'price_modal' => $product->price_modal,
+            'price_jual' => $product->price_jual,
+            'stock' => 15,
+            'stock_reason' => 'Restocked',
+            'min_stock' => $product->min_stock,
+            'is_active' => true
+        ]);
+
+        $response->assertRedirect('/admin/products');
+        
+        $product->refresh();
+        $this->assertEquals(15, $product->stock);
+
+        $this->assertDatabaseHas('stock_histories', [
+            'product_id' => $product->id,
+            'quantity' => 5,
+            'type' => 'in',
+            'description' => 'Restocked'
+        ]);
+    }
 }

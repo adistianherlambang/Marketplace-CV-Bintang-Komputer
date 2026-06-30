@@ -102,6 +102,8 @@ class ProductController extends Controller
             'supplier_id' => 'required|exists:suppliers,id',
             'price_modal' => 'required|numeric|min:0',
             'price_jual' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'stock_reason' => 'nullable|string|max:255',
             'min_stock' => 'required|integer|min:0',
             'description' => 'nullable|string',
             'specs' => 'nullable|string',
@@ -109,10 +111,21 @@ class ProductController extends Controller
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
+        $oldStock = $product->stock;
+        $newStock = (int)$request->input('stock');
+
         $product->update($request->only([
             'name', 'sku', 'barcode', 'category_id', 'brand_id', 'supplier_id',
             'price_modal', 'price_jual', 'min_stock', 'description', 'specs', 'is_active'
         ]));
+
+        if ($newStock !== $oldStock) {
+            $diff = $newStock - $oldStock;
+            $type = $diff > 0 ? 'in' : 'out';
+            $reason = $request->input('stock_reason') ?: 'Stock adjusted during product edit';
+            // ponytail: handle stock audit log on direct adjustment
+            $this->stockService->adjustStock($product, $diff, $type, $reason);
+        }
 
         // Upload new images
         if ($request->hasFile('images')) {

@@ -59,9 +59,6 @@
                 </a>
 
                 <div class="sidebar-section-title sidebar-section-spacer">Logistik & Laporan</div>
-                <a href="{{ route('admin.stocks.index') }}" class="sidebar-link {{ request()->routeIs('admin.stocks.*') ? 'active' : '' }}">
-                    <i class="fa-solid fa-warehouse"></i> Riwayat & Edit Stok
-                </a>
                 <a href="{{ route('admin.returns.index') }}" class="sidebar-link {{ request()->routeIs('admin.returns.*') ? 'active' : '' }}">
                     <i class="fa-solid fa-rotate-left"></i> Retur Barang
                 </a>

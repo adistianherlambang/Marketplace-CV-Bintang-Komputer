@@ -7,7 +7,7 @@
 
     <div x-data="{ openCreateModal: false, openEditModal: false, currentProduct: {
         id: '', name: '', sku: '', barcode: '', category_id: '', brand_id: '', supplier_id: '',
-        price_modal: '', price_jual: '', min_stock: '', description: '', specs: '', is_active: '1'
+        price_modal: '', price_jual: '', stock: '', min_stock: '', description: '', specs: '', is_active: '1'
     } }">
         
         <!-- Action Header & Filters -->
@@ -115,6 +115,7 @@
                                             supplier_id: '{{ $product->supplier_id }}',
                                             price_modal: '{{ (float)$product->price_modal }}',
                                             price_jual: '{{ (float)$product->price_jual }}',
+                                            stock: '{{ $product->stock }}',
                                             min_stock: '{{ $product->min_stock }}',
                                             description: '{{ addslashes($product->description) }}',
                                             specs: '{{ addslashes($product->specs) }}',
@@ -310,19 +311,29 @@
                                     <input type="number" name="price_jual" x-model="currentProduct.price_jual" class="form-control" required min="0">
                                 </div>
                             </div>
-                            <div class="form-group product-price-grid">
-                                <div>
-                                    <label class="form-label">Minimum Stok</label>
-                                    <input type="number" name="min_stock" x-model="currentProduct.min_stock" class="form-control" required min="0">
-                                </div>
-                                <div>
-                                    <label class="form-label">Status Produk</label>
-                                    <select name="is_active" x-model="currentProduct.is_active" class="form-control" required>
-                                        <option value="1">Aktif</option>
-                                        <option value="0">Nonaktif</option>
-                                    </select>
-                                </div>
-                            </div>
+                             <div class="form-group product-price-grid">
+                                 <div>
+                                     <label class="form-label">Minimum Stok</label>
+                                     <input type="number" name="min_stock" x-model="currentProduct.min_stock" class="form-control" required min="0">
+                                 </div>
+                                 <div>
+                                     <label class="form-label">Jumlah Stok Saat Ini</label>
+                                     <input type="number" name="stock" x-model="currentProduct.stock" class="form-control" required min="0">
+                                 </div>
+                             </div>
+                             <div class="form-group product-price-grid">
+                                 <div>
+                                     <label class="form-label">Keterangan Perubahan Stok (Opsional)</label>
+                                     <input type="text" name="stock_reason" class="form-control" placeholder="Contoh: Koreksi opname, dll">
+                                 </div>
+                                 <div>
+                                     <label class="form-label">Status Produk</label>
+                                     <select name="is_active" x-model="currentProduct.is_active" class="form-control" required>
+                                         <option value="1">Aktif</option>
+                                         <option value="0">Nonaktif</option>
+                                     </select>
+                                 </div>
+                             </div>
                             <div class="form-group">
                                 <label class="form-label">Tambah Foto Produk</label>
                                 <input type="file" name="images[]" class="form-control" multiple accept="image/*">

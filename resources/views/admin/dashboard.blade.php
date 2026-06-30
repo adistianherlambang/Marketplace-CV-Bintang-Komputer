@@ -101,7 +101,7 @@
         <div class="chart-card low-stock-card">
             <div class="low-stock-header">
                 <h3 class="font-bold low-stock-title">Peringatan Produk Hampir Habis</h3>
-                <a href="{{ route('admin.stocks.index') }}" class="btn btn-secondary btn-sm">Kelola Stok <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="{{ route('admin.products.index') }}" class="btn btn-secondary btn-sm">Kelola Stok <i class="fa-solid fa-arrow-right"></i></a>
             </div>
             
             <div class="table-responsive">
