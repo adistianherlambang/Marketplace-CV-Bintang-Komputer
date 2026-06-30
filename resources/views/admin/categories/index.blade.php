@@ -1,16 +1,20 @@
 <x-admin-layout>
     @section('header_title', 'Kelola Kategori Produk')
 
+    @push('styles')
+    <link rel="stylesheet" href="{{ asset('css/modules/products.module.css') }}">
+    @endpush
+
     <div x-data="{ openCreateModal: false, openEditModal: false, currentCategory: {id: '', name: ''} }">
         
         <!-- Action Header -->
         <div class="flex justify-between items-center mb-6">
-            <div>
+            <div class="title">
                 <h3 class="font-bold" style="font-size: 1.25rem;">Daftar Kategori</h3>
                 <p class="text-secondary text-sm">Grup produk Anda agar mudah dicari oleh pembeli.</p>
             </div>
             
-            <button @click="openCreateModal = true" class="btn btn-primary">
+            <button @click="openCreateModal = true" class="btn btn-primary button">
                 <i class="fa-solid fa-plus"></i> Tambah Kategori
             </button>
         </div>

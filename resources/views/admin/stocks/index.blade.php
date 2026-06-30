@@ -80,8 +80,9 @@
                         @forelse ($histories as $history)
                             <tr>
                                 <td>
-                                    <strong>{{ $history->product->name }}</strong>
-                                    <div class="text-xs text-secondary">SKU: {{ $history->product->sku }}</div>
+                                    {{-- ponytail: comment --}}
+                                    <strong>{{ optional($history->product)->name ?? 'Produk tidak tersedia' }}</strong>
+                                    <div class="text-xs text-secondary">SKU: {{ optional($history->product)->sku ?? '-' }}</div>
                                 </td>
                                 <td class="td-center">
                                     @if ($history->type === 'in')

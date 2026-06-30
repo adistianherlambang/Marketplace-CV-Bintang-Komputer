@@ -1,16 +1,20 @@
 <x-admin-layout>
     @section('header_title', 'Kelola Supplier / Pemasok Barang')
 
+    @push('styles')
+    <link rel="stylesheet" href="{{ asset('css/modules/products.module.css') }}">
+    @endpush
+
     <div x-data="{ openCreateModal: false, openEditModal: false, currentSupplier: {id: '', name: '', contact_phone: '', email: '', address: ''} }">
         
         <!-- Action Header -->
         <div class="flex justify-between items-center mb-6">
-            <div>
+            <div class="title">
                 <h3 class="font-bold" style="font-size: 1.25rem;">Daftar Pemasok / Supplier</h3>
                 <p class="text-secondary text-sm">Kelola data vendor pemasok stok barang untuk toko Anda.</p>
             </div>
             
-            <button @click="openCreateModal = true" class="btn btn-primary">
+            <button @click="openCreateModal = true" class="btn btn-primary button">
                 <i class="fa-solid fa-plus"></i> Tambah Supplier
             </button>
         </div>
