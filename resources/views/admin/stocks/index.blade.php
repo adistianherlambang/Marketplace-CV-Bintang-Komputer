@@ -17,7 +17,7 @@
                 <!-- Product select -->
                 <div class="form-group">
                     <label class="form-label">Pilih Produk</label>
-                    <select name="product_id" class="form-control" required>
+                    <select name="product_id" class="form-control tom-select" required>
                         <option value="">-- Pilih Barang --</option>
                         @foreach ($products as $product)
                             <option value="{{ $product->id }}">

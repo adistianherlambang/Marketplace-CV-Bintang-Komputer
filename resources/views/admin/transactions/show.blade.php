@@ -151,7 +151,7 @@
                                     @csrf
                                     <div class="form-group">
                                         <label class="form-label invoice-form-label-sm">Metode Bayar Konfirmasi:</label>
-                                        <select name="payment_method" class="form-control">
+                                        <select name="payment_method" class="form-control tom-select">
                                             <option value="Cash">Cash (Tunai)</option>
                                             <option value="Transfer">Transfer Bank</option>
                                             <option value="QRIS">QRIS</option>

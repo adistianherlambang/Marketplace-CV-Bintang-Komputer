@@ -22,7 +22,7 @@
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nomor invoice atau nama pelanggan..." class="form-control filter-input-indent">
             </div>
 
-            <select name="status" class="form-control filter-select-sm" onchange="this.form.submit()">
+            <select name="status" class="form-control filter-select-sm tom-select" onchange="this.form.submit()">
                 <option value="">Semua Status</option>
                 <option value="Lunas" {{ request('status') === 'Lunas' ? 'selected' : '' }}>Lunas</option>
                 <option value="Belum Dibayar" {{ request('status') === 'Belum Dibayar' ? 'selected' : '' }}>Belum Dibayar</option>

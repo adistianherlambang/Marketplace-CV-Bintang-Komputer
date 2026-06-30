@@ -11,7 +11,7 @@
                 <!-- Report Type -->
                 <div class="form-group">
                     <label class="form-label">Jenis Laporan</label>
-                    <select name="type" id="report_type_select" class="form-control" required onchange="onReportTypeChange(this.value)">
+                    <select name="type" id="report_type_select" class="form-control tom-select" required onchange="onReportTypeChange(this.value)">
                         <option value="daily">Laporan Penjualan Harian</option>
                         <option value="monthly" selected>Laporan Penjualan Bulanan</option>
                         <option value="stock">Laporan Status Stok Gudang</option>

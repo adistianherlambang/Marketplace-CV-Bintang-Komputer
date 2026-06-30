@@ -30,7 +30,7 @@
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama atau SKU" class="form-control filter-input-indent">
                 </div>
                 
-                <select name="category" class="form-control filter-select-sm" onchange="this.form.submit()">
+                <select name="category" class="form-control filter-select-sm tom-select" onchange="this.form.submit()">
                     <option value="">Semua Kategori</option>
                     @foreach ($categories as $cat)
                         <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
@@ -178,7 +178,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Kategori</label>
-                                <select name="category_id" class="form-control" required>
+                                <select name="category_id" class="form-control tom-select" required>
                                     <option value="">Pilih Kategori</option>
                                     @foreach ($categories as $cat)
                                         <option value="{{ $cat->id }}">{{ $cat->name }}</option>
@@ -187,7 +187,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Merk / Brand</label>
-                                <select name="brand_id" class="form-control" required>
+                                <select name="brand_id" class="form-control tom-select" required>
                                     <option value="">Pilih Merk</option>
                                     @foreach ($brands as $br)
                                         <option value="{{ $br->id }}">{{ $br->name }}</option>
@@ -196,7 +196,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Supplier Pemasok</label>
-                                <select name="supplier_id" class="form-control" required>
+                                <select name="supplier_id" class="form-control tom-select" required>
                                     <option value="">Pilih Supplier</option>
                                     @foreach ($suppliers as $sup)
                                         <option value="{{ $sup->id }}">{{ $sup->name }}</option>
@@ -276,7 +276,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Kategori</label>
-                                <select name="category_id" x-model="currentProduct.category_id" class="form-control" required>
+                                <select name="category_id" x-model="currentProduct.category_id" class="form-control tom-select" required>
                                     @foreach ($categories as $cat)
                                         <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                                     @endforeach
@@ -284,7 +284,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Merk / Brand</label>
-                                <select name="brand_id" x-model="currentProduct.brand_id" class="form-control" required>
+                                <select name="brand_id" x-model="currentProduct.brand_id" class="form-control tom-select" required>
                                     @foreach ($brands as $br)
                                         <option value="{{ $br->id }}">{{ $br->name }}</option>
                                     @endforeach
@@ -292,7 +292,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Supplier Pemasok</label>
-                                <select name="supplier_id" x-model="currentProduct.supplier_id" class="form-control" required>
+                                <select name="supplier_id" x-model="currentProduct.supplier_id" class="form-control tom-select" required>
                                     @foreach ($suppliers as $sup)
                                         <option value="{{ $sup->id }}">{{ $sup->name }}</option>
                                     @endforeach
@@ -328,7 +328,7 @@
                                  </div>
                                  <div>
                                      <label class="form-label">Status Produk</label>
-                                     <select name="is_active" x-model="currentProduct.is_active" class="form-control" required>
+                                     <select name="is_active" x-model="currentProduct.is_active" class="form-control tom-select" required>
                                          <option value="1">Aktif</option>
                                          <option value="0">Nonaktif</option>
                                      </select>

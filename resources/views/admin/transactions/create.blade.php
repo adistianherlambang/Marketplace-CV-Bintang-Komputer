@@ -101,7 +101,7 @@
                     <!-- Customer selection -->
                     <div class="form-group">
                         <label class="form-label">Pelanggan</label>
-                        <select name="customer_id" class="form-control">
+                        <select name="customer_id" class="form-control tom-select">
                             <option value="">-- Guest / Walk-in Customer --</option>
                             @foreach ($customers as $cust)
                                 <option value="{{ $cust->id }}">{{ $cust->name }} ({{ $cust->phone ?: 'No phone' }})</option>

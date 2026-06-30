@@ -13,7 +13,7 @@
                 <!-- Order selection -->
                 <div class="form-group">
                     <label class="form-label">Nomor Invoice Terkait</label>
-                    <select name="order_id" class="form-control" required>
+                    <select name="order_id" class="form-control tom-select" required>
                         <option value="">-- Pilih Invoice --</option>
                         @foreach ($orders as $order)
                             <option value="{{ $order->id }}">
@@ -85,7 +85,7 @@
                                 <td style="text-align: center;">
                                     <form method="POST" action="{{ route('admin.complaints.status', $comp->id) }}" class="flex items-center gap-1 justify-center">
                                         @csrf
-                                        <select name="status" class="form-control" style="padding: 4px 8px; font-size: 0.75rem; border-radius: var(--radius-sm); max-width: 110px;" onchange="this.form.submit()">
+                                        <select name="status" class="form-control tom-select" style="padding: 4px 8px; font-size: 0.75rem; border-radius: var(--radius-sm); max-width: 110px;" onchange="this.form.submit()">
                                             <option value="Menunggu" {{ $comp->status === 'Menunggu' ? 'selected' : '' }}>Menunggu</option>
                                             <option value="Diproses" {{ $comp->status === 'Diproses' ? 'selected' : '' }}>Diproses</option>
                                             <option value="Selesai" {{ $comp->status === 'Selesai' ? 'selected' : '' }}>Selesai</option>

@@ -22,17 +22,13 @@
             </a>
             
             <div class="flex items-center gap-6">
-                <a href="{{ route('catalog.index') }}" class="font-semibold hover:text-primary">
-                    <i class="fa-solid fa-house mr-1"></i> Home
-                </a>
-                
                 @auth
                     <a href="{{ route('admin.dashboard') }}" class="btn btn-primary btn-sm">
-                        <i class="fa-solid fa-gauge mr-1"></i> Admin Panel
+                        Admin Panel
                     </a>
                 @else
                     <a href="{{ route('login') }}" class="btn btn-secondary btn-sm">
-                        <i class="fa-solid fa-right-to-bracket mr-1"></i> Login Admin
+                        Login Admin
                     </a>
                 @endauth
             </div>

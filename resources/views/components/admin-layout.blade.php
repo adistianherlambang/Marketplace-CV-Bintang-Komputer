@@ -14,6 +14,8 @@
     <!-- Global Utilities & Admin Layout -->
     <link rel="stylesheet" href="{{ asset('css/global-utilities.css') }}">
     <link rel="stylesheet" href="{{ asset('css/modules/admin-layout.module.css') }}">
+    <!-- Custom Searchable Select CSS -->
+    <link rel="stylesheet" href="{{ asset('css/custom-select.css') }}">
     @stack('styles')
     
     <!-- Alpine.js (Optional but handy for modals) -->
@@ -136,4 +138,6 @@
         </main>
     </div>
 </body>
+    <!-- Custom Searchable Select JS -->
+    <script src="{{ asset('js/custom-select.js') }}"></script>
 </html>
