@@ -7,14 +7,11 @@
 
     <!-- Action Header -->
     <div class="flex justify-between items-center mb-6">
-        <div>
+        <div class="title">
             <h3 class="font-bold page-title">Daftar Invoice Penjualan</h3>
             <p class="text-secondary text-sm">Cari, cetak, batalkan, atau ubah status pembayaran transaksi toko.</p>
         </div>
-        
-        <a href="{{ route('admin.transactions.create') }}" class="btn btn-primary">
-            <i class="fa-solid fa-cash-register"></i> POS Penjualan Baru
-        </a>
+    
     </div>
 
     <!-- Filter Bar -->
@@ -31,14 +28,16 @@
                 <option value="Belum Dibayar" {{ request('status') === 'Belum Dibayar' ? 'selected' : '' }}>Belum Dibayar</option>
                 <option value="Dibatalkan" {{ request('status') === 'Dibatalkan' ? 'selected' : '' }}>Dibatalkan</option>
             </select>
+            <div class="flex gap-2">
+                <button type="submit" class="btn btn-primary">Cari</button>
+                @if (request()->anyFilled(['search', 'status']))
+                    <a href="{{ route('admin.transactions.index') }}" class="btn btn-secondary">Clear</a>
+                @endif
+            </div>
         </div>
-
-        <div class="flex gap-2">
-            <button type="submit" class="btn btn-primary">Cari</button>
-            @if (request()->anyFilled(['search', 'status']))
-                <a href="{{ route('admin.transactions.index') }}" class="btn btn-secondary">Clear</a>
-            @endif
-        </div>
+        <a href="{{ route('admin.transactions.create') }}" class="btn btn-primary button">
+            POS Penjualan Baru
+        </a>
     </form>
 
     <!-- Table Grid -->
@@ -118,7 +117,9 @@
     </div>
 
     <!-- Pagination -->
-    <div class="flex justify-center">
-        {{ $orders->links() }}
+    <div class="flex justify-center pagination-wrapper">
+        <div class="flex justify-center mt-4 pagination">
+            {{ $orders->links('pagination::bootstrap-4') }}
+        </div>
     </div>
 </x-admin-layout>

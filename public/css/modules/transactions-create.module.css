@@ -25,7 +25,6 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    box-shadow: var(--shadow);
 }
 
 .pos-product-list {

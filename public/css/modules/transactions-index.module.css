@@ -3,13 +3,18 @@
    transactions-index.module.css
    ============================ */
 
+.title {
+    margin-bottom: 2rem;
+}
+
+.button {
+    width: fit-content;
+}
+
 /* --- Filter Bar --- */
 .filter-bar {
     background-color: var(--white);
     border-radius: var(--radius);
-    padding: 16px 24px;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
     margin-bottom: 32px;
     display: flex;
     flex-wrap: wrap;
@@ -48,4 +53,8 @@
 
 .filter-select-sm {
     max-width: 200px;
+}
+
+.pagination {
+    cursor: pointer;
 }
