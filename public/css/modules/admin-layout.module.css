@@ -142,3 +142,55 @@
     align-items: center;
     gap: 8px;
 }
+
+/* --- Responsive Sidebar Toggle --- */
+.sidebar-toggle-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    color: var(--dark);
+    padding: 8px;
+}
+
+.sidebar-backdrop {
+    display: none;
+}
+
+@media (max-width: 1024px) {
+    .sidebar-toggle-btn {
+        display: block;
+    }
+    
+    .admin-sidebar {
+        position: fixed;
+        left: -260px;
+        z-index: 1001;
+        transition: left 0.3s ease-in-out;
+    }
+    
+    .admin-sidebar.open {
+        left: 0;
+    }
+    
+    .sidebar-backdrop {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(15, 23, 42, 0.4);
+        backdrop-filter: blur(4px);
+        z-index: 1000;
+    }
+
+    .admin-navbar {
+        padding: 0 16px;
+    }
+
+    .admin-content {
+        padding: 16px;
+    }
+}

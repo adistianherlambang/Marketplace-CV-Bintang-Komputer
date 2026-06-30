@@ -333,3 +333,51 @@
     font-size: 0.75rem;
     opacity: 0.8;
 }
+
+/* --- Catalog Responsive Media Queries --- */
+@media (min-width: 1025px) {
+    .filter-bar {
+        width: 280px;
+        flex-shrink: 0;
+    }
+}
+
+@media (max-width: 1024px) {
+    .catalog-wrapper {
+        flex-direction: column;
+    }
+    .filter-bar {
+        width: 100%;
+        gap: 1.5rem;
+    }
+    .catalog-feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .guest-hero {
+        flex-direction: column;
+        padding: 32px 20px;
+        text-align: center;
+        gap: 24px;
+    }
+    .hero-title {
+        font-size: 2rem;
+    }
+    .catalog-hero-graphic {
+        width: 200px;
+        height: 200px;
+    }
+    .catalog-hero-icon {
+        font-size: 5rem;
+    }
+    .catalog-feature-grid {
+        grid-template-columns: 1fr;
+    }
+    .catalog-section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+}

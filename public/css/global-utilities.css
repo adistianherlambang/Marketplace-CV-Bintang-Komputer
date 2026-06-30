@@ -298,7 +298,7 @@ textarea {
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     border: 1px solid var(--border);
-    overflow: hidden;
+    overflow-x: auto;
     margin-bottom: 24px;
 }
 
@@ -634,6 +634,13 @@ tr:hover td {
     align-items: start;
 }
 
+@media (max-width: 1024px) {
+    .grid-2-1,
+    .grid-1-2 {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* ============================
    Shared Icon Helpers
    ============================ */
@@ -676,6 +683,11 @@ tr:hover td {
 
 .label-clickable {
     cursor: pointer;
+}
+
+/* Alpine Cloak */
+[x-cloak] {
+    display: none !important;
 }
 
 /* ============================

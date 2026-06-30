@@ -22,9 +22,12 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body>
-    <div class="admin-wrapper">
+    <div class="admin-wrapper" x-data="{ sidebarOpen: false }">
+        <!-- Sidebar Backdrop for mobile -->
+        <div x-show="sidebarOpen" @click="sidebarOpen = false" class="sidebar-backdrop" x-cloak></div>
+        
         <!-- Sidebar -->
-        <aside class="admin-sidebar">
+        <aside class="admin-sidebar" :class="{ 'open': sidebarOpen }">
             <div class="admin-sidebar-header">
                 <a href="{{ route('admin.dashboard') }}" class="brand-logo sidebar-brand-logo">
                     <span>Bintang Jaya</span>
@@ -81,9 +84,11 @@
 
         <!-- Main Panel -->
         <main class="admin-main">
-            <!-- Navbar -->
             <header class="admin-navbar">
-                <div class="flex items-center">
+                <div class="flex items-center gap-4">
+                    <button type="button" @click="sidebarOpen = !sidebarOpen" class="sidebar-toggle-btn">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
                     <h2 class="font-bold navbar-title">
                         @yield('header_title', 'Admin Panel')
                     </h2>

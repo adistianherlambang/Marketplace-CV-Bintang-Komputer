@@ -22,9 +22,9 @@
 .pos-cart {
     background-color: var(--white);
     border-radius: var(--radius-lg);
-    display: flex;
+    height: 100%;
     flex-direction: column;
-    overflow: hidden;
+    overflow: auto;
 }
 
 .pos-product-list {
