@@ -51,6 +51,10 @@ class TransactionController extends Controller
     {
         $request->validate([
             'customer_id' => 'nullable|exists:customers,id',
+            'customer_name' => 'nullable|string|max:255',
+            'customer_phone' => 'nullable|string|max:20',
+            'customer_email' => 'nullable|email|max:255',
+            'customer_address' => 'nullable|string',
             'status' => 'required|in:Lunas,Belum Dibayar',
             'payment_method' => 'required|string',
             'notes' => 'nullable|string',

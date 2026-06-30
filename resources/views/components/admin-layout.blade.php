@@ -56,9 +56,6 @@
                 <a href="{{ route('admin.suppliers.index') }}" class="sidebar-link {{ request()->routeIs('admin.suppliers.*') ? 'active' : '' }}">
                     <i class="fa-solid fa-truck-field"></i> Supplier
                 </a>
-                <a href="{{ route('admin.customers.index') }}" class="sidebar-link {{ request()->routeIs('admin.customers.*') ? 'active' : '' }}">
-                    <i class="fa-solid fa-users"></i> Pelanggan
-                </a>
 
                 <div class="sidebar-section-title sidebar-section-spacer">Logistik & Laporan</div>
                 <a href="{{ route('admin.returns.index') }}" class="sidebar-link {{ request()->routeIs('admin.returns.*') ? 'active' : '' }}">
@@ -75,7 +72,7 @@
             <div class="admin-sidebar-footer">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" class="btn btn-danger btn-sm logout-btn">
+                    <button type="submit" class="btn btn-danger invoice-btn-full button">
                         Logout Admin
                     </button>
                 </form>

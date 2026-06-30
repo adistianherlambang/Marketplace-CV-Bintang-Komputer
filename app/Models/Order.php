@@ -16,7 +16,10 @@ class Order extends Model
         'user_id',
         'status',
         'total_amount',
-        'notes',
+        'customer_name',
+        'customer_phone',
+        'customer_email',
+        'customer_address',
     ];
 
     protected $casts = [

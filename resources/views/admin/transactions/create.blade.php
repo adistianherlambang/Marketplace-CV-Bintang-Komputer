@@ -100,13 +100,22 @@
                 <div class="pos-cart-footer">
                     <!-- Customer selection -->
                     <div class="form-group">
-                        <label class="form-label">Pelanggan</label>
-                        <select name="customer_id" class="form-control tom-select">
-                            <option value="">-- Guest / Walk-in Customer --</option>
-                            @foreach ($customers as $cust)
-                                <option value="{{ $cust->id }}">{{ $cust->name }} ({{ $cust->phone ?: 'No phone' }})</option>
-                            @endforeach
-                        </select>
+                        <div class="form-group">
+    <label class="form-label">Nama Pelanggan (Opsional)</label>
+    <input type="text" name="customer_name" class="form-control" placeholder="Nama Pelanggan">
+</div>
+<div class="form-group">
+    <label class="form-label">No. Telepon (Opsional)</label>
+    <input type="text" name="customer_phone" class="form-control" placeholder="Nomor Telepon">
+</div>
+<div class="form-group">
+    <label class="form-label">Email (Opsional)</label>
+    <input type="email" name="customer_email" class="form-control" placeholder="Email">
+</div>
+<div class="form-group">
+    <label class="form-label">Alamat (Opsional)</label>
+    <textarea name="customer_address" class="form-control" rows="2" placeholder="Alamat"></textarea>
+</div>
                     </div>
 
                     <!-- Payment Status and Method -->

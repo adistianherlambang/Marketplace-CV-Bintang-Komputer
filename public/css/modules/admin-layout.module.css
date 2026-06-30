@@ -3,6 +3,10 @@
    admin-layout.module.css
    ============================ */
 
+.button {
+    width: 100%;
+}
+
 /* --- Admin Wrapper --- */
 .admin-wrapper {
     display: flex;
