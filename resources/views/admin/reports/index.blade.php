@@ -1,11 +1,11 @@
 <x-admin-layout>
-    @section('header_title', 'Laporan Keuangan & Stok Toko')
+    @section('header_title', 'Laporan Keuangan & Stok')
 
-    <div class="grid" style="grid-template-columns: 1fr 1.5fr; gap: 24px; align-items: start;">
+    <div class="grid grid-1-2">
         
         <!-- Left Pane: Report Selector Form -->
         <div class="chart-card">
-            <h3 class="font-bold mb-4" style="font-size: 1.1rem;"><i class="fa-solid fa-file-pdf text-primary mr-2"></i>Buat / Download Laporan PDF</h3>
+            <h3 class="font-bold mb-4" style="font-size: 1.1rem;">Buat / Download Laporan PDF</h3>
             
             <form method="GET" action="{{ route('admin.reports.preview') }}" target="_blank">
                 <!-- Report Type -->
@@ -46,7 +46,7 @@
 
         <!-- Right Pane: Monthly Reports History Archive -->
         <div class="chart-card" style="padding: 24px 0;">
-            <h3 class="font-bold mb-4" style="font-size: 1.1rem; padding: 0 24px;"><i class="fa-solid fa-archive text-secondary mr-2"></i>Arsip Rekap Laporan Bulanan</h3>
+            <h3 class="font-bold mb-4" style="font-size: 1.1rem; padding: 0 24px;">Arsip Rekap Laporan Bulanan</h3>
             
             <div class="table-responsive">
                 <table style="width: 100%; border-collapse: collapse;">

@@ -5,7 +5,7 @@
         
         <!-- Left: Log Complaint Form -->
         <div class="chart-card">
-            <h3 class="font-bold mb-4" style="font-size: 1.1rem;"><i class="fa-solid fa-comments text-primary mr-2"></i>Catat Komplain Baru</h3>
+            <h3 class="font-bold mb-4" style="font-size: 1.1rem;">Catat Komplain Baru</h3>
             
             <form method="POST" action="{{ route('admin.complaints.store') }}">
                 @csrf
@@ -49,7 +49,7 @@
 
         <!-- Right: Complaints Log Table -->
         <div class="chart-card" style="padding: 24px 0;">
-            <h3 class="font-bold mb-4" style="font-size: 1.1rem; padding: 0 24px;"><i class="fa-solid fa-clock-rotate-left text-secondary mr-2"></i>Audit Log Komplain</h3>
+            <h3 class="font-bold mb-4" style="font-size: 1.1rem; padding: 0 24px;">Audit Log Komplain</h3>
             
             <div class="table-responsive">
                 <table style="width: 100%; border-collapse: collapse;">
