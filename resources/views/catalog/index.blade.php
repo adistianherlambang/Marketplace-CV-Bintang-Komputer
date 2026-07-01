@@ -33,7 +33,6 @@
                 <div class="filter-inputs">
                     <p class="font-bold">Cari Produk</p>
                     <div style="position:relative">
-                        <i class="fa-solid fa-magnifying-glass filter-search-icon"></i>
                         <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama produk" class="form-control filter-input-indent">
                     </div>
                 </div>
@@ -79,7 +78,6 @@
                         <input type="hidden" name="brand" value="{{ request('brand') }}">
                     @endif
                     <div class="catalog-mobile-search-inner">
-                        <i class="fa-solid fa-magnifying-glass filter-search-icon"></i>
                         <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama produk..." class="form-control filter-input-indent">
                     </div>
                 </form>
@@ -113,7 +111,6 @@
                         <div class="form-group">
                             <label class="form-label">Cari Nama Produk</label>
                             <div style="position:relative">
-                                <i class="fa-solid fa-magnifying-glass filter-search-icon"></i>
                                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama produk..." class="form-control filter-input-indent">
                             </div>
                         </div>

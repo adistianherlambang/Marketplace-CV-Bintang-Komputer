@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="{{ asset('css/global-utilities.css') }}">
     <link rel="stylesheet" href="{{ asset('css/modules/catalog-index.module.css') }}">
     @stack('styles')
+
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body>
     <!-- Header -->
