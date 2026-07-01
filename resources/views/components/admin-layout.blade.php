@@ -95,7 +95,7 @@
                 </div>
                 
                 <div class="flex items-center gap-4">
-                    <div class="td-right">
+                    <div class="td-right admin-name">
                         <div class="font-semibold text-sm">{{ Auth::user()->name }}</div>
                         <div class="text-xs text-secondary">Administrator Store</div>
                     </div>

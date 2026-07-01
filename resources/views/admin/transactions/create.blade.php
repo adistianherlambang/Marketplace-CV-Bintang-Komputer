@@ -1,5 +1,5 @@
 <x-admin-layout>
-    @section('header_title', 'POS Kasir - Penjualan Baru')
+    @section('header_title', 'POS Kasir')
 
     @push('styles')
     <link rel="stylesheet" href="{{ asset('css/modules/transactions-create.module.css') }}">

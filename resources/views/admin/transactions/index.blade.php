@@ -1,5 +1,5 @@
 <x-admin-layout>
-    @section('header_title', 'Riwayat Transaksi & Penjualan')
+    @section('header_title', 'Riwayat Transaksi')
 
     @push('styles')
     <link rel="stylesheet" href="{{ asset('css/modules/transactions-index.module.css') }}">

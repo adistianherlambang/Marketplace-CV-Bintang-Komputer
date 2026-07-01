@@ -7,6 +7,10 @@
     width: 100%;
 }
 
+.admin-name {
+    display: block;
+}
+
 /* --- Admin Wrapper --- */
 .admin-wrapper {
     display: flex;
@@ -159,21 +163,26 @@
 }
 
 @media (max-width: 1024px) {
+
+    .admin-name {
+        display: none;
+    }
+
     .sidebar-toggle-btn {
         display: block;
     }
-    
+
     .admin-sidebar {
         position: fixed;
         left: -260px;
         z-index: 1001;
         transition: left 0.3s ease-in-out;
     }
-    
+
     .admin-sidebar.open {
         left: 0;
     }
-    
+
     .sidebar-backdrop {
         display: block;
         position: fixed;

@@ -1,5 +1,5 @@
 <x-admin-layout>
-    @section('header_title', 'Dashboard Ringkasan Toko')
+    @section('header_title', 'Dashboard Admin')
 
     @push('styles')
     <link rel="stylesheet" href="{{ asset('css/modules/dashboard.module.css') }}">
