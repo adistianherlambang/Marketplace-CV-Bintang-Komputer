@@ -112,10 +112,23 @@
 
                     <div>
                         <div class="text-xs text-secondary mb-1">Pelanggan:</div>
-                        <div class="font-bold">{{ $order->customer ? $order->customer->name : 'Guest (Walk-in)' }}</div>
                         @if ($order->customer)
+                            <div class="font-bold">{{ $order->customer->name }}</div>
                             <div class="text-xs text-secondary">{{ $order->customer->phone }}</div>
                             <div class="text-xs text-secondary">{{ $order->customer->address }}</div>
+                        @elseif ($order->customer_name)
+                            <div class="font-bold">{{ $order->customer_name }}</div>
+                            @if ($order->customer_phone)
+                                <div class="text-xs text-secondary">{{ $order->customer_phone }}</div>
+                            @endif
+                            @if ($order->customer_email)
+                                <div class="text-xs text-secondary">{{ $order->customer_email }}</div>
+                            @endif
+                            @if ($order->customer_address)
+                                <div class="text-xs text-secondary">{{ $order->customer_address }}</div>
+                            @endif
+                        @else
+                            <div class="font-bold">Guest (Walk-in)</div>
                         @endif
                     </div>
 
