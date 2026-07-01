@@ -7,6 +7,11 @@
     margin-bottom: 2rem;
 }
 
+.title-wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
 .table {
     width: max-content;
 }
@@ -71,6 +76,10 @@
     width: fit-content;
 }
 
+.button-wrapper {
+    width: fit-content;
+}
+
 /* --- Filter Bar --- */
 .filter-bar {
     background-color: var(--white);
@@ -109,4 +118,23 @@
 
 .filter-input-indent {
     padding-left: 40px;
+}
+
+@media (max-width: 768px) {
+    .title {
+        margin-bottom: 0.5rem;
+    }
+
+    .title-wrapper {
+        flex-direction: column;
+        margin-bottom: 2rem;
+    }
+
+    .button-wrapper {
+        width: 100%;
+    }
+
+    .button {
+        width: 100%;
+    }
 }

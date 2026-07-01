@@ -11,7 +11,7 @@
     } }">
         
         <!-- Action Header & Filters -->
-        <div class="flex justify-between items-center mb-6">
+        <div class="flex justify-between items-center mb-6 title-wrapper">
             <div class="title">
                 <h3 class="font-bold page-title">Daftar Produk / Barang</h3>
                 <p class="text-secondary text-sm">Kelola spesifikasi, harga jual, harga modal, dan detail item.</p>
@@ -37,10 +37,10 @@
                     @endforeach
                 </select>
             </div>
-            <div class="flex gap-2">
-                <button type="submit" class="btn btn-primary">Cari</button>
+            <div class="flex gap-2 button-wrapper">
+                <button type="submit" class="btn btn-primary button">Cari</button>
                 @if (request()->anyFilled(['search', 'category']))
-                    <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">Clear</a>
+                    <a href="{{ route('admin.products.index') }}" class="btn btn-secondary button">Clear</a>
                 @endif
             </div>
         </form>
