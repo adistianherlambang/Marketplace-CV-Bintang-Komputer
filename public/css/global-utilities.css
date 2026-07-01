@@ -635,6 +635,11 @@ tr:hover td {
     align-items: start;
 }
 
+.grid-2-1 > *,
+.grid-1-2 > * {
+    min-width: 0; /* ponytail: prevent grid columns from expanding beyond page boundaries */
+}
+
 @media (max-width: 1024px) {
 
     .grid-2-1,
