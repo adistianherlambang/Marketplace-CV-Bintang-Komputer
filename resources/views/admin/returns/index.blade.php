@@ -1,5 +1,5 @@
 <x-admin-layout>
-    @section('header_title', 'Kelola Retur Barang & Pengembalian')
+    @section('header_title', 'Kelola Retur Barang')
 
     @push('styles')
     <link rel="stylesheet" href="{{ asset('css/modules/returns.module.css') }}">
@@ -9,7 +9,7 @@
         
         <!-- Left: Log Return Form -->
         <div class="chart-card">
-            <h3 class="font-bold mb-4 chart-title"><i class="fa-solid fa-rotate-left text-primary mr-2"></i>Catat Retur Baru</h3>
+            <h3 class="font-bold mb-4 chart-title">Catat Retur Baru</h3>
             
             <form method="POST" action="{{ route('admin.returns.store') }}">
                 @csrf

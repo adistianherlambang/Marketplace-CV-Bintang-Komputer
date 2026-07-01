@@ -1,7 +1,7 @@
 <x-admin-layout>
     @section('header_title', 'Kelola Komplain Pelanggan')
 
-    <div class="grid" style="grid-template-columns: 1fr 2fr; gap: 24px; align-items: start;">
+    <div class="grid grid-1-2">
         
         <!-- Left: Log Complaint Form -->
         <div class="chart-card">

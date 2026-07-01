@@ -8,7 +8,7 @@
     <div x-data="{ openCreateModal: false, openEditModal: false, currentSupplier: {id: '', name: '', contact_phone: '', email: '', address: ''} }">
         
         <!-- Action Header -->
-        <div class="flex justify-between items-center mb-6">
+        <div class="flex justify-between items-center mb-6 title-wrapper">
             <div class="title">
                 <h3 class="font-bold" style="font-size: 1.25rem;">Daftar Pemasok / Supplier</h3>
                 <p class="text-secondary text-sm">Kelola data vendor pemasok stok barang untuk toko Anda.</p>

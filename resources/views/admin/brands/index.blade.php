@@ -8,7 +8,7 @@
     <div x-data="{ openCreateModal: false, openEditModal: false, currentBrand: {id: '', name: ''} }">
         
         <!-- Action Header -->
-        <div class="flex justify-between items-center mb-6">
+        <div class="flex justify-between items-center mb-6 title-wrapper">
             <div class="title">
                 <h3 class="font-bold" style="font-size: 1.25rem;">Daftar Merk / Brand</h3>
                 <p class="text-secondary text-sm">Kelola merk dagang produk yang terdaftar pada sistem.</p>
