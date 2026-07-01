@@ -6,12 +6,15 @@
     @endpush
 
     <!-- Action Header -->
-    <div class="flex justify-between items-center mb-6">
+    <div class="flex justify-between items-center mb-6 title-wrapper">
         <div class="title">
             <h3 class="font-bold page-title">Daftar Invoice Penjualan</h3>
             <p class="text-secondary text-sm">Cari, cetak, batalkan, atau ubah status pembayaran transaksi toko.</p>
         </div>
-    
+
+        <a href="{{ route('admin.transactions.create') }}" class="btn btn-primary button">
+            POS Penjualan Baru
+        </a>
     </div>
 
     <!-- Filter Bar -->
@@ -35,9 +38,6 @@
                 @endif
             </div>
         </div>
-        <a href="{{ route('admin.transactions.create') }}" class="btn btn-primary button">
-            POS Penjualan Baru
-        </a>
     </form>
 
     <!-- Table Grid -->

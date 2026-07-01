@@ -18,7 +18,7 @@
                 
                 <!-- Manual Add button -->
                 <button type="button" @click="openManualModal = true" class="btn btn-secondary btn-sm pos-add-manual-btn">
-                    <i class="fa-solid fa-square-plus text-primary"></i> Barang Manual (Metode 2)
+                    Input Manual
                 </button>
             </div>
 

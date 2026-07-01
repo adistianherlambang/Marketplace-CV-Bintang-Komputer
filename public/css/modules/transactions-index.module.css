@@ -58,3 +58,22 @@
 .pagination {
     cursor: pointer;
 }
+
+@media (max-width: 768px) {
+    .title {
+        margin-bottom: 0.5rem;
+    }
+
+    .title-wrapper {
+        flex-direction: column;
+        margin-bottom: 2rem;
+    }
+
+    .button-wrapper {
+        width: 100%;
+    }
+
+    .button {
+        width: 100%;
+    }
+}
