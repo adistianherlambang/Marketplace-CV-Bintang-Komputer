@@ -101,7 +101,7 @@
     background-color: var(--white);
     border-radius: var(--radius-lg);
     padding: 24px;
-    min-width: 0; /* ponytail: allow child to shrink and scroll horizontally instead of stretching CSS grid */
+    min-width: 0;
 }
 
 .chart-title {
@@ -127,6 +127,7 @@
 .low-stock-header {
     padding: 0 24px 16px 24px;
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid var(--border);
@@ -162,7 +163,6 @@
     .metric-icon {
         width: 36px;
         height: 36px;
-
     }
 
     .metric-info h4 {
@@ -175,5 +175,9 @@
 
     .chart-satu {
         height: 100px;
+    }
+
+    .low-stock-title {
+        font-size: 1rem;
     }
 }
