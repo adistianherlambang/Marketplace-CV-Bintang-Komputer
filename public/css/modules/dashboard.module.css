@@ -101,6 +101,7 @@
     background-color: var(--white);
     border-radius: var(--radius-lg);
     padding: 24px;
+    min-width: 0; /* ponytail: allow child to shrink and scroll horizontally instead of stretching CSS grid */
 }
 
 .chart-title {
@@ -136,8 +137,43 @@
     color: var(--danger);
 }
 
+.table-auto {
+    width: max-content;
+    min-width: 100%;
+    table-layout: auto;
+}
+
 @media (max-width: 1024px) {
     .charts-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .metrics-grid {
+        gap: 1rem;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .metrics-grid>*:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+    }
+
+    .metric-icon {
+        width: 36px;
+        height: 36px;
+
+    }
+
+    .metric-info h4 {
+        font-size: 10px;
+    }
+
+    .metric-val {
+        font-size: 1.25rem;
+    }
+
+    .chart-satu {
+        height: 100px;
     }
 }

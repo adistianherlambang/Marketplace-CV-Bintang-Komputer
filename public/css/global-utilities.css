@@ -303,7 +303,8 @@ textarea {
 }
 
 .table-responsive {
-    overflow-x: auto;
+    overflow-x: scroll;
+    width: 100%;
 }
 
 table {
@@ -635,6 +636,7 @@ tr:hover td {
 }
 
 @media (max-width: 1024px) {
+
     .grid-2-1,
     .grid-1-2 {
         grid-template-columns: 1fr;

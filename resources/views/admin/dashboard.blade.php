@@ -82,7 +82,7 @@
         <!-- Monthly Sales Chart -->
         <div class="chart-card">
             <p class="font-bold mb-4 chart-title">Grafik Penjualan Bulanan (Lunas)</p>
-            <div class="chart-canvas-wrapper">
+            <div class="chart-canvas-wrapper chart-satu">
                 <canvas id="salesChart"></canvas>
             </div>
         </div>
@@ -105,7 +105,7 @@
             </div>
             
             <div class="table-responsive">
-                <table class="table-full table-no-bg">
+                <table class="table-full table-no-bg table-auto">
                     <thead>
                         <tr>
                             <th>Nama Barang</th>
@@ -162,6 +162,8 @@
             const topProductsData = JSON.parse(document.getElementById('top-products-chart-data').textContent);
 
             // Monthly Sales Line Chart
+            const isMobile = window.matchMedia("(max-width: 767px)").matches;
+
             new Chart(document.getElementById('salesChart').getContext('2d'), {
                 type: 'line',
                 data: {
@@ -181,12 +183,28 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
                     scales: {
+                        x: {
+                            ticks: {
+                                display: !isMobile
+                            },
+                            grid: {
+                                display: !isMobile
+                            }
+                        },
                         y: {
                             beginAtZero: true,
                             ticks: {
+                                display: !isMobile,
                                 callback: v => Number(v).toLocaleString('id-ID')
+                            },
+                            grid: {
+                                display: !isMobile
                             }
                         }
                     }
