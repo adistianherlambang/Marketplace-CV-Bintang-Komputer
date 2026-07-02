@@ -81,8 +81,8 @@
                         @forelse ($returns as $ret)
                             <tr>
                                 <td>
-                                    <strong>{{ $ret->order->invoice_number }}</strong>
-                                    <div class="text-xs text-secondary">Barang: {{ $ret->product->name }}</div>
+                                    <strong>{{ $ret->order?->invoice_number ?? 'Order Terhapus' }}</strong>
+                                    <div class="text-xs text-secondary">Barang: {{ $ret->product?->name ?? 'Barang Terhapus' }}</div>
                                 </td>
                                 <td class="td-center font-semibold">{{ $ret->quantity }} pcs</td>
                                 <td class="td-note-col" title="{{ $ret->reason }}">
