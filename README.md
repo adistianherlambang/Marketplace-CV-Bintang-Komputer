@@ -3,8 +3,8 @@
 # 🌟 Sistem Informasi Penjualan
 # CV Bintang Jaya Komputer
 
-[![Laravel](https://img.shields.io/badge/Laravel-13.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
-[![PHP](https://img.shields.io/badge/PHP-8.3-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
+[![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
+[![PHP](https://img.shields.io/badge/PHP-8.2.12-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://mysql.com)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
@@ -163,7 +163,7 @@ bintang-jaya-komputer/
 │   └── console.php
 │
 ├── 📂 docker/
-│   ├── Dockerfile                         # PHP-FPM 8.3 image
+│   ├── Dockerfile                         # PHP-FPM 8.2.12 image
 │   └── nginx.conf                         # Konfigurasi Nginx
 │
 ├── docker-compose.yml                     # Orkestrasi container
@@ -465,7 +465,7 @@ Dashboard Admin menampilkan peringatan produk hampir habis:
 
 | Komponen | Versi |
 |---|---|
-| PHP | 8.3 |
+| PHP | 8.2.12 |
 | MySQL | 8.0 |
 | Nginx | Alpine (latest) |
 | Node.js | LTS (untuk build assets) |
@@ -479,7 +479,7 @@ Dashboard Admin menampilkan peringatan produk hampir habis:
 
 - Git
 - **Metode A (Docker):** Docker Desktop
-- **Metode B (Manual):** PHP 8.3, Composer, MySQL 8, Node.js LTS
+- **Metode B (Manual):** PHP 8.2.12, Composer, MySQL 8, Node.js LTS
 
 ---
 
@@ -564,7 +564,7 @@ docker compose down -v
 > Metode ini menjalankan aplikasi langsung di mesin lokal menggunakan PHP built-in server atau server web yang sudah ada.
 
 **Prasyarat:**
-- PHP 8.3+ dengan ekstensi: `pdo_mysql`, `mbstring`, `openssl`, `fileinfo`, `gd`
+- PHP 8.2.12+ dengan ekstensi: `pdo_mysql`, `mbstring`, `openssl`, `fileinfo`, `gd`
 - Composer 2.x
 - MySQL 8.0+
 - Node.js LTS + npm
@@ -684,7 +684,7 @@ Setelah menjalankan `php artisan migrate --seed`, akun berikut tersedia:
 ┌────────────────────────────▼────────────────────────────────┐
 │                   APPLICATION LAYER                         │
 │                                                             │
-│  🚀 Laravel 13 (PHP 8.3)   🔐 Laravel Breeze (Auth)       │
+│  🚀 Laravel 12 (PHP 8.2.12) 🔐 Laravel Breeze (Auth)       │
 │  📋 Eloquent ORM            🛡️  Form Request Validation     │
 │  🏗️  Resource Controllers   📦 Service Layer Pattern        │
 │  📄 DomPDF (PDF Generate)  🖼️  Intervention Image          │
@@ -702,15 +702,15 @@ Setelah menjalankan `php artisan migrate --seed`, akun berikut tersedia:
 │                 INFRASTRUCTURE (Docker)                     │
 │                                                             │
 │  🐳 Docker Compose          🌐 Nginx (Web Server)          │
-│  ⚙️  PHP-FPM 8.3            🗄️  MySQL 8.0 Container        │
+│  ⚙️  PHP-FPM 8.2.12         🗄️  MySQL 8.0 Container        │
 │  🔧 phpMyAdmin              🔒 Isolated Network Bridge     │
 └─────────────────────────────────────────────────────────────┘
 ```
 
 | Layer | Teknologi | Versi |
 |---|---|---|
-| **Language** | PHP | 8.3 |
-| **Framework** | Laravel | 13.x |
+| **Language** | PHP | 8.2.12 |
+| **Framework** | Laravel | 12.x |
 | **Template Engine** | Blade | — |
 | **Authentication** | Laravel Breeze | 2.4 |
 | **Database** | MySQL | 8.0 |
@@ -720,7 +720,7 @@ Setelah menjalankan `php artisan migrate --seed`, akun berikut tersedia:
 | **Icons** | Heroicons + Font Awesome | — |
 | **Build Tool** | Vite | latest |
 | **Web Server** | Nginx Alpine | latest |
-| **Runtime** | PHP-FPM | 8.3 |
+| **Runtime** | PHP-FPM | 8.2.12 |
 | **Containerization** | Docker + Docker Compose | — |
 | **Code Style** | PSR-12 (enforced by Pint) | — |
 
