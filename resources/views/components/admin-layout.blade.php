@@ -61,6 +61,9 @@
                 </a>
 
                 <div class="sidebar-section-title sidebar-section-spacer">Logistik & Laporan</div>
+                <a href="{{ route('admin.bookings.index') }}" class="sidebar-link {{ request()->routeIs('admin.bookings.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-cart-shopping" style="color: var(--warning);"></i> Pesanan Produk
+                </a>
                 <a href="{{ route('admin.returns.index') }}" class="sidebar-link {{ request()->routeIs('admin.returns.*') ? 'active' : '' }}">
                     <i class="fa-solid fa-rotate-left"></i> Retur Barang
                 </a>

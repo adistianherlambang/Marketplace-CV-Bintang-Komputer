@@ -66,8 +66,12 @@
                         @forelse ($complaints as $comp)
                             <tr>
                                 <td>
-                                    <strong>{{ $comp->order->invoice_number }}</strong>
-                                    <div class="text-xs text-secondary">Pengadu: {{ $comp->customer_name }}</div>
+                                    @if ($comp->order)
+                                        <strong>{{ $comp->order->invoice_number }}</strong>
+                                    @else
+                                        <span class="badge badge-secondary" style="background-color: var(--border); color: var(--secondary); font-size: 0.75rem;">Umum / Tanpa Invoice</span>
+                                    @endif
+                                    <div class="text-xs text-secondary" style="margin-top: 2px;">Pengadu: {{ $comp->customer_name }}</div>
                                 </td>
                                 <td>{{ $comp->contact }}</td>
                                 <td style="font-size: 0.85rem; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ $comp->complaint_text }}">

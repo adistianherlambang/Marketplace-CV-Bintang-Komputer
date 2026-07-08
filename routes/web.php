@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GuestCatalogController;
+use App\Http\Controllers\GuestActionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
@@ -13,11 +14,14 @@ use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\ComplaintController;
 use App\Http\Controllers\Admin\ReturnController;
 use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\BookingController;
 use Illuminate\Support\Facades\Route;
 
 // --- Public Guest Catalog ---
 Route::get('/', [GuestCatalogController::class, 'index'])->name('catalog.index');
 Route::get('/products/{product}', [GuestCatalogController::class, 'show'])->name('catalog.show');
+Route::post('/products/{product}/book', [GuestActionController::class, 'storeBooking'])->name('catalog.book');
+Route::post('/complaints/send', [GuestActionController::class, 'storeComplaint'])->name('complaints.guest.store');
 
 // --- Admin Section (Protected by Authentication) ---
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
@@ -61,6 +65,10 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/preview', [ReportController::class, 'preview'])->name('reports.preview');
     Route::get('/reports/download', [ReportController::class, 'downloadPdf'])->name('reports.download');
+
+    // Product Bookings Management
+    Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
+    Route::post('/bookings/{booking}/status', [BookingController::class, 'updateStatus'])->name('bookings.status');
 
 });
 

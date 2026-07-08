@@ -63,6 +63,68 @@
                     Rp {{ number_format($product->price_jual, 0, ',', '.') }}
                 </div>
 
+                <div x-data="{ open: false }" style="margin-bottom: 24px;">
+                    <button type="button" @click="open = true" class="btn btn-primary btn-booking" style="width: 100%; max-width: 320px; font-weight: 700; padding: 14px 28px; font-size: 1.05rem; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: var(--shadow-md); border: none; cursor: pointer;">
+                        <i class="fa-solid fa-cart-shopping"></i> Pesan Sekarang
+                    </button>
+
+                    <!-- Popup Modal Backdrop -->
+                    <div x-show="open" class="modal-backdrop" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); z-index: 99999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(6px); padding: 16px;" x-transition>
+                        
+                        <!-- Modal Container -->
+                        <div class="modal-container" @click.away="open = false" style="background: var(--white); border-radius: var(--radius-lg); max-width: 480px; width: 100%; padding: 32px; box-shadow: var(--shadow-lg); border: 1px solid var(--border); position: relative; max-height: 90vh; overflow-y: auto;" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100">
+                            
+                            <!-- Close Button -->
+                            <button type="button" @click="open = false" style="position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 1.25rem; cursor: pointer; color: var(--secondary); display: flex; align-items: center; justify-content: center; transition: var(--transition);">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                            
+                            <!-- Modal Header -->
+                            <div style="margin-bottom: 24px;">
+                                <h3 class="font-bold" style="font-size: 1.35rem; color: var(--dark); margin-bottom: 4px;">Pesan Produk</h3>
+                                <p style="font-size: 0.875rem; color: var(--secondary); line-height: 1.4;">Silakan isi formulir di bawah ini untuk memesan <strong>{{ $product->name }}</strong>.</p>
+                            </div>
+                            
+                            <!-- Form -->
+                            <form method="POST" action="{{ route('catalog.book', $product->id) }}">
+                                @csrf
+                                
+                                <div style="display: flex; flex-direction: column; gap: 16px;">
+                                    <!-- Full Name -->
+                                    <div class="form-group" style="text-align: left; display: flex; flex-direction: column; gap: 6px;">
+                                        <label class="form-label font-semibold" style="font-size: 0.85rem; color: var(--dark);">Nama Lengkap</label>
+                                        <input type="text" name="customer_name" class="form-control" style="width: 100%; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); font-size: 0.925rem; outline: none; transition: var(--transition);" required placeholder="Masukkan nama lengkap Anda">
+                                    </div>
+                                    
+                                    <!-- Phone Number -->
+                                    <div class="form-group" style="text-align: left; display: flex; flex-direction: column; gap: 6px;">
+                                        <label class="form-label font-semibold" style="font-size: 0.85rem; color: var(--dark);">No. Telepon / WhatsApp</label>
+                                        <input type="text" name="customer_phone" class="form-control" style="width: 100%; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); font-size: 0.925rem; outline: none; transition: var(--transition);" required placeholder="Contoh: 0812XXXXXXXX">
+                                    </div>
+                                    
+                                    <!-- Date & Time of Pickup -->
+                                    <div class="form-group" style="text-align: left; display: flex; flex-direction: column; gap: 6px;">
+                                        <label class="form-label font-semibold" style="font-size: 0.85rem; color: var(--dark);">Tanggal & Jam Pengambilan</label>
+                                        <input type="datetime-local" name="pickup_time" class="form-control" style="width: 100%; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); font-size: 0.925rem; outline: none; transition: var(--transition);" required min="{{ date('Y-m-d\TH:i') }}">
+                                    </div>
+                                    
+                                    <!-- Additional Notes -->
+                                    <div class="form-group" style="text-align: left; display: flex; flex-direction: column; gap: 6px;">
+                                        <label class="form-label font-semibold" style="font-size: 0.85rem; color: var(--dark);">Catatan Tambahan (Opsional)</label>
+                                        <textarea name="notes" class="form-control" rows="3" style="width: 100%; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); font-size: 0.925rem; outline: none; transition: var(--transition); resize: vertical;" placeholder="Contoh: warna produk, kelengkapan tambahan..."></textarea>
+                                    </div>
+                                </div>
+                                
+                                <!-- Form Actions -->
+                                <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 28px; border-top: 1px solid var(--border); padding-top: 20px;">
+                                    <button type="button" @click="open = false" class="btn btn-secondary" style="padding: 10px 20px; font-weight: 600; font-size: 0.9rem; border-radius: var(--radius-sm); cursor: pointer;">Batal</button>
+                                    <button type="submit" class="btn btn-primary" style="padding: 10px 20px; font-weight: 600; font-size: 0.9rem; border-radius: var(--radius-sm); cursor: pointer; border: none;">Kirim Pesanan</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Tabs/Accordions for description & specs -->
                 <div class="product-tabs">
                     <div>
