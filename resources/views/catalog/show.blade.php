@@ -69,10 +69,10 @@
                     </button>
 
                     <!-- Popup Modal Backdrop -->
-                    <div x-show="open" class="modal-backdrop" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); z-index: 99999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(6px); padding: 16px;" x-transition>
+                    <div class="modal-backdrop" :class="{ 'show': open }" @click="open = false" style="z-index: 99999; backdrop-filter: blur(6px); background: rgba(15, 23, 42, 0.6);">
                         
                         <!-- Modal Container -->
-                        <div class="modal-container" @click.away="open = false" style="background: var(--white); border-radius: var(--radius-lg); max-width: 480px; width: 100%; padding: 32px; box-shadow: var(--shadow-lg); border: 1px solid var(--border); position: relative; max-height: 90vh; overflow-y: auto;" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100">
+                        <div class="modal" @click.stop style="max-width: 480px; padding: 32px; position: relative; max-height: 90vh; overflow-y: auto;">
                             
                             <!-- Close Button -->
                             <button type="button" @click="open = false" style="position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 1.25rem; cursor: pointer; color: var(--secondary); display: flex; align-items: center; justify-content: center; transition: var(--transition);">

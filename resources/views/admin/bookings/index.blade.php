@@ -103,8 +103,8 @@
                                 </button>
 
                                 <!-- Edit Popup Modal -->
-                                <div x-show="editOpen" class="modal-backdrop" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.5); z-index: 99999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); padding: 16px;" x-transition x-cloak>
-                                    <div class="modal-container" @click.away="editOpen = false" style="background: var(--white); border-radius: var(--radius-lg); max-width: 450px; width: 100%; padding: 28px; box-shadow: var(--shadow-lg); border: 1px solid var(--border); position: relative; text-align: left;">
+                                <div class="modal-backdrop" :class="{ 'show': editOpen }" @click="editOpen = false" style="z-index: 99999; backdrop-filter: blur(4px); background: rgba(15, 23, 42, 0.5);" x-cloak>
+                                    <div class="modal" @click.stop style="max-width: 450px; padding: 28px; position: relative; text-align: left;">
                                         <button type="button" @click="editOpen = false" style="position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--secondary); display: flex; align-items: center; justify-content: center;">
                                             <i class="fa-solid fa-xmark"></i>
                                         </button>
