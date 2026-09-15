@@ -15,6 +15,11 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    <!-- Tambahan Menu Riwayat Pesanan (Desktop) -->
+                    <x-nav-link :href="route('customer.orders.index')" :active="request()->routeIs('customer.orders.index')">
+                        {{ __('Riwayat Pesanan') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -38,11 +43,11 @@
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
+                        <!-- Authentication Desktop (SUDAH DIPERBAIKI) -->
+                        <form method="POST" action="{{ route('customer.logout') }}">
                             @csrf
 
-                            <x-dropdown-link :href="route('logout')"
+                            <x-dropdown-link :href="route('customer.logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
                                 {{ __('Log Out') }}
@@ -70,6 +75,11 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+
+            <!-- Tambahan Menu Riwayat Pesanan (Mobile) -->
+            <x-responsive-nav-link :href="route('customer.orders.index')" :active="request()->routeIs('customer.orders.index')">
+                {{ __('Riwayat Pesanan') }}
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
@@ -84,11 +94,11 @@
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
 
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
+                <!-- Authentication Mobile (SUDAH DIPERBAIKI TAG-NYA) -->
+                <form method="POST" action="{{ route('customer.logout') }}">
                     @csrf
 
-                    <x-responsive-nav-link :href="route('logout')"
+                    <x-responsive-nav-link :href="route('customer.logout')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
                         {{ __('Log Out') }}

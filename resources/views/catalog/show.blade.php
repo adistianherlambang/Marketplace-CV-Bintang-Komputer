@@ -56,11 +56,23 @@
                     @else
                         <span><strong>Stok: </strong> Habis</span>
                     @endif
-                    
                 </div>
 
                 <div class="product-price-val">
                     Rp {{ number_format($product->price_jual, 0, ',', '.') }}
+                </div>
+
+                <!-- TOMBOL CHECKOUT & PENGIRIMAN GRABEXPRESS (TAMBAHAN BARU) -->
+                <div class="mt-4 mb-4">
+                    @if ($product->stock > 0)
+                        <a href="{{ route('checkout.index', ['product_id' => $product->id]) }}" class="btn btn-success w-100 py-3 text-center fw-bold" style="background-color: #198754; color: white; display: block; border-radius: 8px; text-decoration: none;">
+                            <i class="fa-solid fa-motorcycle"></i> Lanjut ke Checkout & Pengiriman GrabExpress
+                        </a>
+                    @else
+                        <button class="btn btn-secondary w-100 py-3 fw-bold" disabled style="background-color: #6c757d; color: white; border-radius: 8px; border: none; width: 100%;">
+                            Stok Habis (Tidak Dapat Dibeli)
+                        </button>
+                    @endif
                 </div>
 
                 <!-- Tabs/Accordions for description & specs -->

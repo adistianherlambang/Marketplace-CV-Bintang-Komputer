@@ -12,7 +12,9 @@ class ComplaintController extends Controller
     public function index()
     {
         $complaints = Complaint::with(['order.items.product'])->latest()->paginate(10);
-        return view('admin.complaints.index', compact('complaints'));
+        $orders = Order::latest()->limit(50)->get(); // <-- INI YANG KURANG (DIKEMBALIKAN)
+
+        return view('admin.complaints.index', compact('complaints', 'orders'));
     }
 
     public function store(Request $request)
@@ -32,7 +34,7 @@ class ComplaintController extends Controller
 
         Complaint::create([
             'order_id' => $order->id,
-            'customer_id' => $order->customer_id,
+            'customer_id' => $order->user_id,
             'customer_name' => $order->customer_name ?? 'Pelanggan',
             'customer_phone' => $order->customer_phone ?? '-',
             'complaint_type' => $request->complaint_type,
@@ -42,7 +44,7 @@ class ComplaintController extends Controller
             'status' => 'Pending',
         ]);
 
-        return redirect()->route('admin.complaints.index')->with('success', 'Komplain berhasil dicatat.');
+        return redirect()->route('admin.complaints.index')->with('success', 'Komplain berhasil dikirim.');
     }
 
     public function updateStatus(Request $request, Complaint $complaint)

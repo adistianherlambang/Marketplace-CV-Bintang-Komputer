@@ -1,7 +1,11 @@
 <?php
 
 use App\Http\Controllers\GuestCatalogController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CustomerOrderController;
+use App\Http\Controllers\CustomerComplaintController; // <-- TAMBAHKAN INI DI BAGIAN ATAS
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -13,11 +17,27 @@ use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\ComplaintController;
 use App\Http\Controllers\Admin\ReturnController;
 use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\KelolaPesananController;
 use Illuminate\Support\Facades\Route;
 
 // --- Public Guest Catalog ---
 Route::get('/', [GuestCatalogController::class, 'index'])->name('catalog.index');
 Route::get('/products/{product}', [GuestCatalogController::class, 'show'])->name('catalog.show');
+
+// --- Protected Checkout & Customer Area (Wajib Login) ---
+Route::middleware(['auth'])->group(function () {
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout/store', [CheckoutController::class, 'store'])->name('checkout.store');
+    
+    // Riwayat & Pelacakan Pesanan Pelanggan
+    Route::get('/riwayat-pesanan', [CustomerOrderController::class, 'index'])->name('customer.orders.index');
+    
+    // --- TAMBAHKAN RUTE KOMPLAIN PELANGGAN DI SINI ---
+    Route::get('/riwayat-pesanan/{id}/komplain', [CustomerComplaintController::class, 'create'])->name('customer.complaints.create');
+    Route::post('/riwayat-pesanan/{id}/komplain', [CustomerComplaintController::class, 'store'])->name('customer.complaints.store');
+});
+// Konfirmasi Pesanan Selesai oleh Customer
+Route::post('/riwayat-pesanan/{id}/selesai', [CustomerOrderController::class, 'konfirmasiSelesai'])->name('customer.orders.selesai');
 
 // --- Admin Section (Protected by Authentication) ---
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
@@ -25,7 +45,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard', [DashboardController::class, 'index']);
 
-    // CRUD Resource Controllers
+    // CRUD Resource Controllers (Lengkap)
     Route::resource('products', ProductController::class);
     Route::resource('categories', CategoryController::class)->except(['create', 'show', 'edit']);
     Route::resource('brands', BrandController::class)->except(['create', 'show', 'edit']);
@@ -45,6 +65,11 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('/transactions/{order}/cancel', [TransactionController::class, 'cancel'])->name('transactions.cancel');
     Route::get('/transactions/{order}/invoice', [TransactionController::class, 'invoicePdf'])->name('transactions.invoice');
     Route::get('/transactions/{order}/nota', [TransactionController::class, 'notaPdf'])->name('transactions.nota');
+    Route::get('/transactions/{order}/nota-online', [TransactionController::class, 'notaOnlinePdf'])->name('transactions.nota.online');
+
+    // Kelola Pesanan (E-commerce Order & Shipping Management)
+    Route::get('/pesanan', [KelolaPesananController::class, 'index'])->name('pesanan.index');
+    Route::put('/pesanan/{id}', [KelolaPesananController::class, 'updateStatus'])->name('pesanan.update');
 
     // Complaints Log
     Route::get('/complaints', [ComplaintController::class, 'index'])->name('complaints.index');
@@ -64,16 +89,26 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
 });
 
-// Profile Management (keeps standard Breeze route names, but uses /admin prefix)
+// Profile Management
 Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Root /dashboard redirect to admin panel
+// Root /dashboard redirect dinamis (Admin ke dashboard admin, Customer ke katalog)
 Route::get('/dashboard', function() {
-    return redirect()->route('admin.dashboard');
+    $user = \Illuminate\Support\Facades\Auth::user();
+    if ($user && strtolower(trim($user->email)) === 'admin@bintangkomputer.com') {
+        return redirect()->route('admin.dashboard');
+    }
+    return redirect()->route('catalog.index');
 })->middleware(['auth'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+// --- AUTHENTICATION (SATU PINTU) ---
+Route::get('/login', [CustomerAuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [CustomerAuthController::class, 'login']);
+
+Route::get('/customer/register', [CustomerAuthController::class, 'showRegister'])->name('customer.register');
+Route::post('/customer/register', [CustomerAuthController::class, 'register']);
+Route::post('/customer/logout', [CustomerAuthController::class, 'logout'])->name('customer.logout');

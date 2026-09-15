@@ -61,19 +61,35 @@
 
     <div class="divider"></div>
 
-    <!-- Metadata Block -->
+    <!-- Metadata Block (Otomatis menyesuaikan Online atau POS Kasir) -->
     <table class="meta-table">
         <tr>
             <td>No: {{ $order->invoice_number }}</td>
-            <td class="text-right">Kasir: {{ Str::limit($order->user->name, 8) }}</td>
+            <td class="text-right">Tgl: {{ $order->created_at->format('d/m/y H:i') }}</td>
         </tr>
         <tr>
-            <td>Tgl: {{ $order->created_at->format('d/m/y H:i') }}</td>
-            <td class="text-right">Status: {{ strtoupper($order->status) }}</td>
+            <td>Status: {{ strtoupper($order->status) }}</td>
+            <td class="text-right">Kasir: {{ optional($order->user)->name ? Str::limit($order->user->name, 10) : 'Online' }}</td>
         </tr>
         <tr>
-            <td colspan="2">Pelanggan: {{ $order->customer ? Str::limit($order->customer->name, 20) : 'Guest' }}</td>
+            <td colspan="2">
+                Pelanggan/Penerima: 
+                @if(!empty($order->customer_name))
+                    {{ $order->customer_name }} ({{ $order->customer_phone }})
+                @else
+                    {{ optional($order->customer)->name ?? 'Guest' }}
+                @endif
+            </td>
         </tr>
+        <!-- Informasi Jasa Kirim / Kurir -->
+        <tr>
+            <td colspan="2"><strong>Kurir/Jasa Kirim:</strong> {{ strtoupper($order->shipping_method ?? 'POS / Toko Offline') }}</td>
+        </tr>
+        @if(!empty($order->kecamatan_id))
+        <tr>
+            <td colspan="2">Kec/Kel: {{ optional($order->kecamatan)->nama_kecamatan }} / {{ optional($order->kelurahan)->nama_kelurahan }}</td>
+        </tr>
+        @endif
     </table>
 
     <div class="divider"></div>
@@ -82,7 +98,7 @@
     <table class="items-table">
         @foreach ($order->items as $item)
             <tr>
-                <td colspan="3"><strong>{{ $item->item_name }}</strong></td>
+                <td colspan="3"><strong>{{ $item->item_name ?? optional($item->product)->name }}</strong></td>
             </tr>
             <tr>
                 <td style="width: 35%;">{{ $item->quantity }} x {{ number_format($item->price, 0, ',', '.') }}</td>
@@ -96,13 +112,19 @@
 
     <!-- Totals -->
     <table class="total-table">
+        @if($order->shipping_cost > 0)
+        <tr>
+            <td style="font-size: 8px; font-weight: normal;">Ongkir:</td>
+            <td class="text-right" style="font-size: 8px; font-weight: normal;">Rp {{ number_format($order->shipping_cost, 0, ',', '.') }}</td>
+        </tr>
+        @endif
         <tr>
             <td>TOTAL:</td>
             <td class="text-right">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
         </tr>
         <tr>
             <td style="font-size: 8px; font-weight: normal; color: #555;">METODE BAYAR:</td>
-            <td class="text-right" style="font-size: 8px; font-weight: normal; color: #555;">{{ $order->payments->first() ? $order->payments->first()->payment_method : 'Cash' }}</td>
+            <td class="text-right" style="font-size: 8px; font-weight: normal; color: #555;">{{ strtoupper($order->payment_method ?? 'CASH') }}</td>
         </tr>
     </table>
 

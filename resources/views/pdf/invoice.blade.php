@@ -123,12 +123,12 @@
             </td>
             <td style="width: 50%; vertical-align: top; padding-left: 20px;">
                 <div class="info-title">Pembayaran & Kasir:</div>
-                <strong>Kasir:</strong> {{ $order->user->name }}<br>
-                <strong>Status Pembayaran:</strong> 
-                <span style="font-weight: bold; color: {{ $order->status === 'Lunas' ? '#10b981' : '#ef4444' }};">
+                <strong>Kasir:</strong> {{ optional($order->user)->name ?? '-' }}<br>
+                <strong>Status:</strong> 
+                <span style="font-weight: bold; color: {{ in_array(strtolower($order->status), ['selesai', 'lunas']) ? '#10b981' : (strtolower($order->status) === 'batal' ? '#ef4444' : '#f59e0b') }};">
                     {{ strtoupper($order->status) }}
                 </span><br>
-                <strong>Metode Pembayaran:</strong> {{ $order->payments->first() ? $order->payments->first()->payment_method : 'Cash' }}
+                <strong>Metode Pembayaran:</strong> {{ optional($order->payments->first())->payment_method ?? 'Cash' }}
             </td>
         </tr>
     </table>
@@ -137,18 +137,18 @@
     <table class="items-table">
         <thead>
             <tr>
-                <th style="width: 50%;">Nama Barang / Produk</th>
-                <th style="text-align: right; width: 20%;">Harga Satuan</th>
-                <th style="text-align: center; width: 10%;">Qty</th>
-                <th style="text-align: right; width: 20%;">Subtotal</th>
+                <th>Produk</th>
+                <th style="text-align: right;">Harga</th>
+                <th style="text-align: center;">Qty</th>
+                <th style="text-align: right;">Subtotal</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($order->items as $item)
                 <tr>
                     <td>
-                        <strong>{{ $item->item_name }}</strong>
-                        @if ($item->product_id)
+                        <strong>{{ $item->item_name ?? optional($item->product)->name }}</strong>
+                        @if($item->product_id && $item->product)
                             <div style="font-size: 8px; color: #64748b; margin-top: 2px;">SKU: {{ $item->product->sku }}</div>
                         @endif
                     </td>

@@ -24,14 +24,28 @@
                 <span>Bintang Komputer</span>
             </a>
             
-            <div class="flex items-center gap-6">
+            <div class="flex items-center gap-3">
                 @auth
-                    <a href="{{ route('admin.dashboard') }}" class="btn btn-primary btn-sm">
-                        Admin Panel
-                    </a>
+                    @if(strtolower(trim(Auth::user()->email)) === 'admin@bintangkomputer.com')
+                        <a href="{{ route('admin.dashboard') }}" class="btn btn-primary btn-sm">
+                            <i class="fa-solid fa-gauge-high mr-1"></i> Admin Panel
+                        </a>
+                    @else
+                        <a href="{{ route('customer.orders.index') }}" class="btn btn-secondary btn-sm" style="margin-right: 5px;">
+                            <i class="fa-solid fa-box-archive mr-1"></i> Riwayat Pesanan
+                        </a>
+                        <span class="text-sm text-secondary mr-1">Halo, <strong>{{ Auth::user()->name }}</strong></span>
+                    @endif
+
+                    <form action="{{ route('customer.logout') }}" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-secondary btn-sm" style="border: none; background: #fee2e2; color: #dc2626;">
+                            <i class="fa-solid fa-right-from-bracket"></i> Keluar
+                        </button>
+                    </form>
                 @else
                     <a href="{{ route('login') }}" class="btn btn-secondary btn-sm">
-                        Login Admin
+                        <i class="fa-solid fa-right-to-bracket mr-1"></i> Login / Daftar
                     </a>
                 @endauth
             </div>
@@ -52,4 +66,3 @@
     </footer>
 </body>
 </html>
-

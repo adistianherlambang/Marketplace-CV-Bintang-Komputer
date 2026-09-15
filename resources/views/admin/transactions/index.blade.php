@@ -28,6 +28,7 @@
             <select name="status" class="form-control filter-select-sm tom-select" onchange="this.form.submit()">
                 <option value="">Semua Status</option>
                 <option value="Lunas" {{ request('status') === 'Lunas' ? 'selected' : '' }}>Lunas</option>
+                <option value="Selesai" {{ request('status') === 'Selesai' ? 'selected' : '' }}>Selesai</option>
                 <option value="Belum Dibayar" {{ request('status') === 'Belum Dibayar' ? 'selected' : '' }}>Belum Dibayar</option>
                 <option value="Dibatalkan" {{ request('status') === 'Dibatalkan' ? 'selected' : '' }}>Dibatalkan</option>
             </select>
@@ -77,15 +78,17 @@
                                 Rp {{ number_format($order->total_amount, 0, ',', '.') }}
                             </td>
                             <td class="td-center">
-                                @if ($order->status === 'Lunas')
-                                    <span class="badge badge-success">Lunas</span>
+                                @if (in_array($order->status, ['Lunas', 'Seli', 'Selesai']))
+                                    <span class="badge badge-success">{{ ucfirst($order->status) }}</span>
                                 @elseif ($order->status === 'Belum Dibayar')
                                     <span class="badge badge-warning">Belum Bayar</span>
-                                @else
+                                @elseif (in_array($order->status, ['Dibatalkan', 'Batal']))
                                     <span class="badge badge-danger">Batal</span>
+                                @else
+                                    <span class="badge badge-secondary">{{ ucfirst($order->status) }}</span>
                                 @endif
                             </td>
-                            <td>{{ $order->user->name }}</td>
+                            <td>{{ optional($order->user)->name ?? '-' }}</td>
                             <td class="td-center">
                                 <div class="flex justify-center gap-2">
                                     <a href="{{ route('admin.transactions.show', $order->id) }}" class="btn btn-secondary btn-sm" title="Detail">

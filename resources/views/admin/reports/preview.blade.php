@@ -48,7 +48,7 @@
                         <thead>
                             <tr>
                                 <th>No. Invoice</th>
-                                <th>Pelanggan</th>
+                                <th>Pelanggan & Rincian Produk</th>
                                 <th>Kasir</th>
                                 <th class="th-center">Status</th>
                                 <th class="th-right">Total Transaksi</th>
@@ -58,10 +58,17 @@
                             @forelse ($data['orders'] as $order)
                                 <tr>
                                     <td><strong>{{ $order->invoice_number }}</strong></td>
-                                    <td>{{ $order->customer ? $order->customer->name : 'Guest' }}</td>
-                                    <td>{{ $order->user->name }}</td>
+                                    <td>
+                                        <div class="font-semibold mb-1">{{ $order->customer ? $order->customer->name : 'Guest' }}</div>
+                                        <ul style="margin: 0; padding-left: 15px; font-size: 11px; color: #475569;">
+                                            @foreach ($order->items as $item)
+                                                <li>{{ $item->item_name ?? optional($item->product)->name }} ({{ $item->quantity }}x @ Rp {{ number_format($item->price, 0, ',', '.') }})</li>
+                                            @endforeach
+                                        </ul>
+                                    </td>
+                                    <td>{{ optional($order->user)->name ?? '-' }}</td>
                                     <td class="td-center">
-                                        <span class="badge {{ $order->status === 'Lunas' ? 'badge-success' : 'badge-warning' }}">{{ $order->status }}</span>
+                                        <span class="badge {{ in_array($order->status, ['Lunas', 'Selesai']) ? 'badge-success' : 'badge-warning' }}">{{ $order->status }}</span>
                                     </td>
                                     <td class="preview-td-amount">
                                         Rp {{ number_format($order->total_amount, 0, ',', '.') }}
@@ -103,7 +110,7 @@
                             <tr>
                                 <th>No. Invoice</th>
                                 <th>Tanggal</th>
-                                <th>Pelanggan</th>
+                                <th>Pelanggan & Rincian Produk</th>
                                 <th class="th-center">Status</th>
                                 <th class="th-right">Total Belanja</th>
                             </tr>
@@ -113,9 +120,16 @@
                                 <tr>
                                     <td><strong>{{ $order->invoice_number }}</strong></td>
                                     <td>{{ $order->created_at->format('d/m/Y') }}</td>
-                                    <td>{{ $order->customer ? $order->customer->name : 'Guest' }}</td>
+                                    <td>
+                                        <div class="font-semibold mb-1">{{ $order->customer ? $order->customer->name : 'Guest' }}</div>
+                                        <ul style="margin: 0; padding-left: 15px; font-size: 11px; color: #475569;">
+                                            @foreach ($order->items as $item)
+                                                <li>{{ $item->item_name ?? optional($item->product)->name }} ({{ $item->quantity }}x @ Rp {{ number_format($item->price, 0, ',', '.') }})</li>
+                                            @endforeach
+                                        </ul>
+                                    </td>
                                     <td class="td-center">
-                                        <span class="badge {{ $order->status === 'Lunas' ? 'badge-success' : 'badge-warning' }}">{{ $order->status }}</span>
+                                        <span class="badge {{ in_array($order->status, ['Lunas', 'Selesai']) ? 'badge-success' : 'badge-warning' }}">{{ $order->status }}</span>
                                     </td>
                                     <td class="preview-td-amount">
                                         Rp {{ number_format($order->total_amount, 0, ',', '.') }}
@@ -147,7 +161,7 @@
             <!-- 3. Stock Report -->
             @if ($data['type'] === 'stock')
                 <div class="preview-report-section">
-                    <h3 class="font-bold text-center preview-report-title">LAPORAN PERSERDIAAN STOK BARANG GUDANG</h3>
+                    <h3 class="font-bold text-center preview-report-title">LAPORAN PERSEDIAAN STOK BARANG GUDANG</h3>
                     <p class="text-center text-secondary text-sm">Dicetak Pada: {{ now()->format('d F Y H:i') }}</p>
                 </div>
 
@@ -170,8 +184,8 @@
                                         <strong>{{ $product->name }}</strong>
                                         <div class="text-xs text-secondary">SKU: {{ $product->sku }}</div>
                                     </td>
-                                    <td>{{ $product->brand->name }}</td>
-                                    <td>{{ $product->supplier->name }}</td>
+                                    <td>{{ optional($product->brand)->name }}</td>
+                                    <td>{{ optional($product->supplier)->name }}</td>
                                     <td class="td-right">Rp {{ number_format($product->price_modal, 0, ',', '.') }}</td>
                                     <td class="td-center">{{ $product->min_stock }}</td>
                                     <td class="{{ $product->stock <= $product->min_stock ? 'preview-td-stock-danger' : 'preview-td-stock-normal' }}">
@@ -219,14 +233,14 @@
                         <tbody>
                             @forelse ($data['returns'] as $ret)
                                 <tr>
-                                    <td><strong>{{ $ret->order->invoice_number }}</strong></td>
-                                    <td>{{ $ret->product->name }}</td>
+                                    <td><strong>{{ optional($ret->order)->invoice_number }}</strong></td>
+                                    <td>{{ optional($ret->product)->name }}</td>
                                     <td class="preview-td-qty">{{ $ret->quantity }} pcs</td>
                                     <td class="preview-td-reason">{{ $ret->reason }}</td>
                                     <td class="td-center">
                                         <span class="badge {{ $ret->status === 'Disetujui' ? 'badge-success' : 'badge-danger' }}">{{ $ret->status }}</span>
                                     </td>
-                                    <td>{{ $ret->date->format('d/m/Y') }}</td>
+                                    <td>{{ optional($ret->date)->format('d/m/Y') }}</td>
                                 </tr>
                             @empty
                                 <tr>

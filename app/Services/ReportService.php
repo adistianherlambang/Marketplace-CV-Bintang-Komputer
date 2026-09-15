@@ -32,13 +32,13 @@ class ReportService
         // 4. Products low on stock
         $lowStockCount = Product::where('stock', '<=', DB::raw('min_stock'))->count();
 
-        // 5. Total sales today (Lunas orders)
-        $salesToday = Order::where('status', 'Lunas')
+        // 5. Total sales today (Lunas or Selesai orders)
+        $salesToday = Order::whereIn('status', ['Lunas', 'Selesai'])
             ->whereDate('created_at', $today)
             ->sum('total_amount');
 
-        // 6. Total sales this month (Lunas orders)
-        $salesThisMonth = Order::where('status', 'Lunas')
+        // 6. Total sales this month (Lunas or Selesai orders)
+        $salesThisMonth = Order::whereIn('status', ['Lunas', 'Selesai'])
             ->where('created_at', '>=', $startOfMonth)
             ->sum('total_amount');
 
@@ -61,7 +61,7 @@ class ReportService
             $monthEnd = Carbon::now()->subMonths($i)->endOfMonth();
             $monthLabel = $monthStart->format('M Y');
 
-            $amount = Order::where('status', 'Lunas')
+            $amount = Order::whereIn('status', ['Lunas', 'Selesai'])
                 ->whereBetween('created_at', [$monthStart, $monthEnd])
                 ->sum('total_amount');
 
@@ -71,9 +71,12 @@ class ReportService
             ];
         }
 
-        // 11. Top selling products
+        // 11. Top selling products (hanya hitung dari Lunas atau Selesai)
         $topProducts = OrderItem::select('product_id', 'item_name', DB::raw('SUM(quantity) as total_qty'), DB::raw('SUM(subtotal) as total_sales'))
             ->whereNotNull('product_id')
+            ->whereHas('order', function($q) {
+                $q->whereIn('status', ['Lunas', 'Selesai']);
+            })
             ->groupBy('product_id', 'item_name')
             ->orderByDesc('total_qty')
             ->limit(5)
@@ -106,11 +109,11 @@ class ReportService
      */
     public function getDailyReportData(string $date): array
     {
-        $orders = Order::with(['customer', 'user', 'items'])
+        $orders = Order::with(['customer', 'user', 'items.product'])
             ->whereDate('created_at', $date)
             ->get();
 
-        $totalSales = $orders->where('status', 'Lunas')->sum('total_amount');
+        $totalSales = $orders->whereIn('status', ['Lunas', 'Selesai'])->sum('total_amount');
         $totalTransactions = $orders->count();
 
         return [
@@ -129,11 +132,11 @@ class ReportService
         $startOfMonth = Carbon::parse($yearMonth . '-01')->startOfMonth();
         $endOfMonth = Carbon::parse($yearMonth . '-01')->endOfMonth();
 
-        $orders = Order::with(['customer', 'user'])
+        $orders = Order::with(['customer', 'user', 'items.product'])
             ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
             ->get();
 
-        $totalSales = $orders->where('status', 'Lunas')->sum('total_amount');
+        $totalSales = $orders->whereIn('status', ['Lunas', 'Selesai'])->sum('total_amount');
         $totalTransactions = $orders->count();
 
         return [
@@ -152,8 +155,11 @@ class ReportService
         $startOfYear = Carbon::parse($year . '-01-01')->startOfYear();
         $endOfYear = Carbon::parse($year . '-01-01')->endOfYear();
 
-        $orders = Order::whereBetween('created_at', [$startOfYear, $endOfYear])->get();
-        $totalSales = $orders->where('status', 'Lunas')->sum('total_amount');
+        $orders = Order::with(['customer', 'user', 'items.product'])
+            ->whereBetween('created_at', [$startOfYear, $endOfYear])
+            ->get();
+            
+        $totalSales = $orders->whereIn('status', ['Lunas', 'Selesai'])->sum('total_amount');
         $totalTransactions = $orders->count();
 
         return [
@@ -205,6 +211,9 @@ class ReportService
     {
         $products = OrderItem::select('product_id', 'item_name', DB::raw('SUM(quantity) as total_qty'), DB::raw('SUM(subtotal) as total_sales'))
             ->whereNotNull('product_id')
+            ->whereHas('order', function($q) {
+                $q->whereIn('status', ['Lunas', 'Selesai']);
+            })
             ->groupBy('product_id', 'item_name')
             ->orderByDesc('total_qty')
             ->get();

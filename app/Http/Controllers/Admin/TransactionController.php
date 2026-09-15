@@ -86,23 +86,19 @@ class TransactionController extends Controller
 
     public function updatePaymentStatus(Order $order, Request $request)
     {
-        if ($order->status !== 'Belum Dibayar') {
-            return redirect()->back()->with('error', 'Transaksi ini sudah lunas atau dibatalkan.');
-        }
-
         $order->update([
             'status' => 'Lunas'
         ]);
 
         Payment::create([
             'order_id' => $order->id,
-            'payment_method' => $request->input('payment_method', 'Cash'),
+            'payment_method' => $order->payment_method ?? $request->input('payment_method', 'Transfer Manual'),
             'amount_paid' => $order->total_amount,
             'payment_status' => 'Lunas',
             'payment_date' => now(),
         ]);
 
-        return redirect()->back()->with('success', 'Pembayaran berhasil dikonfirmasi.');
+        return redirect()->back()->with('success', 'Bukti transfer diverifikasi dan pembayaran berhasil dikonfirmasi.');
     }
 
     public function cancel(Order $order)
@@ -116,11 +112,11 @@ class TransactionController extends Controller
     }
 
     /**
-     * Generate Invoice PDF (A4 Format)
+     * Generate Invoice PDF (A4 Format) - Dibuka untuk semua status pesanan online
      */
     public function invoicePdf(Order $order)
     {
-        $order->load(['customer', 'user', 'items']);
+        $order->load(['customer', 'user', 'items.product', 'kecamatan', 'kelurahan']);
         $pdf = Pdf::loadView('pdf.invoice', compact('order'))->setPaper('a4', 'portrait');
         $safeInvoiceNumber = str_replace('/', '-', $order->invoice_number);
         return $pdf->download("invoice-{$safeInvoiceNumber}.pdf");
@@ -131,10 +127,22 @@ class TransactionController extends Controller
      */
     public function notaPdf(Order $order)
     {
-        $order->load(['customer', 'user', 'items']);
-        // Custom paper size: 80mm width x 200mm height
+        $order->load(['customer', 'user', 'items.product', 'kecamatan', 'kelurahan']);
         $pdf = Pdf::loadView('pdf.nota', compact('order'))->setPaper([0, 0, 226.77, 566.92], 'portrait');
         $safeInvoiceNumber = str_replace('/', '-', $order->invoice_number);
         return $pdf->download("nota-{$safeInvoiceNumber}.pdf");
+    }
+
+    /**
+     * Generate Nota Online E-commerce PDF (A4 Format khusus pesanan online)
+     */
+    public function notaOnlinePdf(Order $order)
+    {
+        $order->load(['customer', 'user', 'items.product', 'kecamatan', 'kelurahan']);
+        
+        $pdf = Pdf::loadView('pdf.nota_online', compact('order'))->setPaper('a4', 'portrait');
+        $safeInvoiceNumber = str_replace('/', '-', $order->invoice_number);
+        
+        return $pdf->download("Nota-Online-{$safeInvoiceNumber}.pdf");
     }
 }

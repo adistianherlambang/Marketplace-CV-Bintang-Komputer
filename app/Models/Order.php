@@ -4,36 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Order extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
-    protected $fillable = [
-        'invoice_number',
-        'customer_id',
-        'user_id',
-        'status',
-        'total_amount',
-        'customer_name',
-        'customer_phone',
-        'customer_email',
-        'customer_address',
-    ];
-
-    protected $casts = [
-        'total_amount' => 'decimal:2',
-    ];
-
-    public function customer()
-    {
-        return $this->belongsTo(Customer::class);
-    }
+    protected $guarded = ['id'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
     }
 
     public function items()
@@ -46,13 +31,13 @@ class Order extends Model
         return $this->hasMany(Payment::class);
     }
 
-    public function complaints()
+    public function kecamatan()
     {
-        return $this->hasMany(Complaint::class);
+        return $this->belongsTo(Kecamatan::class, 'kecamatan_id');
     }
 
-    public function returns()
+    public function kelurahan()
     {
-        return $this->hasMany(ReturnLog::class);
+        return $this->belongsTo(Kelurahan::class, 'kelurahan_id');
     }
 }
