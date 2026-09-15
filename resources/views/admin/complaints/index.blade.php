@@ -14,11 +14,45 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
+<<<<<<< HEAD
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Invoice & Pelanggan</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Jenis & Detail Kendala</th>
                                 <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Bukti (Nota / Produk)</th>
                                 <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Status</th>
                                 <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Aksi</th>
+=======
+                                <td>
+                                    @if ($comp->order)
+                                        <strong>{{ $comp->order->invoice_number }}</strong>
+                                    @else
+                                        <span class="badge badge-secondary" style="background-color: var(--border); color: var(--secondary); font-size: 0.75rem;">Umum / Tanpa Invoice</span>
+                                    @endif
+                                    <div class="text-xs text-secondary" style="margin-top: 2px;">Pengadu: {{ $comp->customer_name }}</div>
+                                </td>
+                                <td>{{ $comp->contact }}</td>
+                                <td style="font-size: 0.85rem; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ $comp->complaint_text }}">
+                                    {{ $comp->complaint_text }}
+                                </td>
+                                <td style="text-align: center;">
+                                    @if ($comp->status === 'Selesai')
+                                        <span class="badge badge-success">Selesai</span>
+                                    @elseif ($comp->status === 'Diproses')
+                                        <span class="badge badge-warning">Diproses</span>
+                                    @else
+                                        <span class="badge badge-danger">Menunggu</span>
+                                    @endif
+                                </td>
+                                <td style="text-align: center;">
+                                    <form method="POST" action="{{ route('admin.complaints.status', $comp->id) }}" class="flex items-center gap-1 justify-center">
+                                        @csrf
+                                        <select name="status" class="form-control tom-select" style="padding: 4px 8px; font-size: 0.75rem; border-radius: var(--radius-sm); max-width: 110px;" onchange="this.form.submit()">
+                                            <option value="Menunggu" {{ $comp->status === 'Menunggu' ? 'selected' : '' }}>Menunggu</option>
+                                            <option value="Diproses" {{ $comp->status === 'Diproses' ? 'selected' : '' }}>Diproses</option>
+                                            <option value="Selesai" {{ $comp->status === 'Selesai' ? 'selected' : '' }}>Selesai</option>
+                                        </select>
+                                    </form>
+                                </td>
+>>>>>>> b4fa47c28bfaa5fee06e55f9358ca8bbe9db5d89
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200 text-sm">

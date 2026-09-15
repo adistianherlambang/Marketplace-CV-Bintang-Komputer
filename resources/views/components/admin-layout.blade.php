@@ -26,12 +26,76 @@
             <!-- Sidebar Backdrop for mobile -->
             <div x-show="sidebarOpen" @click="sidebarOpen = false" class="sidebar-backdrop" x-cloak></div>
             
+<<<<<<< HEAD
             <!-- Sidebar -->
             <aside class="admin-sidebar" :class="{ 'open': sidebarOpen }">
                 <div class="admin-sidebar-header">
                     <a href="{{ route('admin.dashboard') }}" class="brand-logo sidebar-brand-logo">
                         <span>Bintang Jaya</span>
                     </a>
+=======
+            <div class="admin-sidebar-menu">
+                <div class="sidebar-section-title">Menu Utama</div>
+                <a href="{{ route('admin.dashboard') }}" class="sidebar-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                    <i class="fa-solid fa-gauge"></i> Dashboard
+                </a>
+                <a href="{{ route('admin.transactions.create') }}" class="sidebar-link {{ request()->routeIs('admin.transactions.create') ? 'active' : '' }}">
+                    <i class="fa-solid fa-cash-register text-success"></i> POS Kasir
+                </a>
+                <a href="{{ route('admin.transactions.index') }}" class="sidebar-link {{ request()->routeIs('admin.transactions.index') && !request()->routeIs('admin.transactions.create') ? 'active' : '' }}">
+                    <i class="fa-solid fa-file-invoice-dollar"></i> Transaksi / Invoice
+                </a>
+
+                <div class="sidebar-section-title sidebar-section-spacer">Manajemen Data</div>
+                <a href="{{ route('admin.products.index') }}" class="sidebar-link {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-box"></i> Produk
+                </a>
+                <a href="{{ route('admin.categories.index') }}" class="sidebar-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-tags"></i> Kategori
+                </a>
+                <a href="{{ route('admin.brands.index') }}" class="sidebar-link {{ request()->routeIs('admin.brands.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-copyright"></i> Merk / Brand
+                </a>
+                <a href="{{ route('admin.suppliers.index') }}" class="sidebar-link {{ request()->routeIs('admin.suppliers.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-truck-field"></i> Supplier
+                </a>
+
+                <div class="sidebar-section-title sidebar-section-spacer">Logistik & Laporan</div>
+                <a href="{{ route('admin.bookings.index') }}" class="sidebar-link {{ request()->routeIs('admin.bookings.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-cart-shopping" style="color: var(--warning);"></i> Pesanan Produk
+                </a>
+                <a href="{{ route('admin.returns.index') }}" class="sidebar-link {{ request()->routeIs('admin.returns.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-rotate-left"></i> Retur Barang
+                </a>
+                <a href="{{ route('admin.complaints.index') }}" class="sidebar-link {{ request()->routeIs('admin.complaints.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-comments"></i> Komplain Pelanggan
+                </a>
+                <a href="{{ route('admin.reports.index') }}" class="sidebar-link {{ request()->routeIs('admin.reports.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-file-lines"></i> Laporan Bulanan
+                </a>
+            </div>
+            
+            <div class="admin-sidebar-footer">
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-danger invoice-btn-full button">
+                        Logout Admin
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+        <!-- Main Panel -->
+        <main class="admin-main">
+            <header class="admin-navbar">
+                <div class="flex items-center gap-4">
+                    <button type="button" @click="sidebarOpen = !sidebarOpen" class="sidebar-toggle-btn">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <h2 class="font-bold navbar-title">
+                        @yield('header_title', 'Admin Panel')
+                    </h2>
+>>>>>>> b4fa47c28bfaa5fee06e55f9358ca8bbe9db5d89
                 </div>
                 
                 <div class="admin-sidebar-menu">
