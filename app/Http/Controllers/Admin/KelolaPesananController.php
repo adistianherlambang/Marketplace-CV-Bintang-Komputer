@@ -45,7 +45,7 @@ class KelolaPesananController extends Controller
         return view('admin.pesanan.index', compact('pesanan', 'counts'));
     }
 
-    public function updateStatus(Request $request, $id)
+    public function updateStatus(Request $request, int|string $id)
     {
         $request->validate([
             'status' => 'required|string',

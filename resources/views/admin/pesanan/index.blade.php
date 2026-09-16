@@ -16,31 +16,41 @@
         </div>
     @endif
 
+    <style>
+        .metric-card-link { padding: 16px; text-decoration: none; border: 1px solid var(--border); transition: all 0.2s ease; }
+        .metric-card-link:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .metric-active-primary { border: 2px solid var(--primary) !important; }
+        .metric-active-warning { border: 2px solid #f59e0b !important; }
+        .metric-active-purple { border: 2px solid #8b5cf6 !important; }
+        .metric-active-success { border: 2px solid var(--success) !important; }
+        .bg-menunggu-alert { background: #fffbeb !important; }
+    </style>
+
     <!-- Status Metric Cards -->
     <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px;">
-        <a href="{{ route('admin.pesanan.index') }}" class="chart-card" style="padding: 16px; text-decoration: none; border: {{ !request('status') ? '2px solid var(--primary)' : '1px solid var(--border)' }};">
+        <a href="{{ route('admin.pesanan.index') }}" class="chart-card metric-card-link {{ !request('status') ? 'metric-active-primary' : '' }}">
             <div class="text-xs text-secondary font-semibold">Semua Pesanan</div>
             <div class="text-xl font-bold text-dark mt-1">{{ $counts['all'] }}</div>
         </a>
-        <a href="{{ route('admin.pesanan.index', ['status' => 'Menunggu Konfirmasi']) }}" class="chart-card" style="padding: 16px; text-decoration: none; border: {{ request('status') === 'Menunggu Konfirmasi' ? '2px solid #f59e0b' : '1px solid var(--border)' }}; background: {{ $counts['menunggu'] > 0 ? '#fffbeb' : 'white' }};">
+        <a href="{{ route('admin.pesanan.index', ['status' => 'Menunggu Konfirmasi']) }}" class="chart-card metric-card-link {{ request('status') === 'Menunggu Konfirmasi' ? 'metric-active-warning' : '' }} {{ $counts['menunggu'] > 0 ? 'bg-menunggu-alert' : '' }}">
             <div class="text-xs font-semibold" style="color: #b45309;">
                 <i class="fa-solid fa-clock mr-1"></i> Menunggu Konfirmasi
             </div>
             <div class="text-xl font-bold mt-1" style="color: #b45309;">{{ $counts['menunggu'] }}</div>
         </a>
-        <a href="{{ route('admin.pesanan.index', ['status' => 'Diproses']) }}" class="chart-card" style="padding: 16px; text-decoration: none; border: {{ request('status') === 'Diproses' ? '2px solid var(--primary)' : '1px solid var(--border)' }};">
+        <a href="{{ route('admin.pesanan.index', ['status' => 'Diproses']) }}" class="chart-card metric-card-link {{ request('status') === 'Diproses' ? 'metric-active-primary' : '' }}">
             <div class="text-xs text-primary font-semibold">
                 <i class="fa-solid fa-box mr-1"></i> Sedang Diproses
             </div>
             <div class="text-xl font-bold text-primary mt-1">{{ $counts['diproses'] }}</div>
         </a>
-        <a href="{{ route('admin.pesanan.index', ['status' => 'Dikirim']) }}" class="chart-card" style="padding: 16px; text-decoration: none; border: {{ request('status') === 'Dikirim' ? '2px solid #8b5cf6' : '1px solid var(--border)' }};">
+        <a href="{{ route('admin.pesanan.index', ['status' => 'Dikirim']) }}" class="chart-card metric-card-link {{ request('status') === 'Dikirim' ? 'metric-active-purple' : '' }}">
             <div class="text-xs font-semibold" style="color: #7c3aed;">
                 <i class="fa-solid fa-motorcycle mr-1"></i> Dikirim (Grab)
             </div>
             <div class="text-xl font-bold mt-1" style="color: #7c3aed;">{{ $counts['dikirim'] }}</div>
         </a>
-        <a href="{{ route('admin.pesanan.index', ['status' => 'Selesai']) }}" class="chart-card" style="padding: 16px; text-decoration: none; border: {{ request('status') === 'Selesai' ? '2px solid var(--success)' : '1px solid var(--border)' }};">
+        <a href="{{ route('admin.pesanan.index', ['status' => 'Selesai']) }}" class="chart-card metric-card-link {{ request('status') === 'Selesai' ? 'metric-active-success' : '' }}">
             <div class="text-xs font-semibold" style="color: #059669;">
                 <i class="fa-solid fa-circle-check mr-1"></i> Selesai
             </div>

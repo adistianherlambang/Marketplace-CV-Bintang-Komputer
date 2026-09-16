@@ -90,7 +90,7 @@ class CheckoutController extends Controller
     /**
      * Kirim Pesan WhatsApp Otomatis ke Admin
      */
-    private function sendWhatsAppNotificationToAdmin($order, $product)
+    private function sendWhatsAppNotificationToAdmin(Order $order, Product $product): void
     {
         $adminPhone = '6281234567890'; 
         

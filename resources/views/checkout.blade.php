@@ -146,7 +146,7 @@
 
     <!-- Script Logika Interaktif Dinamis -->
     <script>
-        const productPrice = {{ $product->price_jual }};
+        const productPrice = Number("{{ $product->price_jual }}");
         const selectKecamatan = document.getElementById('kecamatan_id');
         const selectKelurahan = document.getElementById('kelurahan_id');
         const textOngkir = document.getElementById('text-ongkir');

@@ -27,7 +27,7 @@ class CustomerOrderController extends Controller
         return view('customers.orders.index', compact('pesanan'));
     }
 
-    public function konfirmasiSelesai($id)
+    public function konfirmasiSelesai(int|string $id)
     {
         $userId = Auth::id();
         $order = Order::where('id', $id)

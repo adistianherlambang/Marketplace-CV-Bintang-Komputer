@@ -124,9 +124,14 @@
                 <div class="info-title">Pembayaran &amp; Kasir:</div>
                 <strong>Kasir:</strong> {{ $order->cashier_display_name }}<br>
                 <strong>Status:</strong> 
-                <span style="font-weight: bold; color: {{ in_array(strtolower($order->status), ['selesai', 'lunas']) ? '#10b981' : (strtolower($order->status) === 'batal' ? '#ef4444' : '#f59e0b') }};">
-                    {{ strtoupper($order->status) }}
-                </span><br>
+                @if(in_array(strtolower($order->status), ['selesai', 'lunas']))
+                    <span style="font-weight: bold; color: #10b981;">{{ strtoupper($order->status) }}</span>
+                @elseif(strtolower($order->status) === 'batal')
+                    <span style="font-weight: bold; color: #ef4444;">{{ strtoupper($order->status) }}</span>
+                @else
+                    <span style="font-weight: bold; color: #f59e0b;">{{ strtoupper($order->status) }}</span>
+                @endif
+                <br>
                 <strong>Metode Pembayaran:</strong> {{ $order->payment_method ?? optional($order->payments->first())->payment_method ?? 'Cash' }}
             </td>
         </tr>

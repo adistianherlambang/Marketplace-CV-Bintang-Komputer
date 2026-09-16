@@ -12,7 +12,7 @@ class CustomerComplaintController extends Controller
     /**
      * Tampilkan formulir pengajuan komplain untuk pesanan tertentu
      */
-    public function create($id)
+    public function create(int|string $id)
     {
         $userId = Auth::id();
 
@@ -30,7 +30,7 @@ class CustomerComplaintController extends Controller
     /**
      * Simpan pengajuan komplain dari pelanggan
      */
-    public function store(Request $request, $id)
+    public function store(Request $request, int|string $id)
     {
         $request->validate([
             'complaint_type' => 'required|string',
