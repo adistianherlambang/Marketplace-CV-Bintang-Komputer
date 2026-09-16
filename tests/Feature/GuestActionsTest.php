@@ -17,8 +17,8 @@ class GuestActionsTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected $admin;
-    protected $product;
+    protected User $admin;
+    protected Product $product;
 
     protected function setUp(): void
     {

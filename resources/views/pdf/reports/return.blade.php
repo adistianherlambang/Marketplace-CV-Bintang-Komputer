@@ -11,6 +11,9 @@
         .table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         .table th { background-color: #f8fafc; border-bottom: 1px solid #cbd5e1; padding: 8px 10px; font-weight: bold; text-align: left; }
         .table td { padding: 8px 10px; border-bottom: 1px solid #e2e8f0; }
+        .status-success { font-weight: bold; color: #10b981; }
+        .status-danger { font-weight: bold; color: #ef4444; }
+        .status-warning { font-weight: bold; color: #f59e0b; }
     </style>
 </head>
 <body>
@@ -39,7 +42,7 @@
                     <td>{{ $ret->product->name }}</td>
                     <td style="text-align: center;">{{ $ret->quantity }} pcs</td>
                     <td>{{ $ret->reason }}</td>
-                    <td style="text-align: center; font-weight: bold; color: {{ $ret->status === 'Disetujui' ? '#10b981' : ($ret->status === 'Ditolak' ? '#ef4444' : '#f59e0b') }};">
+                    <td class="{{ $ret->status === 'Disetujui' ? 'status-success' : ($ret->status === 'Ditolak' ? 'status-danger' : 'status-warning') }}" style="text-align: center;">
                         {{ strtoupper($ret->status) }}
                     </td>
                 </tr>

@@ -17,7 +17,7 @@ class AdminPageTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected $admin;
+    protected User $admin;
 
     protected function setUp(): void
     {

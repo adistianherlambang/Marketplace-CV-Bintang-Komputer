@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    protected $stockService;
+    protected StockService $stockService;
 
     public function __construct(StockService $stockService)
     {

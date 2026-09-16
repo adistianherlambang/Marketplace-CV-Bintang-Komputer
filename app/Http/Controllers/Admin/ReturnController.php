@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class ReturnController extends Controller
 {
-    protected $orderService;
+    protected OrderService $orderService;
 
     public function __construct(OrderService $orderService)
     {

@@ -7,7 +7,7 @@ use App\Services\ReportService;
 
 class DashboardController extends Controller
 {
-    protected $reportService;
+    protected ReportService $reportService;
 
     public function __construct(ReportService $reportService)
     {

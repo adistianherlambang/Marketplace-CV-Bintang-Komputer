@@ -14,6 +14,8 @@
         .summary-box { float: right; width: 250px; margin-top: 20px; border-top: 1px solid #cbd5e1; padding-top: 10px; }
         .summary-row { width: 100%; }
         .summary-row td { padding: 3px 0; }
+        .stock-danger { font-weight: bold; color: #ef4444; }
+        .stock-normal { font-weight: bold; color: #000000; }
     </style>
 </head>
 <body>
@@ -45,7 +47,7 @@
                     <td>{{ $product->brand->name }}</td>
                     <td>{{ $product->supplier->name }}</td>
                     <td style="text-align: right;">Rp {{ number_format($product->price_modal, 0, ',', '.') }}</td>
-                    <td style="text-align: center; font-weight: bold; color: {{ $product->stock <= $product->min_stock ? '#ef4444' : '#000000' }};">
+                    <td class="{{ $product->stock <= $product->min_stock ? 'stock-danger' : 'stock-normal' }}" style="text-align: center;">
                         {{ $product->stock }} pcs
                     </td>
                 </tr>

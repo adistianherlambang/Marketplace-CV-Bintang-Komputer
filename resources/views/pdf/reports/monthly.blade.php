@@ -14,6 +14,8 @@
         .summary-box { float: right; width: 250px; margin-top: 20px; border-top: 1px solid #cbd5e1; padding-top: 10px; }
         .summary-row { width: 100%; }
         .summary-row td { padding: 3px 0; }
+        .status-success { font-weight: bold; color: #10b981; }
+        .status-warning { font-weight: bold; color: #f59e0b; }
     </style>
 </head>
 <body>
@@ -44,7 +46,7 @@
                     <td>{{ $order->customer_display_name }}</td>
                     <td>{{ $order->cashier_display_name }}</td>
                     <td style="text-align: center;">
-                        <span style="font-weight: bold; color: {{ in_array($order->status, ['Lunas', 'Selesai']) ? '#10b981' : '#f59e0b' }}">{{ $order->status }}</span>
+                        <span class="{{ in_array($order->status, ['Lunas', 'Selesai']) ? 'status-success' : 'status-warning' }}">{{ $order->status }}</span>
                     </td>
                     <td style="text-align: right; font-weight: bold;">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
                 </tr>
