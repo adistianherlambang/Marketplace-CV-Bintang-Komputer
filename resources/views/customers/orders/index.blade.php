@@ -430,7 +430,7 @@
                             <span class="badge bg-danger-subtle text-danger fw-bold rounded-pill px-2.5 py-1">
                                 <i class="fa-solid fa-receipt me-1"></i> {{ $item->invoice_number }}
                             </span>
-                            <button type="button" class="copy-btn" onclick="copyInvoice('{{ $item->invoice_number }}', this)" title="Salin Invoice">
+                            <button type="button" class="copy-btn" data-invoice="{{ $item->invoice_number }}" onclick="copyInvoice(this.dataset.invoice, this)" title="Salin Invoice">
                                 <i class="fa-regular fa-copy"></i>
                             </button>
                             <span class="text-muted small">
@@ -555,7 +555,7 @@
                                                 </a>
                                             @endif
                                             @if($item->bukti_transfer)
-                                                <button type="button" class="btn btn-outline-secondary btn-sm w-100 fw-bold" style="font-size: 0.75rem;" onclick="openBuktiModal('{{ asset('storage/' . $item->bukti_transfer) }}')">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm w-100 fw-bold" style="font-size: 0.75rem;" data-bukti="{{ asset('storage/' . $item->bukti_transfer) }}" onclick="openBuktiModal(this.dataset.bukti)">
                                                     <i class="fa-solid fa-image me-1"></i> Bukti Transfer
                                                 </button>
                                             @endif
