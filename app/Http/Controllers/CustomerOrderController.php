@@ -20,7 +20,7 @@ class CustomerOrderController extends Controller
                                       ->whereNull('customer_user_id');
                               });
                         })
-                        ->with(['items.product', 'kecamatan', 'kelurahan'])
+                        ->with(['items.product.primaryImage', 'items.product.brand', 'kecamatan', 'kelurahan'])
                         ->latest()
                         ->get();
 

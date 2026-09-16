@@ -12,14 +12,19 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                    <x-nav-link :href="route('catalog.index')" :active="request()->routeIs('catalog.*')">
+                        <i class="fa-solid fa-store me-1.5 text-red-600"></i> {{ __('Katalog Produk') }}
                     </x-nav-link>
 
-                    <!-- Tambahan Menu Riwayat Pesanan (Desktop) -->
-                    <x-nav-link :href="route('customer.orders.index')" :active="request()->routeIs('customer.orders.index')">
-                        {{ __('Riwayat Pesanan') }}
+                    <x-nav-link :href="route('customer.orders.index')" :active="request()->routeIs('customer.orders.*')">
+                        <i class="fa-solid fa-receipt me-1.5 text-red-600"></i> {{ __('Riwayat Pesanan') }}
                     </x-nav-link>
+
+                    @if(Auth::user() && strtolower(trim(Auth::user()->email)) === 'admin@bintangkomputer.com')
+                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
+                            <i class="fa-solid fa-gauge-high me-1.5 text-blue-600"></i> {{ __('Admin Panel') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -72,14 +77,19 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+            <x-responsive-nav-link :href="route('catalog.index')" :active="request()->routeIs('catalog.*')">
+                <i class="fa-solid fa-store me-2 text-red-600"></i> {{ __('Katalog Produk') }}
             </x-responsive-nav-link>
 
-            <!-- Tambahan Menu Riwayat Pesanan (Mobile) -->
-            <x-responsive-nav-link :href="route('customer.orders.index')" :active="request()->routeIs('customer.orders.index')">
-                {{ __('Riwayat Pesanan') }}
+            <x-responsive-nav-link :href="route('customer.orders.index')" :active="request()->routeIs('customer.orders.*')">
+                <i class="fa-solid fa-receipt me-2 text-red-600"></i> {{ __('Riwayat Pesanan') }}
             </x-responsive-nav-link>
+
+            @if(Auth::user() && strtolower(trim(Auth::user()->email)) === 'admin@bintangkomputer.com')
+                <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
+                    <i class="fa-solid fa-gauge-high me-2 text-blue-600"></i> {{ __('Admin Panel') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
