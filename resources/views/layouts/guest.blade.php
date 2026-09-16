@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title ?? 'Katalog - CV Bintang Jaya Komputer' }}</title>
+    <title>{{ $title ?? 'CV Bintang Jaya Komputer' }}</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -14,12 +14,16 @@
 
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold text-primary" href="{{ route('catalog.index') }}">
-                <i class="fa-solid fa-store me-1"></i> Bintang Komputer
+            <a class="navbar-brand fw-bold text-primary d-flex align-items-center gap-2" href="{{ route('catalog.index') }}">
+                <img src="{{ asset('img/logo.png') }}" alt="Logo" style="height: 36px; width: 36px; object-fit: contain; border-radius: 6px;">
+                <span class="text-dark">CV Bintang Jaya Komputer</span>
             </a>
 
             <div class="ms-auto d-flex align-items-center gap-2">
                 @auth
+                    <a href="{{ route('customer.orders.index') }}" class="btn btn-outline-primary btn-sm fw-bold me-1">
+                        <i class="fa-solid fa-box-archive me-1"></i> Riwayat Pesanan
+                    </a>
                     <span class="small text-muted me-2">Halo, <strong>{{ Auth::user()->name }}</strong></span>
                     <form action="{{ route('customer.logout') }}" method="POST" class="d-inline">
                         @csrf
@@ -31,8 +35,8 @@
                     <a href="{{ route('login') }}" class="btn btn-outline-primary btn-sm fw-bold px-3">
                         <i class="fa-solid fa-right-to-bracket me-1"></i> Login
                     </a>
-                    <a href="{{ route('register') }}" class="btn btn-success btn-sm fw-bold px-3 text-white">
-                        <i class="fa-solid fa-user-plus me-1"></i> Daftar
+                    <a href="{{ route('customer.register') }}" class="btn btn-primary btn-sm fw-bold px-3 text-white">
+                        <i class="fa-solid fa-user-plus me-1"></i> Daftar Akun
                     </a>
                 @endauth
             </div>

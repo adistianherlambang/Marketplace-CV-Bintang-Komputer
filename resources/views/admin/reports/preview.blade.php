@@ -59,16 +59,16 @@
                                 <tr>
                                     <td><strong>{{ $order->invoice_number }}</strong></td>
                                     <td>
-                                        <div class="font-semibold mb-1">{{ $order->customer ? $order->customer->name : 'Guest' }}</div>
+                                        <div class="font-semibold mb-1">{{ $order->customer_display_name }}</div>
                                         <ul style="margin: 0; padding-left: 15px; font-size: 11px; color: #475569;">
                                             @foreach ($order->items as $item)
                                                 <li>{{ $item->item_name ?? optional($item->product)->name }} ({{ $item->quantity }}x @ Rp {{ number_format($item->price, 0, ',', '.') }})</li>
                                             @endforeach
                                         </ul>
                                     </td>
-                                    <td>{{ optional($order->user)->name ?? '-' }}</td>
+                                    <td>{{ $order->cashier_display_name }}</td>
                                     <td class="td-center">
-                                        <span class="badge {{ in_array($order->status, ['Lunas', 'Selesai']) ? 'badge-success' : 'badge-warning' }}">{{ $order->status }}</span>
+                                        <span class="badge {{ in_array($order->status, ['Lunas', 'Selesai']) ? 'badge-success' : (in_array($order->status, ['Diproses', 'Dikirim']) ? 'badge-info' : 'badge-warning') }}">{{ $order->status }}</span>
                                     </td>
                                     <td class="preview-td-amount">
                                         Rp {{ number_format($order->total_amount, 0, ',', '.') }}
@@ -111,6 +111,7 @@
                                 <th>No. Invoice</th>
                                 <th>Tanggal</th>
                                 <th>Pelanggan & Rincian Produk</th>
+                                <th>Kasir</th>
                                 <th class="th-center">Status</th>
                                 <th class="th-right">Total Belanja</th>
                             </tr>
@@ -121,15 +122,16 @@
                                     <td><strong>{{ $order->invoice_number }}</strong></td>
                                     <td>{{ $order->created_at->format('d/m/Y') }}</td>
                                     <td>
-                                        <div class="font-semibold mb-1">{{ $order->customer ? $order->customer->name : 'Guest' }}</div>
+                                        <div class="font-semibold mb-1">{{ $order->customer_display_name }}</div>
                                         <ul style="margin: 0; padding-left: 15px; font-size: 11px; color: #475569;">
                                             @foreach ($order->items as $item)
                                                 <li>{{ $item->item_name ?? optional($item->product)->name }} ({{ $item->quantity }}x @ Rp {{ number_format($item->price, 0, ',', '.') }})</li>
                                             @endforeach
                                         </ul>
                                     </td>
+                                    <td>{{ $order->cashier_display_name }}</td>
                                     <td class="td-center">
-                                        <span class="badge {{ in_array($order->status, ['Lunas', 'Selesai']) ? 'badge-success' : 'badge-warning' }}">{{ $order->status }}</span>
+                                        <span class="badge {{ in_array($order->status, ['Lunas', 'Selesai']) ? 'badge-success' : (in_array($order->status, ['Diproses', 'Dikirim']) ? 'badge-info' : 'badge-warning') }}">{{ $order->status }}</span>
                                     </td>
                                     <td class="preview-td-amount">
                                         Rp {{ number_format($order->total_amount, 0, ',', '.') }}
@@ -137,7 +139,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="td-empty">Tidak ada transaksi pada bulan ini.</td>
+                                    <td colspan="6" class="td-empty">Tidak ada transaksi pada bulan ini.</td>
                                 </tr>
                             @endforelse
                         </tbody>

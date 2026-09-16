@@ -52,16 +52,16 @@
 
     <!-- Header Store Info -->
     <div class="text-center">
-        <div class="header-logo">BINTANG JAYA KOMPUTER</div>
+        <div class="header-logo">CV. BINTANG JAYA KOMPUTER</div>
         <div style="font-size: 7.5px; margin-top: 2px;">
-            Jl. Ahmad Yani No.68, Iringmulyo, Metro<br>
+            Jl. Ahmad Yani No.68, Iringmulyo, Metro, Lampung<br>
             Telp: (0725) 45678
         </div>
     </div>
 
     <div class="divider"></div>
 
-    <!-- Metadata Block (Otomatis menyesuaikan Online atau POS Kasir) -->
+    <!-- Metadata Block -->
     <table class="meta-table">
         <tr>
             <td>No: {{ $order->invoice_number }}</td>
@@ -69,25 +69,22 @@
         </tr>
         <tr>
             <td>Status: {{ strtoupper($order->status) }}</td>
-            <td class="text-right">Kasir: {{ optional($order->user)->name ? Str::limit($order->user->name, 10) : 'Online' }}</td>
+            <td class="text-right">Kasir: {{ $order->cashier_display_name }}</td>
         </tr>
         <tr>
             <td colspan="2">
-                Pelanggan/Penerima: 
-                @if(!empty($order->customer_name))
-                    {{ $order->customer_name }} ({{ $order->customer_phone }})
-                @else
-                    {{ optional($order->customer)->name ?? 'Guest' }}
-                @endif
+                Pelanggan: {{ $order->customer_display_name }}
+                @if(!empty($order->customer_phone)) ({{ $order->customer_phone }}) @endif
             </td>
         </tr>
-        <!-- Informasi Jasa Kirim / Kurir -->
         <tr>
-            <td colspan="2"><strong>Kurir/Jasa Kirim:</strong> {{ strtoupper($order->shipping_method ?? 'POS / Toko Offline') }}</td>
+            <td colspan="2">
+                Kurir: {{ $order->shipping_cost > 0 || !empty($order->shareloc_link) ? 'GrabExpress Instant' : 'POS / Ambil di Toko' }}
+            </td>
         </tr>
-        @if(!empty($order->kecamatan_id))
+        @if(!empty($order->kecamatan_id) || !empty($order->kelurahan_id))
         <tr>
-            <td colspan="2">Kec/Kel: {{ optional($order->kecamatan)->nama_kecamatan }} / {{ optional($order->kelurahan)->nama_kelurahan }}</td>
+            <td colspan="2">Tujuan: Kec. {{ optional($order->kecamatan)->nama_kecamatan }} / Kel. {{ optional($order->kelurahan)->nama_kelurahan }}</td>
         </tr>
         @endif
     </table>
@@ -114,7 +111,7 @@
     <table class="total-table">
         @if($order->shipping_cost > 0)
         <tr>
-            <td style="font-size: 8px; font-weight: normal;">Ongkir:</td>
+            <td style="font-size: 8px; font-weight: normal;">Ongkir Grab:</td>
             <td class="text-right" style="font-size: 8px; font-weight: normal;">Rp {{ number_format($order->shipping_cost, 0, ',', '.') }}</td>
         </tr>
         @endif
@@ -134,7 +131,7 @@
     <div class="text-center" style="font-size: 8px; margin-top: 10px;">
         Terima Kasih Atas Kunjungan Anda<br>
         Barang Yang Sudah Dibeli<br>
-        Tidak Dapat Ditukar/Dikembalikan
+        Tidak Dapat Ditukar/Dikembalikan Tanpa Nota Resmi
     </div>
 
 </body>

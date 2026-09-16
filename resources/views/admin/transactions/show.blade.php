@@ -112,17 +112,25 @@
 
                     <div>
                         <div class="text-xs text-secondary mb-1">Pelanggan:</div>
-                        <div class="font-bold">{{ $order->customer ? $order->customer->name : 'Guest (Walk-in)' }}</div>
-                        @if ($order->customer)
+                        <div class="font-bold">{{ $order->customer_display_name }}</div>
+                        @if ($order->customer_phone)
+                            <div class="text-xs text-secondary">{{ $order->customer_phone }}</div>
+                        @elseif ($order->customer && $order->customer->phone)
                             <div class="text-xs text-secondary">{{ $order->customer->phone }}</div>
+                        @endif
+                        @if ($order->customer && $order->customer->address)
                             <div class="text-xs text-secondary">{{ $order->customer->address }}</div>
+                        @elseif ($order->kecamatan || $order->kelurahan)
+                            <div class="text-xs text-secondary">Kec. {{ optional($order->kecamatan)->nama_kecamatan }}, Kel. {{ optional($order->kelurahan)->nama_kelurahan }}</div>
                         @endif
                     </div>
 
                     <div>
-                        <div class="text-xs text-secondary mb-1">Kasir Pembuat:</div>
-                        <div class="font-bold">{{ $order->user->name }}</div>
-                        <div class="text-xs text-secondary">{{ $order->user->email }}</div>
+                        <div class="text-xs text-secondary mb-1">Kasir / Saluran:</div>
+                        <div class="font-bold">{{ $order->cashier_display_name }}</div>
+                        @if ($order->user && $order->user_id !== $order->customer_user_id)
+                            <div class="text-xs text-secondary">{{ $order->user->email }}</div>
+                        @endif
                     </div>
 
                     <div>

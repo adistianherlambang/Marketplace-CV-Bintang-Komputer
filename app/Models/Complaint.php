@@ -11,9 +11,15 @@ class Complaint extends Model
 
     protected $fillable = [
         'order_id',
+        'customer_id',
         'customer_name',
+        'customer_phone',
         'contact',
+        'complaint_type',
+        'description',
         'complaint_text',
+        'nota_bukti',
+        'product_bukti',
         'status',
         'date',
     ];
@@ -25,5 +31,10 @@ class Complaint extends Model
     public function order()
     {
         return $this->belongsTo(Order::class);
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(User::class, 'customer_id');
     }
 }

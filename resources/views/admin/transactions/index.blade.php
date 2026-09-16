@@ -67,11 +67,11 @@
                             </td>
                             <td>{{ $order->created_at->format('d M Y H:i') }}</td>
                             <td>
-                                @if ($order->customer)
-                                    <strong>{{ $order->customer->name }}</strong>
-                                    <div class="text-xs text-secondary">{{ $order->customer->phone ?: 'No phone' }}</div>
-                                @else
-                                    <span class="text-secondary font-semibold">Guest (Walk-in)</span>
+                                <strong>{{ $order->customer_display_name }}</strong>
+                                @if ($order->customer_phone)
+                                    <div class="text-xs text-secondary">{{ $order->customer_phone }}</div>
+                                @elseif ($order->customer && $order->customer->phone)
+                                    <div class="text-xs text-secondary">{{ $order->customer->phone }}</div>
                                 @endif
                             </td>
                             <td class="font-bold text-primary">
@@ -80,15 +80,15 @@
                             <td class="td-center">
                                 @if (in_array($order->status, ['Lunas', 'Seli', 'Selesai']))
                                     <span class="badge badge-success">{{ ucfirst($order->status) }}</span>
-                                @elseif ($order->status === 'Belum Dibayar')
-                                    <span class="badge badge-warning">Belum Bayar</span>
+                                @elseif (in_array($order->status, ['Belum Dibayar', 'Menunggu Konfirmasi']))
+                                    <span class="badge badge-warning">{{ $order->status }}</span>
                                 @elseif (in_array($order->status, ['Dibatalkan', 'Batal']))
                                     <span class="badge badge-danger">Batal</span>
                                 @else
                                     <span class="badge badge-secondary">{{ ucfirst($order->status) }}</span>
                                 @endif
                             </td>
-                            <td>{{ optional($order->user)->name ?? '-' }}</td>
+                            <td>{{ $order->cashier_display_name }}</td>
                             <td class="td-center">
                                 <div class="flex justify-center gap-2">
                                     <a href="{{ route('admin.transactions.show', $order->id) }}" class="btn btn-secondary btn-sm" title="Detail">

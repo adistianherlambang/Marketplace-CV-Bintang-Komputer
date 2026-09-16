@@ -28,11 +28,12 @@
     <table class="table">
         <thead>
             <tr>
-                <th style="width: 25%;">No. Invoice</th>
-                <th style="width: 20%;">Tanggal</th>
-                <th style="width: 30%;">Pelanggan</th>
+                <th style="width: 22%;">No. Invoice</th>
+                <th style="width: 15%;">Tanggal</th>
+                <th style="width: 25%;">Pelanggan</th>
+                <th style="width: 15%;">Kasir</th>
                 <th style="width: 10%; text-align: center;">Status</th>
-                <th style="width: 15%; text-align: right;">Total</th>
+                <th style="width: 13%; text-align: right;">Total</th>
             </tr>
         </thead>
         <tbody>
@@ -40,15 +41,16 @@
                 <tr>
                     <td><strong>{{ $order->invoice_number }}</strong></td>
                     <td>{{ $order->created_at->format('d/m/Y') }}</td>
-                    <td>{{ $order->customer ? $order->customer->name : 'Guest' }}</td>
+                    <td>{{ $order->customer_display_name }}</td>
+                    <td>{{ $order->cashier_display_name }}</td>
                     <td style="text-align: center;">
-                        <span style="font-weight: bold; color: {{ $order->status === 'Lunas' ? '#10b981' : '#f59e0b' }}">{{ $order->status }}</span>
+                        <span style="font-weight: bold; color: {{ in_array($order->status, ['Lunas', 'Selesai']) ? '#10b981' : '#f59e0b' }}">{{ $order->status }}</span>
                     </td>
                     <td style="text-align: right; font-weight: bold;">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5" style="text-align: center; padding: 20px; color: #64748b;">Tidak ada data transaksi.</td>
+                    <td colspan="6" style="text-align: center; padding: 20px; color: #64748b;">Tidak ada data transaksi.</td>
                 </tr>
             @endforelse
         </tbody>

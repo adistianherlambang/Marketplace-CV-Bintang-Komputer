@@ -377,5 +377,11 @@ class DatabaseSeeder extends Seeder
                 'date' => now()->subDays(1),
             ]);
         }
+
+        // 10. Additional Products and Metro Districts
+        $this->call([
+            MoreProductsSeeder::class,
+            WilayahMetroSeeder::class,
+        ]);
     }
 }

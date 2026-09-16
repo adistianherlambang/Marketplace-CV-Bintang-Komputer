@@ -39,10 +39,10 @@
             @forelse ($data['orders'] as $order)
                 <tr>
                     <td><strong>{{ $order->invoice_number }}</strong></td>
-                    <td>{{ $order->customer ? $order->customer->name : 'Guest' }}</td>
-                    <td>{{ $order->user->name }}</td>
+                    <td>{{ $order->customer_display_name }}</td>
+                    <td>{{ $order->cashier_display_name }}</td>
                     <td style="text-align: center;">
-                        <span style="font-weight: bold; color: {{ $order->status === 'Lunas' ? '#10b981' : '#f59e0b' }}">{{ $order->status }}</span>
+                        <span style="font-weight: bold; color: {{ in_array($order->status, ['Lunas', 'Selesai']) ? '#10b981' : '#f59e0b' }}">{{ $order->status }}</span>
                     </td>
                     <td style="text-align: right; font-weight: bold;">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
                 </tr>

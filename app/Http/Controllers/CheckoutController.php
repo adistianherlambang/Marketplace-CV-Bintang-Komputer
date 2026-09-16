@@ -54,9 +54,11 @@ class CheckoutController extends Controller
         // 1. Buat Header Order
         // user_id dikosongkan (null) untuk order online dari customer, 
         // agar tidak keliru tercatat sebagai kasir/admin.
+        // customer_user_id mencatat akun pelanggan yang sedang login.
         $order = Order::create([
             'invoice_number' => 'INV/' . date('Ymd') . '/' . sprintf('%04d', rand(1, 9999)),
             'user_id' => null, 
+            'customer_user_id' => Auth::id(),
             'customer_name' => $request->customer_name,
             'customer_phone' => $request->customer_phone,
             'status' => $statusPesanan,

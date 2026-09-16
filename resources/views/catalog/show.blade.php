@@ -39,11 +39,6 @@
 
             <!-- Right Pane: Product Details -->
             <div class="flex flex-col">
-                <div class="product-meta product-info-meta">
-                    <span>{{ $product->category->name }}</span>
-                    <span>{{ $product->brand->name }}</span>
-                </div>
-
                 <h1 class="font-bold product-detail-title">{{ $product->name }}</h1>
                 
                 <div class="product-sku-row">
@@ -62,80 +57,18 @@
                     Rp {{ number_format($product->price_jual, 0, ',', '.') }}
                 </div>
 
-<<<<<<< HEAD
-                <!-- TOMBOL CHECKOUT & PENGIRIMAN GRABEXPRESS (TAMBAHAN BARU) -->
-                <div class="mt-4 mb-4">
+                <!-- TOMBOL CHECKOUT & PENGIRIMAN GRABEXPRESS -->
+                <div style="margin: 24px 0;">
                     @if ($product->stock > 0)
-                        <a href="{{ route('checkout.index', ['product_id' => $product->id]) }}" class="btn btn-success w-100 py-3 text-center fw-bold" style="background-color: #198754; color: white; display: block; border-radius: 8px; text-decoration: none;">
-                            <i class="fa-solid fa-motorcycle"></i> Lanjut ke Checkout & Pengiriman GrabExpress
+                        <a href="{{ route('checkout.index', ['product_id' => $product->id]) }}" class="btn btn-primary btn-booking" style="width: 100%; max-width: 360px; font-weight: 700; padding: 14px 28px; font-size: 1.05rem; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: var(--shadow-md); border: none; cursor: pointer; background-color: var(--primary); color: white;">
+                            <i class="fa-solid fa-motorcycle"></i> Beli Sekarang &amp; Kirim GrabExpress
                         </a>
                     @else
-                        <button class="btn btn-secondary w-100 py-3 fw-bold" disabled style="background-color: #6c757d; color: white; border-radius: 8px; border: none; width: 100%;">
-                            Stok Habis (Tidak Dapat Dibeli)
+                        <button class="btn btn-secondary" disabled style="width: 100%; max-width: 360px; padding: 14px 28px; font-weight: 700; font-size: 1rem; border-radius: var(--radius); background-color: var(--secondary); color: white; border: none; cursor: not-allowed;">
+                            <i class="fa-solid fa-ban mr-1"></i> Stok Habis (Tidak Dapat Dibeli)
                         </button>
                     @endif
-=======
-                <div x-data="{ open: false }" style="margin-bottom: 24px;">
-                    <button type="button" @click="open = true" class="btn btn-primary btn-booking" style="width: 100%; max-width: 320px; font-weight: 700; padding: 14px 28px; font-size: 1.05rem; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: var(--shadow-md); border: none; cursor: pointer;">
-                        <i class="fa-solid fa-cart-shopping"></i> Pesan Sekarang
-                    </button>
-
-                    <!-- Popup Modal Backdrop -->
-                    <div class="modal-backdrop" :class="{ 'show': open }" @click="open = false" style="z-index: 99999; backdrop-filter: blur(6px); background: rgba(15, 23, 42, 0.6);">
-                        
-                        <!-- Modal Container -->
-                        <div class="modal" @click.stop style="max-width: 480px; padding: 32px; position: relative; max-height: 90vh; overflow-y: auto;">
-                            
-                            <!-- Close Button -->
-                            <button type="button" @click="open = false" style="position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 1.25rem; cursor: pointer; color: var(--secondary); display: flex; align-items: center; justify-content: center; transition: var(--transition);">
-                                <i class="fa-solid fa-xmark"></i>
-                            </button>
-                            
-                            <!-- Modal Header -->
-                            <div style="margin-bottom: 24px;">
-                                <h3 class="font-bold" style="font-size: 1.35rem; color: var(--dark); margin-bottom: 4px;">Pesan Produk</h3>
-                                <p style="font-size: 0.875rem; color: var(--secondary); line-height: 1.4;">Silakan isi formulir di bawah ini untuk memesan <strong>{{ $product->name }}</strong>.</p>
-                            </div>
-                            
-                            <!-- Form -->
-                            <form method="POST" action="{{ route('catalog.book', $product->id) }}">
-                                @csrf
-                                
-                                <div style="display: flex; flex-direction: column; gap: 16px;">
-                                    <!-- Full Name -->
-                                    <div class="form-group" style="text-align: left; display: flex; flex-direction: column; gap: 6px;">
-                                        <label class="form-label font-semibold" style="font-size: 0.85rem; color: var(--dark);">Nama Lengkap</label>
-                                        <input type="text" name="customer_name" class="form-control" style="width: 100%; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); font-size: 0.925rem; outline: none; transition: var(--transition);" required placeholder="Masukkan nama lengkap Anda">
-                                    </div>
-                                    
-                                    <!-- Phone Number -->
-                                    <div class="form-group" style="text-align: left; display: flex; flex-direction: column; gap: 6px;">
-                                        <label class="form-label font-semibold" style="font-size: 0.85rem; color: var(--dark);">No. Telepon / WhatsApp</label>
-                                        <input type="text" name="customer_phone" class="form-control" style="width: 100%; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); font-size: 0.925rem; outline: none; transition: var(--transition);" required placeholder="Contoh: 0812XXXXXXXX">
-                                    </div>
-                                    
-                                    <!-- Date & Time of Pickup -->
-                                    <div class="form-group" style="text-align: left; display: flex; flex-direction: column; gap: 6px;">
-                                        <label class="form-label font-semibold" style="font-size: 0.85rem; color: var(--dark);">Tanggal & Jam Pengambilan</label>
-                                        <input type="datetime-local" name="pickup_time" class="form-control" style="width: 100%; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); font-size: 0.925rem; outline: none; transition: var(--transition);" required min="{{ date('Y-m-d\TH:i') }}">
-                                    </div>
-                                    
-                                    <!-- Additional Notes -->
-                                    <div class="form-group" style="text-align: left; display: flex; flex-direction: column; gap: 6px;">
-                                        <label class="form-label font-semibold" style="font-size: 0.85rem; color: var(--dark);">Catatan Tambahan (Opsional)</label>
-                                        <textarea name="notes" class="form-control" rows="3" style="width: 100%; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); font-size: 0.925rem; outline: none; transition: var(--transition); resize: vertical;" placeholder="Contoh: warna produk, kelengkapan tambahan..."></textarea>
-                                    </div>
-                                </div>
-                                
-                                <!-- Form Actions -->
-                                <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 28px; border-top: 1px solid var(--border); padding-top: 20px;">
-                                    <button type="button" @click="open = false" class="btn btn-secondary" style="padding: 10px 20px; font-weight: 600; font-size: 0.9rem; border-radius: var(--radius-sm); cursor: pointer;">Batal</button>
-                                    <button type="submit" class="btn btn-primary" style="padding: 10px 20px; font-weight: 600; font-size: 0.9rem; border-radius: var(--radius-sm); cursor: pointer; border: none;">Kirim Pesanan</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
->>>>>>> b4fa47c28bfaa5fee06e55f9358ca8bbe9db5d89
+                </div>
                 </div>
 
                 <!-- Tabs/Accordions for description & specs -->

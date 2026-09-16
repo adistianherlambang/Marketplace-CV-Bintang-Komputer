@@ -71,16 +71,21 @@
                                 </td>
                                 <td style="text-align: center; font-weight: 600;">{{ $rep->total_transactions }} trx</td>
                                 <td style="text-align: center;">
-                                    <a href="{{ route('admin.reports.download', ['type' => 'monthly', 'param' => $rep->report_month]) }}" class="btn btn-secondary btn-sm" style="padding: 4px 8px; font-size: 0.75rem;">
-                                        <i class="fa-solid fa-file-arrow-down"></i> PDF
-                                    </a>
+                                    <div style="display: inline-flex; gap: 4px; justify-content: center;">
+                                        <a href="{{ route('admin.reports.preview', ['type' => 'monthly', 'month' => $rep->report_month]) }}" target="_blank" class="btn btn-secondary btn-sm" style="padding: 4px 8px; font-size: 0.75rem;" title="Lihat Transaksi">
+                                            <i class="fa-solid fa-eye text-primary"></i> Preview
+                                        </a>
+                                        <a href="{{ route('admin.reports.download', ['type' => 'monthly', 'param' => $rep->report_month]) }}" class="btn btn-primary btn-sm" style="padding: 4px 8px; font-size: 0.75rem;" title="Download PDF">
+                                            <i class="fa-solid fa-file-arrow-down"></i> PDF
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
                                 <td colspan="5" style="text-align: center; padding: 40px; color: var(--secondary);">
                                     <i class="fa-solid fa-folder-open" style="font-size: 2.5rem; margin-bottom: 12px; opacity: 0.5;"></i>
-                                    <p>Belum ada arsap bulanan yang tercatat. Download rekap bulanan di sebelah kiri untuk menambah arsip.</p>
+                                    <p>Belum ada transaksi pada periode ini.</p>
                                 </td>
                             </tr>
                         @endforelse

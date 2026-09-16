@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\MonthlyReport;
+use App\Models\Order;
 use App\Services\ReportService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
@@ -19,6 +21,38 @@ class ReportController extends Controller
 
     public function index()
     {
+        // Auto-synchronize monthly reports so any month containing order transactions appears in the archive
+        try {
+            $driver = DB::connection()->getDriverName();
+            $monthExpr = $driver === 'sqlite' ? "strftime('%Y-%m', created_at)" : "DATE_FORMAT(created_at, '%Y-%m')";
+
+            $orderMonths = Order::selectRaw("
+                {$monthExpr} as report_month,
+                SUM(CASE WHEN status IN ('Lunas', 'Selesai', 'Diproses', 'Dikirim') THEN total_amount ELSE 0 END) as total_sales,
+                COUNT(*) as total_transactions
+            ")
+            ->whereNotNull('created_at')
+            ->groupBy('report_month')
+            ->orderByDesc('report_month')
+            ->get();
+
+            foreach ($orderMonths as $om) {
+                if ($om->report_month) {
+                    MonthlyReport::updateOrCreate(
+                        ['report_month' => $om->report_month],
+                        [
+                            'total_sales' => $om->total_sales ?? 0,
+                            'total_earnings' => ($om->total_sales ?? 0) * 0.20,
+                            'total_transactions' => $om->total_transactions ?? 0,
+                            'generated_at' => now(),
+                        ]
+                    );
+                }
+            }
+        } catch (\Throwable $e) {
+            // Gracefully ignore if database driver or permissions issue
+        }
+
         $monthlyReports = MonthlyReport::orderBy('report_month', 'desc')->get();
         return view('admin.reports.index', compact('monthlyReports'));
     }

@@ -61,7 +61,7 @@
         }
         .total-box {
             float: right;
-            width: 250px;
+            width: 270px;
         }
         .total-row {
             width: 100%;
@@ -112,23 +112,22 @@
         <tr>
             <td style="width: 50%; vertical-align: top; padding-right: 20px;">
                 <div class="info-title">Pelanggan / Pembeli:</div>
-                @if ($order->customer)
-                    <strong>{{ $order->customer->name }}</strong><br>
-                    Telp: {{ $order->customer->phone ?: '-' }}<br>
-                    Alamat: {{ $order->customer->address ?: '-' }}
-                @else
-                    <strong>Guest / Walk-in Customer</strong><br>
-                    Toko Retail Offline Bintang Jaya Komputer
+                <strong>{{ $order->customer_display_name }}</strong><br>
+                Telp: {{ $order->customer_phone ?? optional($order->customer)->phone ?? '-' }}<br>
+                @if($order->customer && $order->customer->address)
+                    Alamat: {{ $order->customer->address }}<br>
+                @elseif($order->kecamatan || $order->kelurahan)
+                    Alamat: Kec. {{ optional($order->kecamatan)->nama_kecamatan }}, Kel. {{ optional($order->kelurahan)->nama_kelurahan }}<br>
                 @endif
             </td>
             <td style="width: 50%; vertical-align: top; padding-left: 20px;">
-                <div class="info-title">Pembayaran & Kasir:</div>
-                <strong>Kasir:</strong> {{ optional($order->user)->name ?? '-' }}<br>
+                <div class="info-title">Pembayaran &amp; Kasir:</div>
+                <strong>Kasir:</strong> {{ $order->cashier_display_name }}<br>
                 <strong>Status:</strong> 
                 <span style="font-weight: bold; color: {{ in_array(strtolower($order->status), ['selesai', 'lunas']) ? '#10b981' : (strtolower($order->status) === 'batal' ? '#ef4444' : '#f59e0b') }};">
                     {{ strtoupper($order->status) }}
                 </span><br>
-                <strong>Metode Pembayaran:</strong> {{ optional($order->payments->first())->payment_method ?? 'Cash' }}
+                <strong>Metode Pembayaran:</strong> {{ $order->payment_method ?? optional($order->payments->first())->payment_method ?? 'Cash' }}
             </td>
         </tr>
     </table>
@@ -138,7 +137,7 @@
         <thead>
             <tr>
                 <th>Produk</th>
-                <th style="text-align: right;">Harga</th>
+                <th style="text-align: right;">Harga Satuan</th>
                 <th style="text-align: center;">Qty</th>
                 <th style="text-align: right;">Subtotal</th>
             </tr>
@@ -163,14 +162,21 @@
     <!-- Total Calculations -->
     <div class="total-box">
         <table style="width: 100%;">
-            <tr class="total-row">
-                <td style="color: #64748b;">Subtotal Belanja:</td>
-                <td style="text-align: right;">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
-            </tr>
-            <tr class="total-row">
-                <td style="color: #64748b;">Pajak / PPN (0%):</td>
-                <td style="text-align: right;">Rp 0</td>
-            </tr>
+            @if($order->shipping_cost > 0)
+                <tr class="total-row">
+                    <td style="color: #64748b;">Subtotal Barang:</td>
+                    <td style="text-align: right;">Rp {{ number_format($order->total_amount - $order->shipping_cost, 0, ',', '.') }}</td>
+                </tr>
+                <tr class="total-row">
+                    <td style="color: #64748b;">Ongkos Kirim Grab:</td>
+                    <td style="text-align: right;">Rp {{ number_format($order->shipping_cost, 0, ',', '.') }}</td>
+                </tr>
+            @else
+                <tr class="total-row">
+                    <td style="color: #64748b;">Subtotal Belanja:</td>
+                    <td style="text-align: right;">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
+                </tr>
+            @endif
             <tr class="total-row total-final">
                 <td style="font-weight: bold;">Total Bayar:</td>
                 <td style="text-align: right; font-weight: bold;">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
@@ -180,7 +186,7 @@
 
     @if ($order->notes)
         <div style="margin-top: 40px; width: 60%; background-color: #f8fafc; padding: 10px; border-radius: 4px; border: 1px solid #e2e8f0;">
-            <strong style="font-size: 9px; color: #475569;">Catatan / Syarat Ketentuan:</strong>
+            <strong style="font-size: 9px; color: #475569;">Catatan Transaksi:</strong>
             <div style="font-size: 8.5px; color: #64748b; margin-top: 3px;">{{ $order->notes }}</div>
         </div>
     @endif

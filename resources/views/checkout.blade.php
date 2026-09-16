@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout Pesanan - Bintang Komputer</title>
+    <title>Checkout Pesanan - CV Bintang Jaya Komputer</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -11,10 +11,16 @@
     <div class="container py-5">
         <div class="row mb-4">
             <div class="col-12">
-                <a href="{{ route('catalog.index') }}" class="text-decoration-none text-dark fw-bold">
+                <a href="{{ route('catalog.index') }}" class="text-decoration-none text-dark fw-bold d-inline-flex align-items-center gap-2">
                     <i class="fa-solid fa-arrow-left"></i> Kembali ke Katalog
                 </a>
-                <h2 class="mt-3 fw-bold">Checkout Pengiriman</h2>
+                <div class="d-flex align-items-center gap-3 mt-3">
+                    <img src="{{ asset('img/logo.png') }}" alt="Logo" style="height: 48px; width: 48px; object-fit: contain; border-radius: 10px;">
+                    <div>
+                        <h2 class="fw-bold mb-0">Checkout Pengiriman</h2>
+                        <span class="text-muted small">CV Bintang Jaya Komputer</span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -30,7 +36,7 @@
                         
                         <div class="mb-3">
                             <label class="form-label fw-bold">Nama Lengkap</label>
-                            <input type="text" name="customer_name" class="form-control" placeholder="Masukkan nama lengkap Anda" required>
+                            <input type="text" name="customer_name" class="form-control" value="{{ old('customer_name', Auth::check() ? Auth::user()->name : '') }}" placeholder="Masukkan nama lengkap Anda" required>
                         </div>
 
                         <div class="mb-3">

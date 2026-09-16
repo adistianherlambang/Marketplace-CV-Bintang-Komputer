@@ -109,11 +109,12 @@ class ReportService
      */
     public function getDailyReportData(string $date): array
     {
-        $orders = Order::with(['customer', 'user', 'items.product'])
+        $orders = Order::with(['customer', 'customerUser', 'user', 'items.product'])
             ->whereDate('created_at', $date)
+            ->orderByDesc('created_at')
             ->get();
 
-        $totalSales = $orders->whereIn('status', ['Lunas', 'Selesai'])->sum('total_amount');
+        $totalSales = $orders->whereIn('status', ['Lunas', 'Selesai', 'Diproses', 'Dikirim'])->sum('total_amount');
         $totalTransactions = $orders->count();
 
         return [
@@ -132,11 +133,12 @@ class ReportService
         $startOfMonth = Carbon::parse($yearMonth . '-01')->startOfMonth();
         $endOfMonth = Carbon::parse($yearMonth . '-01')->endOfMonth();
 
-        $orders = Order::with(['customer', 'user', 'items.product'])
+        $orders = Order::with(['customer', 'customerUser', 'user', 'items.product'])
             ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
+            ->orderByDesc('created_at')
             ->get();
 
-        $totalSales = $orders->whereIn('status', ['Lunas', 'Selesai'])->sum('total_amount');
+        $totalSales = $orders->whereIn('status', ['Lunas', 'Selesai', 'Diproses', 'Dikirim'])->sum('total_amount');
         $totalTransactions = $orders->count();
 
         return [
