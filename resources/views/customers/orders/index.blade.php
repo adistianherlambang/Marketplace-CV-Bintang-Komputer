@@ -4,7 +4,7 @@
             <h2 class="font-bold text-xl text-gray-800 leading-tight">
                 {{ __('Riwayat & Pelacakan Pesanan Saya') }}
             </h2>
-            <a href="{{ route('catalog.index') }}" class="text-sm font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1">
+            <a href="{{ route('catalog.index') }}" class="text-sm font-semibold text-red-600 hover:text-red-700 flex items-center gap-1 transition">
                 <i class="fa-solid fa-cart-shopping"></i> Belanja Lagi di Katalog
             </a>
         </div>
@@ -34,9 +34,9 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-100">
                             @forelse($pesanan as $item)
-                            <tr class="hover:bg-gray-50/70 transition">
+                            <tr class="hover:bg-red-50/20 transition">
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="font-bold text-blue-600 text-sm block">{{ $item->invoice_number }}</span>
+                                    <span class="font-bold text-red-600 text-sm block">{{ $item->invoice_number }}</span>
                                     <small class="text-gray-400 text-xs">{{ $item->created_at->format('d/m/Y H:i') }} WIB</small>
                                 </td>
                                 <td class="px-6 py-4">
@@ -45,7 +45,7 @@
                                             {{ $orderItem->item_name }} <span class="text-xs font-normal text-gray-500">({{ $orderItem->quantity }}x @ Rp {{ number_format($orderItem->price, 0, ',', '.') }})</span>
                                         </div>
                                     @endforeach
-                                    <div class="font-extrabold text-blue-700 text-sm mt-1">
+                                    <div class="font-extrabold text-red-600 text-sm mt-1">
                                         Total: Rp {{ number_format($item->total_amount, 0, ',', '.') }}
                                         @if($item->shipping_cost > 0)
                                             <span class="text-xs text-gray-400 font-normal">(Termasuk Ongkir Rp {{ number_format($item->shipping_cost, 0, ',', '.') }})</span>
@@ -60,23 +60,23 @@
                                         $st = strtolower(trim($item->status));
                                     @endphp
                                     @if($st === 'selesai' || $st === 'lunas')
-                                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-green-100 text-green-800">
-                                            <i class="fa-solid fa-circle-check mr-1 mt-0.5"></i> Selesai
+                                        <span class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600">
+                                            <i class="fa-solid fa-circle-check"></i> Selesai
                                         </span>
                                     @elseif($st === 'dikirim')
-                                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-purple-100 text-purple-800">
-                                            <i class="fa-solid fa-motorcycle mr-1 mt-0.5"></i> Dalam Pengiriman
+                                        <span class="inline-flex items-center gap-1.5 text-xs font-bold text-red-600">
+                                            <i class="fa-solid fa-motorcycle"></i> Dalam Pengiriman
                                         </span>
                                     @elseif($st === 'diproses')
-                                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-blue-100 text-blue-800">
-                                            <i class="fa-solid fa-box mr-1 mt-0.5"></i> Sedang Diproses
+                                        <span class="inline-flex items-center gap-1.5 text-xs font-bold text-amber-600">
+                                            <i class="fa-solid fa-box"></i> Sedang Diproses
                                         </span>
                                     @elseif($st === 'menunggu konfirmasi')
-                                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-amber-100 text-amber-800">
-                                            <i class="fa-solid fa-clock mr-1 mt-0.5"></i> Menunggu Konfirmasi
+                                        <span class="inline-flex items-center gap-1.5 text-xs font-bold text-red-500">
+                                            <i class="fa-solid fa-clock"></i> Menunggu Konfirmasi
                                         </span>
                                     @else
-                                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-gray-100 text-gray-800">
+                                        <span class="inline-flex items-center gap-1.5 text-xs font-bold text-gray-600">
                                             {{ $item->status }}
                                         </span>
                                     @endif
@@ -84,13 +84,13 @@
                                 <td class="px-6 py-4 text-xs text-gray-600">
                                     <div class="font-medium text-gray-800">Kec. {{ optional($item->kecamatan)->nama_kecamatan }}, Kel. {{ optional($item->kelurahan)->nama_kelurahan }}</div>
                                     @if($item->shareloc_link)
-                                        <a href="{{ $item->shareloc_link }}" target="_blank" class="text-blue-600 hover:underline font-semibold inline-flex items-center gap-1 mt-1">
+                                        <a href="{{ $item->shareloc_link }}" target="_blank" class="text-red-600 hover:underline font-semibold inline-flex items-center gap-1 mt-1">
                                             <i class="fa-solid fa-location-dot"></i> Buka Titik Maps
                                         </a>
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-center text-xs space-y-1.5">
-                                    <a href="{{ route('admin.transactions.nota', $item->id) }}" target="_blank" class="inline-flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-1.5 px-3 rounded-lg text-xs transition shadow-sm">
+                                    <a href="{{ route('admin.transactions.nota', $item->id) }}" target="_blank" class="inline-flex items-center gap-1 bg-red-600 hover:bg-red-700 text-white font-bold py-1.5 px-3 rounded-lg text-xs transition shadow-sm">
                                         <i class="fa-solid fa-file-arrow-down"></i> Download Nota
                                     </a>
 

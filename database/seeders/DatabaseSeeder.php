@@ -35,6 +35,13 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
+        // Demo Customer / User
+        $user = User::create([
+            'name' => 'Pelanggan Demo',
+            'email' => 'user@bintangkomputer.com',
+            'password' => Hash::make('password'),
+        ]);
+
         // 2. Categories
         $categories = [
             'Laptops' => 'laptops',

@@ -21,16 +21,36 @@
                 </div>
             @endif
 
+            {{-- Dev Quick Fill Helper --}}
+            <div class="p-3 mb-4 rounded-3 border bg-light">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="small fw-bold text-secondary">
+                        <i class="fa-solid fa-code text-primary me-1"></i> Quick Fill (Dev)
+                    </span>
+                    <span class="badge bg-secondary-subtle text-secondary border">Dev Mode</span>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-outline-danger btn-sm flex-fill d-flex align-items-center justify-content-center gap-1 py-1" onclick="fillLogin('admin@bintangkomputer.com', 'password')">
+                        <i class="fa-solid fa-user-shield"></i>
+                        <span>Admin</span>
+                    </button>
+                    <button type="button" class="btn btn-outline-success btn-sm flex-fill d-flex align-items-center justify-content-center gap-1 py-1" onclick="fillLogin('user@bintangkomputer.com', 'password')">
+                        <i class="fa-solid fa-user"></i>
+                        <span>User</span>
+                    </button>
+                </div>
+            </div>
+
             <form action="{{ route('login') }}" method="POST">
                 @csrf
                 <div class="mb-3">
                     <label class="form-label fw-bold small">Email Pelanggan</label>
-                    <input type="email" name="email" class="form-control" value="{{ old('email') }}" placeholder="nama@email.com" required autofocus>
+                    <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}" placeholder="nama@email.com" required autofocus>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label fw-bold small">Password</label>
-                    <input type="password" name="password" class="form-control" placeholder="********" required>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="********" required>
                 </div>
 
                 <div class="mb-3 form-check">
@@ -51,5 +71,17 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function fillLogin(email, password) {
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            if (emailInput && passwordInput) {
+                emailInput.value = email;
+                passwordInput.value = password;
+                passwordInput.focus();
+            }
+        }
+    </script>
 </body>
 </html>

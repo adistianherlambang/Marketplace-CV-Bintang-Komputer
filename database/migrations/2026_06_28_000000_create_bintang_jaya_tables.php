@@ -98,7 +98,7 @@ return new class extends Migration
             $table->id();
             $table->string('invoice_number')->unique();
             $table->foreignId('customer_id')->nullable()->constrained('customers')->onDelete('set null');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // admin cashier
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade'); // admin cashier (null for online customer order)
             $table->string('status')->default('Belum Dibayar'); // Belum Dibayar, Lunas, Dibatalkan
             $table->decimal('total_amount', 12, 2);
             $table->text('notes')->nullable();
