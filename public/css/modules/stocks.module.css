@@ -498,6 +498,38 @@
     border: 1px solid #bfdbfe;
 }
 
+.badge-type-other {
+    background: #f1f5f9;
+    color: var(--secondary, #64748b);
+    border: 1px solid var(--border, #e2e8f0);
+}
+
+.td-qty-change {
+    text-align: center;
+    font-weight: 800;
+    font-size: 0.9375rem;
+}
+
+.td-qty-positive {
+    color: #059669;
+}
+
+.td-qty-negative {
+    color: #dc2626;
+}
+
+.stocks-petugas-name {
+    font-weight: 600;
+    color: var(--dark, #0f172a);
+    font-size: 0.85rem;
+}
+
+.stocks-desc-cell {
+    font-size: 0.8125rem;
+    color: var(--secondary, #64748b);
+    line-height: 1.35;
+}
+
 /* Action Button in Table */
 .btn-table-action {
     display: inline-flex;

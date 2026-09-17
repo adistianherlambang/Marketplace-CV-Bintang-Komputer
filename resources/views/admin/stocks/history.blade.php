@@ -125,20 +125,20 @@
                                         <i class="fa-solid fa-rotate-left"></i> Retur
                                     </span>
                                 @else
-                                    <span class="badge-stock" style="background: #f1f5f9; color: var(--secondary); border: 1px solid var(--border);">
+                                    <span class="badge-stock badge-type-other">
                                         {{ ucfirst($history->type) }}
                                     </span>
                                 @endif
                             </td>
-                            <td style="text-align: center; font-weight: 800; font-size: 0.9375rem; color: {{ in_array($history->type, ['in', 'return']) ? '#059669' : '#dc2626' }};">
+                            <td class="td-qty-change {{ in_array($history->type, ['in', 'return']) ? 'td-qty-positive' : 'td-qty-negative' }}">
                                 {{ in_array($history->type, ['in', 'return']) ? '+' : '-' }}{{ $history->quantity }} pcs
                             </td>
                             <td>
-                                <span style="font-weight: 600; color: var(--dark); font-size: 0.85rem;">
+                                <span class="stocks-petugas-name">
                                     {{ optional($history->user)->name ?? 'Sistem' }}
                                 </span>
                             </td>
-                            <td style="font-size: 0.8125rem; color: var(--secondary); line-height: 1.35;" title="{{ $history->description }}">
+                            <td class="stocks-desc-cell" title="{{ $history->description }}">
                                 {{ Str::limit($history->description, 50) }}
                             </td>
                         </tr>
