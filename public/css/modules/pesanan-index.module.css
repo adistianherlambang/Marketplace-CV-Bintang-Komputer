@@ -1,0 +1,795 @@
+/* ==========================================================================
+   Admin Pesanan Index Module (Kelola Pesanan Masuk Online)
+   Modern Web Styling: Glassmorphism, Micro-interactions, Responsive Cards
+   ========================================================================== */
+
+/* --- Page Header --- */
+.pesanan-header-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.pesanan-page-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--dark);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pesanan-live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+}
+
+.pesanan-live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #10b981;
+    animation: livePulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes livePulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.3); }
+}
+
+/* --- Stat Metric Cards --- */
+.pesanan-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.pesanan-metric-card {
+    position: relative;
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 16px 18px;
+    text-decoration: none;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.pesanan-metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: transparent;
+    transition: background 0.2s ease;
+}
+
+.pesanan-metric-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px -3px rgba(0, 0, 0, 0.08);
+    border-color: #cbd5e1;
+}
+
+.pesanan-metric-card.active {
+    border-color: var(--card-accent, #2563eb);
+    box-shadow: 0 6px 16px -2px rgba(37, 99, 235, 0.15);
+}
+
+.pesanan-metric-card.active::before {
+    background: var(--card-accent, #2563eb);
+}
+
+.metric-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.metric-icon-box {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    transition: transform 0.2s ease;
+}
+
+.pesanan-metric-card:hover .metric-icon-box {
+    transform: scale(1.08);
+}
+
+.metric-counter {
+    font-size: 1.65rem;
+    font-weight: 800;
+    line-height: 1;
+    color: #0f172a;
+    letter-spacing: -0.02em;
+}
+
+.metric-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #64748b;
+}
+
+/* Card Themes */
+.metric-all { --card-accent: #2563eb; }
+.metric-all .metric-icon-box { background: #eff6ff; color: #2563eb; }
+
+.metric-menunggu { --card-accent: #f59e0b; }
+.metric-menunggu .metric-icon-box { background: #fffbeb; color: #d97706; }
+.metric-menunggu.has-pending {
+    background: linear-gradient(180deg, #fffbeb 0%, #ffffff 40%);
+    border-color: #fde68a;
+}
+
+.metric-diproses { --card-accent: #3b82f6; }
+.metric-diproses .metric-icon-box { background: #eff6ff; color: #2563eb; }
+
+.metric-dikirim { --card-accent: #8b5cf6; }
+.metric-dikirim .metric-icon-box { background: #f5f3ff; color: #7c3aed; }
+
+.metric-selesai { --card-accent: #10b981; }
+.metric-selesai .metric-icon-box { background: #ecfdf5; color: #059669; }
+
+/* Pulse badge for pending */
+.metric-badge-urgent {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 999px;
+    background: #fef3c7;
+    color: #b45309;
+    border: 1px solid #fde68a;
+}
+
+/* --- Filter & Search Toolbar --- */
+.pesanan-filter-bar {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.02);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.pesanan-filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+}
+
+.pesanan-search-container {
+    flex: 1;
+    min-width: 260px;
+    position: relative;
+}
+
+.pesanan-search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 0.9rem;
+    pointer-events: none;
+}
+
+.pesanan-search-input {
+    width: 100%;
+    height: 42px;
+    padding-left: 40px;
+    padding-right: 14px;
+    font-size: 0.875rem;
+    color: #1e293b;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+.pesanan-search-input:focus {
+    background: #ffffff;
+    border-color: #3b82f6;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.pesanan-select-status {
+    height: 42px;
+    padding: 0 14px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #334155;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    min-width: 190px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pesanan-select-status:focus {
+    border-color: #3b82f6;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.pesanan-btn-filter {
+    height: 42px;
+    padding: 0 18px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pesanan-btn-reset {
+    height: 42px;
+    padding: 0 14px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #64748b;
+    background: #f1f5f9;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.pesanan-btn-reset:hover {
+    background: #e2e8f0;
+    color: #1e293b;
+}
+
+/* --- Table Container & Styling --- */
+.pesanan-table-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.03);
+    overflow: hidden;
+}
+
+.pesanan-table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.pesanan-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    text-align: left;
+}
+
+.pesanan-table thead th {
+    background: #f8fafc;
+    color: #64748b;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 14px 18px;
+    border-bottom: 1px solid #e2e8f0;
+    white-space: nowrap;
+}
+
+.pesanan-table tbody td {
+    padding: 16px 18px;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: top;
+    color: #1e293b;
+    transition: background 0.15s ease;
+}
+
+.pesanan-table tbody tr:hover td {
+    background: #f8fafc;
+}
+
+.pesanan-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* --- Table Cell Details --- */
+.invoice-badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #eff6ff;
+    color: #1d4ed8;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 6px;
+    border: 1px solid #dbeafe;
+    letter-spacing: 0.01em;
+}
+
+.customer-info-box {
+    margin-top: 6px;
+}
+
+.customer-name-row {
+    font-weight: 700;
+    color: #0f172a;
+    font-size: 0.92rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.customer-avatar-mini {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    color: #475569;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 800;
+}
+
+.customer-subtext {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.78rem;
+    color: #64748b;
+    margin-top: 4px;
+}
+
+.customer-wa-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: #059669;
+    font-weight: 600;
+    background: #ecfdf5;
+    padding: 2px 7px;
+    border-radius: 6px;
+    text-decoration: none;
+    border: 1px solid #a7f3d0;
+    transition: all 0.2s ease;
+}
+
+.customer-wa-btn:hover {
+    background: #10b981;
+    color: #ffffff;
+}
+
+.delivery-location-card {
+    margin-top: 8px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 0.78rem;
+    color: #475569;
+}
+
+.maps-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: #2563eb;
+    font-weight: 600;
+    margin-top: 3px;
+    text-decoration: none;
+}
+
+.maps-link-btn:hover {
+    text-decoration: underline;
+    color: #1d4ed8;
+}
+
+/* Products Column */
+.order-product-item {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 0.85rem;
+    padding-bottom: 4px;
+}
+
+.order-product-name {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.order-product-qty {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #64748b;
+    background: #f1f5f9;
+    padding: 1px 6px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.order-total-highlight {
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px dashed #e2e8f0;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+.order-total-price {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.01em;
+}
+
+.order-meta-info {
+    font-size: 0.75rem;
+    color: #64748b;
+    margin-top: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* Bukti Transfer Column */
+.bukti-preview-trigger {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    outline: none;
+}
+
+.bukti-thumb-wrap {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #cbd5e1;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    background: #f1f5f9;
+}
+
+.bukti-thumb-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.2s ease;
+}
+
+.bukti-thumb-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 0.85rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.bukti-preview-trigger:hover .bukti-thumb-wrap img {
+    transform: scale(1.08);
+}
+
+.bukti-preview-trigger:hover .bukti-thumb-overlay {
+    opacity: 1;
+}
+
+.bukti-label-btn {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #2563eb;
+}
+
+.bukti-empty-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #94a3b8;
+    background: #f8fafc;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px dashed #cbd5e1;
+}
+
+/* Status Badges */
+.status-pill-modern {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    padding: 4px 11px;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+.status-pill-menunggu {
+    background: #fffbeb;
+    color: #b45309;
+    border: 1px solid #fde68a;
+}
+
+.status-pill-diproses {
+    background: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #bfdbfe;
+}
+
+.status-pill-dikirim {
+    background: #f5f3ff;
+    color: #6d28d9;
+    border: 1px solid #ddd6fe;
+}
+
+.status-pill-selesai {
+    background: #ecfdf5;
+    color: #047857;
+    border: 1px solid #a7f3d0;
+}
+
+.status-pill-batal {
+    background: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+}
+
+.status-pill-neutral {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+}
+
+/* Actions Column */
+.pesanan-actions-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+    min-width: 170px;
+}
+
+.btn-action-primary-step {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+}
+
+.btn-action-primary-step:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-action-confirm {
+    background: #10b981;
+    color: #ffffff;
+}
+.btn-action-confirm:hover { background: #059669; }
+
+.btn-action-ship {
+    background: #2563eb;
+    color: #ffffff;
+}
+.btn-action-ship:hover { background: #1d4ed8; }
+
+.btn-action-complete {
+    background: #059669;
+    color: #ffffff;
+}
+.btn-action-complete:hover { background: #047857; }
+
+.action-sub-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.action-status-select {
+    flex: 1;
+    height: 32px;
+    padding: 0 8px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #334155;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+.action-status-select:focus {
+    border-color: #3b82f6;
+    outline: none;
+}
+
+.action-nota-btn {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    color: #059669;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.action-nota-btn:hover {
+    background: #ecfdf5;
+    border-color: #a7f3d0;
+}
+
+/* --- Modern Bukti Modal (Lightbox) --- */
+.pesanan-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(15, 23, 42, 0.72);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.pesanan-modal-box {
+    background: #ffffff;
+    border-radius: 16px;
+    max-width: 580px;
+    width: 100%;
+    padding: 24px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.pesanan-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.pesanan-modal-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pesanan-modal-close-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: #f1f5f9;
+    border: none;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pesanan-modal-close-btn:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+}
+
+.pesanan-modal-body {
+    overflow-y: auto;
+    text-align: center;
+    flex: 1;
+}
+
+.pesanan-modal-img {
+    max-width: 100%;
+    max-height: 65vh;
+    border-radius: 10px;
+    object-fit: contain;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.pesanan-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid #f1f5f9;
+}
+
+/* Empty State */
+.pesanan-empty-wrapper {
+    text-align: center;
+    padding: 56px 20px;
+    color: #64748b;
+}
+
+.pesanan-empty-icon {
+    font-size: 2.8rem;
+    color: #94a3b8;
+    margin-bottom: 12px;
+    opacity: 0.6;
+}
+
+.pesanan-empty-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 4px;
+}
+
+.pesanan-empty-desc {
+    font-size: 0.82rem;
+    color: #94a3b8;
+}

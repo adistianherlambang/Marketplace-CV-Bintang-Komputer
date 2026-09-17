@@ -366,7 +366,7 @@
         </div>
 
         {{-- Filter Toolbar & Search --}}
-        <div class="card border-0 shadow-sm rounded-4 p-3 mb-4">
+        <!-- <div class="card border-0 shadow-sm rounded-4 p-3 mb-4">
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
                 
                 {{-- Status Pills --}}
@@ -406,7 +406,7 @@
                     <input type="text" id="orderSearchInput" oninput="filterOrders()" placeholder="Cari invoice atau produk..." class="form-control form-control-sm ps-5 rounded-pill border-secondary-subtle">
                 </div>
             </div>
-        </div>
+        </div> -->
 
         {{-- Order Cards List --}}
         <div id="orderCardsList">
@@ -426,15 +426,15 @@
                     
                     {{-- Header --}}
                     <div class="order-card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
-                        <div class="d-flex align-items-center gap-2">
+                        <div class="d-flex flex-column align-items-center gap-2">
                             <span class="badge bg-danger-subtle text-danger fw-bold rounded-pill px-2.5 py-1">
                                 <i class="fa-solid fa-receipt me-1"></i> {{ $item->invoice_number }}
                             </span>
-                            <button type="button" class="copy-btn" data-invoice="{{ $item->invoice_number }}" onclick="copyInvoice(this.dataset.invoice, this)" title="Salin Invoice">
+                            <!-- <button type="button" class="copy-btn" data-invoice="{{ $item->invoice_number }}" onclick="copyInvoice(this.dataset.invoice, this)" title="Salin Invoice">
                                 <i class="fa-regular fa-copy"></i>
-                            </button>
+                            </button> -->
                             <span class="text-muted small">
-                                <i class="fa-regular fa-calendar me-1"></i> {{ $item->created_at->format('d M Y, H:i') }} WIB
+                                <!-- <i class="fa-regular fa-calendar me-1"></i> --> {{ $item->created_at->format('d M Y, H:i') }} WIB
                             </span>
                         </div>
 
