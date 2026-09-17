@@ -35,11 +35,14 @@ class ComplaintController extends Controller
             'customer_id' => $order->customer_id,
             'customer_name' => $order->customer_name ?? 'Pelanggan',
             'customer_phone' => $order->customer_phone ?? '-',
+            'contact' => $order->customer_phone ?? '-',
             'complaint_type' => $request->complaint_type,
             'description' => $request->description,
+            'complaint_text' => "[{$request->complaint_type}] " . $request->description,
             'nota_bukti' => $notaPath,
             'product_bukti' => $productBuktiPath,
             'status' => 'Pending',
+            'date' => now(),
         ]);
 
         return redirect()->route('admin.complaints.index')->with('success', 'Komplain berhasil dicatat.');

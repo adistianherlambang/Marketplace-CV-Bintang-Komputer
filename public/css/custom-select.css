@@ -40,6 +40,12 @@
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
+.custom-select-trigger.is-invalid,
+.custom-select-container.is-invalid .custom-select-trigger {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
 .custom-select-text {
     font-size: 0.875rem;
     color: var(--dark);

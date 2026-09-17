@@ -381,7 +381,7 @@
                                 <div class="upload-dropzone-icon" style="background: #eff6ff; color: #2563eb;">
                                     <i class="fa-solid fa-receipt"></i>
                                 </div>
-                                <label class="form-label-custom mb-1">Foto Nota Pembelian <span class="text-danger">*</span></label>
+                                <label class="form-label-custom mb-1" for="notaInput" style="cursor: pointer;">Foto Nota Pembelian <span class="text-danger">*</span></label>
                                 <p class="text-muted small mb-3">Foto nota fisik atau screenshot invoice resmi.</p>
                             </div>
 
@@ -403,7 +403,7 @@
                                 <div class="upload-dropzone-icon" style="background: #fee2e2; color: #dc2626;">
                                     <i class="fa-solid fa-camera"></i>
                                 </div>
-                                <label class="form-label-custom mb-1">Foto Fisik Kerusakan Produk <span class="text-danger">*</span></label>
+                                <label class="form-label-custom mb-1" for="productInput" style="cursor: pointer;">Foto Fisik Kerusakan Produk <span class="text-danger">*</span></label>
                                 <p class="text-muted small mb-3">Foto bagian yang rusak atau berkendala.</p>
                             </div>
 

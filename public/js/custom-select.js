@@ -324,6 +324,31 @@ class CustomSelect {
                 this.close();
             }
         });
+
+        // Form validation feedback & focus reroute
+        this.select.addEventListener('invalid', () => {
+            this.trigger.classList.add('is-invalid');
+        });
+
+        this.select.addEventListener('change', () => {
+            if (this.select.checkValidity()) {
+                this.trigger.classList.remove('is-invalid');
+            }
+        });
+
+        this.select.addEventListener('focus', () => {
+            this.trigger.focus();
+        });
+
+        if (this.select.form) {
+            this.select.form.addEventListener('reset', () => {
+                setTimeout(() => {
+                    this.updateTriggerText();
+                    this.updateSelectedClass();
+                    this.trigger.classList.remove('is-invalid');
+                }, 10);
+            });
+        }
     }
 
     open() {
