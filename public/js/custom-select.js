@@ -1,6 +1,6 @@
 class CustomSelect {
     constructor(originalSelect) {
-        if (originalSelect.classList.contains('custom-select-hidden')) return;
+        if (originalSelect.classList.contains('custom-select-hidden') || originalSelect.classList.contains('no-custom-select')) return;
 
         this.select = originalSelect;
         this.wrapper = null;
@@ -493,7 +493,7 @@ document.addEventListener('click', (e) => {
 // Function to automatically convert standard selects
 function initCustomSelects(root = document) {
     // Exclude selects that might have been processed, or are within hidden templates if appropriate
-    root.querySelectorAll('select:not(.custom-select-hidden)').forEach(select => {
+    root.querySelectorAll('select:not(.custom-select-hidden):not(.no-custom-select)').forEach(select => {
         new CustomSelect(select);
     });
 }
@@ -507,7 +507,7 @@ document.addEventListener('DOMContentLoaded', () => {
         mutations.forEach(mutation => {
             mutation.addedNodes.forEach(node => {
                 if (node.nodeType === Node.ELEMENT_NODE) {
-                    if (node.tagName === 'SELECT' && !node.classList.contains('custom-select-hidden')) {
+                    if (node.tagName === 'SELECT' && !node.classList.contains('custom-select-hidden') && !node.classList.contains('no-custom-select')) {
                         new CustomSelect(node);
                     } else {
                         initCustomSelects(node);

@@ -1,30 +1,31 @@
 /* ============================================================
    Stocks Module
    stocks.module.css
-   Solid, clean layout for stock inventory and history
+   Clean, solid layout for stock management and history
    ============================================================ */
 
-/* --- Header Actions --- */
-.stocks-header-wrap {
+/* --- Header --- */
+.stocks-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 24px;
     flex-wrap: wrap;
     gap: 16px;
 }
 
-.stocks-header-title h2 {
-    font-size: 1.45rem;
+.stocks-title {
+    font-size: 1.5rem;
     font-weight: 800;
-    color: #0f172a;
-    margin: 0;
+    color: var(--dark);
+    margin-bottom: 4px;
+    letter-spacing: -0.02em;
 }
 
-.stocks-header-title p {
-    font-size: 0.85rem;
-    color: #64748b;
-    margin: 4px 0 0 0;
+.stocks-subtitle {
+    font-size: 0.875rem;
+    color: var(--secondary);
+    margin-bottom: 0;
 }
 
 .stocks-header-actions {
@@ -33,236 +34,259 @@
     gap: 10px;
 }
 
-/* --- Low Stock Warning Banner --- */
-.stocks-warning-banner {
+/* --- Low Stock Alert Banner --- */
+.stocks-alert-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding: 14px 18px;
+    border-radius: var(--radius);
     background-color: #fffbeb;
     border: 1px solid #fde68a;
     border-left: 4px solid #f59e0b;
-    border-radius: 8px;
-    padding: 14px 18px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-}
-
-.stocks-warning-content {
-    display: flex;
-    align-items: center;
+    box-shadow: var(--shadow-sm);
+    flex-wrap: wrap;
     gap: 12px;
 }
 
-.stocks-warning-icon {
-    font-size: 1.35rem;
+.stocks-alert-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.stocks-alert-icon {
+    font-size: 1.4rem;
     color: #d97706;
 }
 
-.stocks-warning-title {
+.stocks-alert-title {
     font-size: 0.9rem;
     font-weight: 700;
     color: #92400e;
     margin: 0;
 }
 
-.stocks-warning-desc {
-    font-size: 0.8rem;
+.stocks-alert-desc {
+    font-size: 0.825rem;
     color: #b45309;
     margin: 2px 0 0 0;
 }
 
-.stocks-warning-btn {
+.stocks-alert-btn {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     font-weight: 700;
     color: #92400e;
     background: #fef3c7;
     border: 1px solid #fcd34d;
-    padding: 6px 12px;
-    border-radius: 6px;
+    padding: 7px 14px;
+    border-radius: var(--radius-sm);
     text-decoration: none;
     white-space: nowrap;
-    transition: all 0.15s ease-in-out;
+    transition: var(--transition);
 }
 
-.stocks-warning-btn:hover {
+.stocks-alert-btn:hover {
     background: #fde68a;
     color: #78350f;
 }
 
-/* --- Stock Metric Cards --- */
-.stocks-metrics-grid {
+/* --- Status Metric Cards (Grid 4 Kolom) --- */
+.stocks-stats-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
     margin-bottom: 24px;
 }
 
-@media (max-width: 992px) {
-    .stocks-metrics-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 576px) {
-    .stocks-metrics-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-.stocks-metric-card {
-    background: #ffffff;
-    border-radius: 10px;
-    border: 1px solid #e2e8f0;
-    padding: 16px 20px;
+.stat-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: space-between;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    transition: var(--transition);
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
 }
 
-.stocks-metric-label {
-    font-size: 0.75rem;
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: #cbd5e1;
+}
+
+.stat-card-label {
+    font-size: 0.8rem;
     font-weight: 600;
-    color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-}
-
-.stocks-metric-value {
-    font-size: 1.65rem;
-    font-weight: 800;
-    color: #0f172a;
-    line-height: 1.2;
-    margin-top: 4px;
-}
-
-.stocks-metric-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 8px;
+    color: var(--secondary);
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
+    gap: 6px;
+    margin-bottom: 8px;
 }
 
-.metric-icon-total {
-    background: #eff6ff;
-    color: #2563eb;
+.stat-card-value {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--dark);
+    line-height: 1;
 }
 
-.metric-icon-safe {
-    background: #dcfce7;
-    color: #16a34a;
+.stat-card.active {
+    border: 2px solid var(--primary);
+    background-color: var(--primary-light);
 }
 
-.metric-icon-low {
-    background: #fffbeb;
-    color: #d97706;
+.stat-card-success .stat-card-label,
+.stat-card-success .stat-card-value {
+    color: #059669;
+}
+.stat-card.active-success {
+    border: 2px solid var(--success);
+    background-color: #ecfdf5;
 }
 
-.metric-icon-empty {
-    background: #fee2e2;
+.stat-card-warning .stat-card-label,
+.stat-card-warning .stat-card-value {
+    color: #b45309;
+}
+.stat-card.active-warning {
+    border: 2px solid #f59e0b;
+    background-color: #fffbeb;
+}
+.stat-card.has-pending {
+    background-color: #fffbeb;
+    border-color: #fde68a;
+}
+
+.stat-card-danger .stat-card-label,
+.stat-card-danger .stat-card-value {
     color: #dc2626;
 }
+.stat-card.active-danger {
+    border: 2px solid var(--danger);
+    background-color: #fef2f2;
+}
 
-/* --- Filter & Search Section --- */
+/* --- Filter Bar --- */
 .stocks-filter-card {
-    background: #ffffff;
-    border-radius: 10px;
-    border: 1px solid #e2e8f0;
-    padding: 16px 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-sm);
 }
 
-.stocks-filter-form {
+.stocks-filter-row {
     display: flex;
-    align-items: center;
-    gap: 12px;
     flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
 }
 
-.stocks-search-wrap {
+.filter-search-box {
     position: relative;
     flex: 1;
-    min-width: 260px;
+    min-width: 240px;
 }
 
-.stocks-search-icon {
+.filter-search-box i {
     position: absolute;
-    left: 12px;
+    left: 14px;
     top: 50%;
     transform: translateY(-50%);
-    color: #94a3b8;
-    font-size: 0.85rem;
+    color: var(--secondary);
+    pointer-events: none;
 }
 
-.stocks-search-input {
+.filter-search-box input {
     width: 100%;
-    padding: 8px 12px 8px 36px;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    outline: none;
-    transition: border-color 0.15s ease-in-out;
-}
-
-.stocks-search-input:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-}
-
-.stocks-select-wrap {
-    min-width: 180px;
-}
-
-.stocks-filter-select {
-    width: 100%;
-    padding: 8px 12px;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    font-size: 0.85rem;
+    height: 40px;
+    padding: 0 14px 0 38px;
+    font-size: 0.875rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
     outline: none;
     background-color: #ffffff;
+    transition: var(--transition);
+}
+
+.filter-search-box input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.filter-select-wrapper {
+    position: relative;
+    width: auto;
+    min-width: 190px;
+    max-width: 230px;
+}
+
+.filter-select-wrapper select,
+.filter-select-wrapper .custom-select-trigger {
+    height: 40px;
+    min-height: 40px;
+}
+
+.filter-select-wrapper .custom-select-search-wrapper {
+    display: none;
+}
+
+.filter-submit-btn,
+.filter-reset-btn {
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 16px;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-weight: 600;
+    box-sizing: border-box;
 }
 
 /* --- Table Container --- */
-.stocks-table-card {
-    background: #ffffff;
-    border-radius: 10px;
-    border: 1px solid #e2e8f0;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+.stocks-table-container {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    overflow-x: auto;
+    margin-bottom: 24px;
 }
 
 .stocks-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.85rem;
 }
 
 .stocks-table th {
-    background: #f8fafc;
-    border-bottom: 1px solid #e2e8f0;
-    padding: 12px 16px;
-    font-size: 0.72rem;
+    background-color: #f8fafc;
+    color: var(--secondary);
+    font-size: 0.75rem;
     font-weight: 700;
-    color: #475569;
     text-transform: uppercase;
-    letter-spacing: 0.03em;
-    white-space: nowrap;
+    letter-spacing: 0.04em;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
 }
 
 .stocks-table td {
     padding: 14px 16px;
     border-bottom: 1px solid #f1f5f9;
     vertical-align: middle;
-    color: #1e293b;
+    font-size: 0.875rem;
+    color: var(--dark);
 }
 
 .stocks-table tr:last-child td {
@@ -283,9 +307,9 @@
 .stocks-product-img {
     width: 44px;
     height: 44px;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     object-fit: cover;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border);
     background: #f8fafc;
     flex-shrink: 0;
 }
@@ -293,74 +317,87 @@
 .stocks-product-img-fallback {
     width: 44px;
     height: 44px;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     background: #f1f5f9;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #94a3b8;
     font-size: 1.1rem;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border);
     flex-shrink: 0;
 }
 
 .stocks-product-name {
     font-weight: 700;
-    color: #0f172a;
-    line-height: 1.3;
+    color: var(--dark);
+    line-height: 1.35;
+    font-size: 0.875rem;
 }
 
-.stocks-product-sku {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
+.stocks-sku-pill {
+    display: inline-block;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-size: 0.72rem;
-    color: #64748b;
-    margin-top: 2px;
+    font-weight: 700;
+    color: var(--primary);
+    background: #eff6ff;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #dbeafe;
 }
 
-/* --- Badges --- */
-.badge-stock {
+.stocks-meta-text {
+    font-size: 0.72rem;
+    color: var(--secondary);
+}
+
+/* --- Status Badges (Standard CV Bintang) --- */
+.badge-status {
     display: inline-flex;
     align-items: center;
     gap: 5px;
     padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 0.75rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
     font-weight: 700;
     white-space: nowrap;
 }
 
-.badge-stock-safe {
+.badge-status-selesai {
     background-color: #dcfce7;
     color: #15803d;
     border: 1px solid #86efac;
 }
 
-.badge-stock-low {
+.badge-status-diproses {
     background-color: #fffbeb;
     color: #b45309;
     border: 1px solid #fde68a;
 }
 
-.badge-stock-empty {
+.badge-status-ditolak {
     background-color: #fee2e2;
     color: #b91c1c;
     border: 1px solid #fca5a5;
 }
 
-.stock-qty-text {
+/* --- Stock Quantity Typography --- */
+.stock-num-bold {
     font-weight: 800;
-    font-size: 0.95rem;
+    font-size: 1rem;
+    line-height: 1;
 }
 
-.stock-qty-safe {
+.stock-num-safe {
     color: #15803d;
 }
 
-.stock-qty-low {
+.stock-num-low {
     color: #b45309;
 }
 
-.stock-qty-empty {
+.stock-num-empty {
     color: #b91c1c;
 }
 
@@ -378,26 +415,32 @@
 }
 
 .stocks-modal-box {
-    background: #ffffff;
-    border-radius: 12px;
+    background: var(--white);
+    border-radius: var(--radius);
     width: 100%;
-    max-width: 520px;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    max-width: 480px;
+    box-shadow: var(--shadow-lg);
     overflow: hidden;
+    animation: modalFadeIn 0.15s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: scale(0.96); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 .stocks-modal-header {
     padding: 16px 20px;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid var(--border);
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .stocks-modal-title {
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--dark);
     margin: 0;
     display: flex;
     align-items: center;
@@ -407,15 +450,16 @@
 .stocks-modal-close {
     background: none;
     border: none;
-    font-size: 1.1rem;
-    color: #94a3b8;
+    font-size: 1.2rem;
+    color: var(--secondary);
     cursor: pointer;
     padding: 4px;
     border-radius: 4px;
+    transition: var(--transition);
 }
 
 .stocks-modal-close:hover {
-    color: #0f172a;
+    color: var(--dark);
     background: #f1f5f9;
 }
 
@@ -423,9 +467,78 @@
     padding: 20px;
 }
 
+.selected-product-box {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    margin-bottom: 16px;
+}
+
+/* Type Toggle Buttons */
+.adjust-type-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.adjust-type-option {
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.825rem;
+    font-weight: 700;
+    color: var(--secondary);
+    background: var(--white);
+}
+
+.adjust-type-option:hover {
+    border-color: #cbd5e1;
+}
+
+.adjust-type-option.active-in {
+    border-color: #16a34a;
+    background-color: #ecfdf5;
+    color: #15803d;
+}
+
+.adjust-type-option.active-out {
+    border-color: #dc2626;
+    background-color: #fef2f2;
+    color: #b91c1c;
+}
+
+/* Input with Addon */
+.input-addon-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-addon-wrap input {
+    padding-right: 48px;
+}
+
+.input-addon-text {
+    position: absolute;
+    right: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--secondary);
+    pointer-events: none;
+}
+
 .stocks-modal-footer {
     padding: 14px 20px;
-    border-top: 1px solid #e2e8f0;
+    border-top: 1px solid var(--border);
     background: #f8fafc;
     display: flex;
     justify-content: flex-end;
@@ -433,21 +546,22 @@
 }
 
 /* History Audit Log Specific Styles */
-.history-type-in {
+.history-type-badge-in {
     background-color: #dcfce7;
     color: #15803d;
     border: 1px solid #86efac;
 }
 
-.history-type-out {
+.history-type-badge-out {
     background-color: #fee2e2;
     color: #b91c1c;
     border: 1px solid #fca5a5;
 }
 
-.history-type-return {
+.history-type-badge-return {
     background-color: #eff6ff;
     color: #1d4ed8;
     border: 1px solid #93c5fd;
 }
+
 

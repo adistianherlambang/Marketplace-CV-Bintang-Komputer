@@ -9,14 +9,20 @@
         modalOpen: false,
         selectedProductId: '',
         selectedProductName: '',
+        selectedProductSku: '',
+        selectedMinStock: 0,
         currentStock: 0,
+        dropdownProductId: '',
         adjustType: 'in',
         quantity: '',
         description: '',
-        openModal(productId = '', productName = '', stock = 0) {
+        openModal(productId = '', productName = '', productSku = '', stock = 0, minStock = 0) {
             this.selectedProductId = productId;
             this.selectedProductName = productName;
+            this.selectedProductSku = productSku;
             this.currentStock = stock;
+            this.selectedMinStock = minStock;
+            this.dropdownProductId = productId;
             this.adjustType = 'in';
             this.quantity = '';
             this.description = '';
@@ -28,226 +34,212 @@
     }">
 
         <!-- Header Title & Action Buttons -->
-        <div class="stocks-header-wrap">
-            <div class="stocks-header-title">
-                <h2>Kelola Stok Barang</h2>
-                <p>Pantau ketersediaan stok fisik produk gudang dan peringatan stok menipis.</p>
+        <div class="stocks-header">
+            <div>
+                <h3 class="stocks-title">Kelola Stok Barang</h3>
+                <p class="stocks-subtitle">Pantau ketersediaan stok fisik produk gudang dan deteksi stok yang menipis secara real-time.</p>
             </div>
             <div class="stocks-header-actions">
-                <a href="{{ route('admin.stocks.history') }}" class="btn btn-secondary">
+                <a href="{{ route('admin.stocks.history') }}" class="btn btn-secondary" style="height: 40px; display: inline-flex; align-items: center; gap: 8px;">
                     <i class="fa-solid fa-clock-rotate-left"></i> Riwayat Stok
                 </a>
-                <button type="button" @click="openModal()" class="btn btn-primary">
-                    <i class="fa-solid fa-plus-minus"></i> Sesuaikan Stok
+                <button type="button" @click="openModal()" class="btn btn-primary" style="height: 40px; display: inline-flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-plus-minus"></i> Penyesuaian Stok
                 </button>
             </div>
         </div>
 
-        <!-- Low Stock Warning Banner -->
+        <!-- Low Stock Warning Alert Banner -->
         @if(($counts['low'] ?? 0) > 0 || ($counts['empty'] ?? 0) > 0)
-            <div class="stocks-warning-banner">
-                <div class="stocks-warning-content">
-                    <i class="fa-solid fa-triangle-exclamation stocks-warning-icon"></i>
+            <div class="stocks-alert-banner">
+                <div class="stocks-alert-left">
+                    <i class="fa-solid fa-triangle-exclamation stocks-alert-icon"></i>
                     <div>
-                        <h4 class="stocks-warning-title">Peringatan Ketersediaan Stok!</h4>
-                        <p class="stocks-warning-desc">
+                        <h4 class="stocks-alert-title">Peringatan Ketersediaan Stok!</h4>
+                        <p class="stocks-alert-desc">
                             Terdapat <strong>{{ $counts['low'] }} produk</strong> dengan stok menipis (di bawah batas minimum) 
                             @if(($counts['empty'] ?? 0) > 0)
                                 dan <strong>{{ $counts['empty'] }} produk habis</strong>
                             @endif
-                            yang perlu segera dilakukan pengadaan / restock.
+                            yang perlu segera dilakukan pengadaan ulang.
                         </p>
                     </div>
                 </div>
-                <div>
-                    <a href="{{ route('admin.stocks.index', ['status' => 'low']) }}" class="stocks-warning-btn">
-                        <i class="fa-solid fa-filter"></i> Lihat Stok Menipis
+                @if(request('status') !== 'low')
+                    <a href="{{ route('admin.stocks.index', ['status' => 'low']) }}" class="stocks-alert-btn">
+                        <i class="fa-solid fa-filter"></i> Tampilkan Stok Menipis
                     </a>
-                </div>
+                @endif
             </div>
         @endif
 
-        <!-- Summary Metric Cards -->
-        <div class="stocks-metrics-grid">
-            <div class="stocks-metric-card">
-                <div>
-                    <div class="stocks-metric-label">Total Produk</div>
-                    <div class="stocks-metric-value">{{ $counts['total'] ?? 0 }}</div>
+        <!-- Status Metric Cards (Interactive) -->
+        <div class="stocks-stats-grid">
+            <a href="{{ route('admin.stocks.index') }}" class="stat-card {{ !request('status') ? 'active' : '' }}">
+                <div class="stat-card-label">
+                    <i class="fa-solid fa-boxes-stacked"></i> Semua Produk
                 </div>
-                <div class="stocks-metric-icon metric-icon-total">
-                    <i class="fa-solid fa-boxes-stacked"></i>
-                </div>
-            </div>
+                <div class="stat-card-value">{{ $counts['total'] ?? 0 }}</div>
+            </a>
 
-            <div class="stocks-metric-card">
-                <div>
-                    <div class="stocks-metric-label">Stok Aman</div>
-                    <div class="stocks-metric-value" style="color: #16a34a;">{{ $counts['safe'] ?? 0 }}</div>
+            <a href="{{ route('admin.stocks.index', ['status' => 'safe']) }}" class="stat-card stat-card-success {{ request('status') === 'safe' ? 'active-success' : '' }}">
+                <div class="stat-card-label">
+                    <i class="fa-solid fa-circle-check"></i> Stok Aman
                 </div>
-                <div class="stocks-metric-icon metric-icon-safe">
-                    <i class="fa-solid fa-circle-check"></i>
-                </div>
-            </div>
+                <div class="stat-card-value">{{ $counts['safe'] ?? 0 }}</div>
+            </a>
 
-            <div class="stocks-metric-card">
-                <div>
-                    <div class="stocks-metric-label">Stok Menipis</div>
-                    <div class="stocks-metric-value" style="color: #d97706;">{{ $counts['low'] ?? 0 }}</div>
+            <a href="{{ route('admin.stocks.index', ['status' => 'low']) }}" class="stat-card stat-card-warning {{ request('status') === 'low' ? 'active-warning' : '' }} {{ ($counts['low'] ?? 0) > 0 ? 'has-pending' : '' }}">
+                <div class="stat-card-label">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Stok Menipis
                 </div>
-                <div class="stocks-metric-icon metric-icon-low">
-                    <i class="fa-solid fa-triangle-exclamation"></i>
-                </div>
-            </div>
+                <div class="stat-card-value">{{ $counts['low'] ?? 0 }}</div>
+            </a>
 
-            <div class="stocks-metric-card">
-                <div>
-                    <div class="stocks-metric-label">Stok Habis</div>
-                    <div class="stocks-metric-value" style="color: #dc2626;">{{ $counts['empty'] ?? 0 }}</div>
+            <a href="{{ route('admin.stocks.index', ['status' => 'empty']) }}" class="stat-card stat-card-danger {{ request('status') === 'empty' ? 'active-danger' : '' }}">
+                <div class="stat-card-label">
+                    <i class="fa-solid fa-circle-xmark"></i> Stok Habis
                 </div>
-                <div class="stocks-metric-icon metric-icon-empty">
-                    <i class="fa-solid fa-circle-xmark"></i>
-                </div>
-            </div>
+                <div class="stat-card-value">{{ $counts['empty'] ?? 0 }}</div>
+            </a>
         </div>
 
-        <!-- Filter & Search Bar -->
-        <div class="stocks-filter-card">
-            <form method="GET" action="{{ route('admin.stocks.index') }}" class="stocks-filter-form">
-                <div class="stocks-search-wrap">
-                    <i class="fa-solid fa-magnifying-glass stocks-search-icon"></i>
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama produk atau SKU..." class="stocks-search-input">
+        <!-- Filter & Search Card -->
+        <form method="GET" action="{{ route('admin.stocks.index') }}" class="stocks-filter-card">
+            <div class="stocks-filter-row">
+                <div class="filter-search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama produk atau kode SKU...">
                 </div>
 
-                <div class="stocks-select-wrap">
-                    <select name="status" class="stocks-filter-select" onchange="this.form.submit()">
+                <div class="filter-select-wrapper">
+                    <select name="status" class="form-control" onchange="this.form.submit()">
                         <option value="">Semua Status Stok</option>
-                        <option value="low" {{ request('status') === 'low' ? 'selected' : '' }}>⚠️ Stok Menipis</option>
-                        <option value="empty" {{ request('status') === 'empty' ? 'selected' : '' }}>⛔ Stok Habis</option>
-                        <option value="safe" {{ request('status') === 'safe' ? 'selected' : '' }}>✅ Stok Aman</option>
+                        <option value="safe" {{ request('status') === 'safe' ? 'selected' : '' }}>Stok Aman</option>
+                        <option value="low" {{ request('status') === 'low' ? 'selected' : '' }}>Stok Menipis</option>
+                        <option value="empty" {{ request('status') === 'empty' ? 'selected' : '' }}>Stok Habis</option>
                     </select>
                 </div>
 
-                <button type="submit" class="btn btn-primary" style="padding: 8px 16px;">
-                    <i class="fa-solid fa-magnifying-glass"></i> Cari
+                <button type="submit" class="btn btn-primary filter-submit-btn">
+                    <i class="fa-solid fa-filter"></i> Filter
                 </button>
 
-                @if(request('search') || request('status'))
-                    <a href="{{ route('admin.stocks.index') }}" class="btn btn-secondary" style="padding: 8px 14px;">
+                @if(request()->anyFilled(['search', 'status']))
+                    <a href="{{ route('admin.stocks.index') }}" class="btn btn-secondary filter-reset-btn">
                         <i class="fa-solid fa-rotate-left"></i> Reset
                     </a>
                 @endif
-            </form>
-        </div>
+            </div>
+        </form>
 
-        <!-- Stock Table -->
-        <div class="stocks-table-card">
-            <div class="table-responsive">
-                <table class="stocks-table">
-                    <thead>
+        <!-- Stock Table Container -->
+        <div class="stocks-table-container">
+            <table class="stocks-table">
+                <thead>
+                    <tr>
+                        <th style="width: 5%; text-align: center;">No</th>
+                        <th style="width: 36%;">Produk &amp; SKU</th>
+                        <th style="width: 16%;">Harga Modal &amp; Jual</th>
+                        <th style="width: 10%; text-align: center;">Batas Min.</th>
+                        <th style="width: 12%; text-align: center;">Sisa Stok</th>
+                        <th style="width: 10%; text-align: center;">Status</th>
+                        <th style="width: 11%; text-align: center;">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($products as $product)
+                        @php
+                            $isLow = $product->stock > 0 && $product->stock <= $product->min_stock;
+                            $isEmpty = $product->stock <= 0;
+                        @endphp
                         <tr>
-                            <th style="width: 5%; text-align: center;">No</th>
-                            <th style="width: 40%;">Produk &amp; SKU</th>
-                            <th style="width: 15%;">Harga Modal</th>
-                            <th style="width: 12%; text-align: center;">Min. Stok</th>
-                            <th style="width: 13%; text-align: center;">Sisa Stok</th>
-                            <th style="width: 15%; text-align: center;">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($products as $product)
-                            @php
-                                $isLow = $product->stock > 0 && $product->stock <= $product->min_stock;
-                                $isEmpty = $product->stock <= 0;
-                            @endphp
-                            <tr>
-                                <td style="text-align: center; color: #64748b; font-size: 0.8rem;">
-                                    {{ $loop->iteration + ($products->currentPage() - 1) * $products->perPage() }}
-                                </td>
+                            <td style="text-align: center; color: var(--secondary); font-size: 0.8rem;">
+                                {{ $loop->iteration + ($products->currentPage() - 1) * $products->perPage() }}
+                            </td>
 
-                                <td>
-                                    <div class="stocks-product-cell">
-                                        @if($product->primaryImage && file_exists(public_path('storage/' . $product->primaryImage->image_path)))
-                                            <img src="{{ asset('storage/' . $product->primaryImage->image_path) }}" alt="{{ $product->name }}" class="stocks-product-img">
-                                        @else
-                                            <div class="stocks-product-img-fallback">
-                                                <i class="fa-solid fa-box"></i>
-                                            </div>
-                                        @endif
-                                        <div>
-                                            <div class="stocks-product-name">{{ $product->name }}</div>
-                                            <div class="stocks-product-sku">
-                                                <span>SKU: {{ $product->sku }}</span>
-                                                @if($product->brand)
-                                                    <span style="color: #cbd5e1; margin: 0 4px;">•</span>
-                                                    <span>{{ $product->brand->name }}</span>
-                                                @endif
-                                                @if($product->category)
-                                                    <span style="color: #cbd5e1; margin: 0 4px;">•</span>
-                                                    <span>{{ $product->category->name }}</span>
-                                                @endif
-                                            </div>
+                            <td>
+                                <div class="stocks-product-cell">
+                                    @if($product->primaryImage && file_exists(public_path('storage/' . $product->primaryImage->image_path)))
+                                        <img src="{{ asset('storage/' . $product->primaryImage->image_path) }}" alt="{{ $product->name }}" class="stocks-product-img">
+                                    @else
+                                        <div class="stocks-product-img-fallback">
+                                            <i class="fa-solid fa-box"></i>
+                                        </div>
+                                    @endif
+                                    <div>
+                                        <div class="stocks-product-name">{{ $product->name }}</div>
+                                        <div class="stocks-meta-text" style="margin-top: 3px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                                            <span class="stocks-sku-pill">SKU: {{ $product->sku }}</span>
+                                            @if($product->brand)
+                                                <span>• {{ $product->brand->name }}</span>
+                                            @endif
+                                            @if($product->category)
+                                                <span>• {{ $product->category->name }}</span>
+                                            @endif
                                         </div>
                                     </div>
-                                </td>
+                                </div>
+                            </td>
 
-                                <td>
-                                    <div style="font-weight: 600; color: #0f172a; font-size: 0.85rem;">
-                                        Rp {{ number_format($product->price_modal, 0, ',', '.') }}
-                                    </div>
-                                    <div style="font-size: 0.72rem; color: #64748b;">
-                                        Jual: Rp {{ number_format($product->price_jual, 0, ',', '.') }}
-                                    </div>
-                                </td>
+                            <td>
+                                <div style="font-weight: 700; color: var(--dark); font-size: 0.875rem;">
+                                    Rp {{ number_format($product->price_modal, 0, ',', '.') }}
+                                </div>
+                                <div style="font-size: 0.75rem; color: var(--secondary); margin-top: 1px;">
+                                    Jual: Rp {{ number_format($product->price_jual, 0, ',', '.') }}
+                                </div>
+                            </td>
 
-                                <td style="text-align: center; color: #64748b; font-weight: 600;">
-                                    {{ $product->min_stock }} pcs
-                                </td>
+                            <td style="text-align: center; color: var(--secondary); font-weight: 600; font-size: 0.85rem;">
+                                {{ $product->min_stock }} pcs
+                            </td>
 
-                                <td style="text-align: center;">
-                                    <div class="stock-qty-text {{ $isEmpty ? 'stock-qty-empty' : ($isLow ? 'stock-qty-low' : 'stock-qty-safe') }}">
-                                        {{ $product->stock }} pcs
-                                    </div>
-                                    <div style="margin-top: 3px;">
-                                        @if ($isEmpty)
-                                            <span class="badge-stock badge-stock-empty">
-                                                <i class="fa-solid fa-circle-xmark"></i> Habis
-                                            </span>
-                                        @elseif ($isLow)
-                                            <span class="badge-stock badge-stock-low">
-                                                <i class="fa-solid fa-triangle-exclamation"></i> Menipis
-                                            </span>
-                                        @else
-                                            <span class="badge-stock badge-stock-safe">
-                                                <i class="fa-solid fa-circle-check"></i> Aman
-                                            </span>
-                                        @endif
-                                    </div>
-                                </td>
+                            <td style="text-align: center;">
+                                <div class="stock-num-bold {{ $isEmpty ? 'stock-num-empty' : ($isLow ? 'stock-num-low' : 'stock-num-safe') }}">
+                                    {{ $product->stock }} pcs
+                                </div>
+                            </td>
 
-                                <td style="text-align: center;">
-                                    <button type="button" 
-                                            @click="openModal({{ $product->id }}, '{{ addslashes($product->name) }}', {{ $product->stock }})"
-                                            class="btn btn-secondary btn-sm"
-                                            style="padding: 5px 12px; font-size: 0.78rem;">
-                                        <i class="fa-solid fa-plus-minus text-primary"></i> Sesuaikan
-                                    </button>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="6" style="text-align: center; padding: 48px 20px; color: #64748b;">
-                                    <i class="fa-solid fa-boxes-stacked" style="font-size: 2.5rem; opacity: 0.35; margin-bottom: 12px; display: block;"></i>
-                                    <div style="font-weight: 700; color: #0f172a; margin-bottom: 4px;">Tidak Ada Data Produk</div>
-                                    <div style="font-size: 0.8rem;">Tidak ada produk yang cocok dengan pencarian atau filter yang dipilih.</div>
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
+                            <td style="text-align: center;">
+                                @if ($isEmpty)
+                                    <span class="badge-status badge-status-ditolak">
+                                        <i class="fa-solid fa-circle-xmark"></i> Habis
+                                    </span>
+                                @elseif ($isLow)
+                                    <span class="badge-status badge-status-diproses">
+                                        <i class="fa-solid fa-triangle-exclamation"></i> Menipis
+                                    </span>
+                                @else
+                                    <span class="badge-status badge-status-selesai">
+                                        <i class="fa-solid fa-circle-check"></i> Aman
+                                    </span>
+                                @endif
+                            </td>
+
+                            <td style="text-align: center;">
+                                <button type="button" 
+                                        @click="openModal({{ $product->id }}, '{{ addslashes($product->name) }}', '{{ $product->sku }}', {{ $product->stock }}, {{ $product->min_stock }})"
+                                        class="btn btn-secondary btn-sm"
+                                        style="padding: 6px 12px; font-size: 0.78rem; font-weight: 600; white-space: nowrap;">
+                                    <i class="fa-solid fa-sliders text-primary"></i> Sesuaikan
+                                </button>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 48px 20px; color: var(--secondary);">
+                                <i class="fa-solid fa-boxes-stacked" style="font-size: 2.5rem; opacity: 0.35; margin-bottom: 12px; display: block;"></i>
+                                <div style="font-weight: 700; color: var(--dark); margin-bottom: 4px;">Tidak Ada Data Produk</div>
+                                <div style="font-size: 0.85rem;">Tidak ada produk yang cocok dengan pencarian atau status filter yang dipilih.</div>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
 
             @if(method_exists($products, 'links'))
-                <div style="padding: 16px 20px; border-top: 1px solid #e2e8f0;">
+                <div style="padding: 16px 20px; border-top: 1px solid var(--border);">
                     {{ $products->links() }}
                 </div>
             @endif
@@ -257,10 +249,11 @@
         <div x-show="modalOpen" class="stocks-modal-backdrop" @click="closeModal()" x-cloak style="display: none;">
             <div class="stocks-modal-box" @click.stop>
                 <div class="stocks-modal-header">
-                    <h3 class="stocks-modal-title">
-                        <i class="fa-solid fa-plus-minus text-primary"></i> Penyesuaian Stok Barang
-                    </h3>
-                    <button type="button" @click="closeModal()" class="stocks-modal-close">
+                    <h4 class="stocks-modal-title">
+                        <i class="fa-solid fa-sliders text-primary"></i>
+                        <span>Penyesuaian Stok Barang</span>
+                    </h4>
+                    <button type="button" @click="closeModal()" class="stocks-modal-close" aria-label="Tutup">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
@@ -268,11 +261,33 @@
                 <form method="POST" action="{{ route('admin.stocks.adjust') }}">
                     @csrf
                     <div class="stocks-modal-body">
-                        <!-- Product Selection -->
-                        <div class="form-group mb-3">
-                            <label class="form-label font-semibold">Pilih Barang / Produk <span class="text-danger">*</span></label>
-                            <select name="product_id" x-model="selectedProductId" class="form-control" required>
-                                <option value="">-- Pilih Barang --</option>
+                        <!-- Product Info (if selected from table row) -->
+                        <div class="selected-product-box" x-show="selectedProductId">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                <div>
+                                    <div class="font-bold text-dark text-sm" x-text="selectedProductName"></div>
+                                    <div class="stocks-meta-text" style="margin-top: 2px;">
+                                        <span>SKU: <strong class="text-primary font-mono" x-text="selectedProductSku"></strong></span>
+                                        <span style="margin: 0 4px;">•</span>
+                                        <span>Min. Stok: <strong x-text="selectedMinStock + ' pcs'"></strong></span>
+                                    </div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 0.72rem; color: var(--secondary);">Sisa Stok Fisik</div>
+                                    <div style="font-size: 1.05rem; font-weight: 800;" 
+                                         :class="currentStock <= 0 ? 'text-danger' : (currentStock <= selectedMinStock ? 'text-warning' : 'text-success')" 
+                                         x-text="currentStock + ' pcs'">
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" name="product_id" :value="selectedProductId" :disabled="!selectedProductId">
+                        </div>
+
+                        <!-- Product Selection Dropdown (if opened generally from header) -->
+                        <div class="form-group mb-3" x-show="!selectedProductId">
+                            <label class="form-label font-semibold text-sm">Pilih Produk <span class="text-danger">*</span></label>
+                            <select name="product_id" x-model="dropdownProductId" class="form-control no-custom-select" :required="!selectedProductId" :disabled="!!selectedProductId">
+                                <option value="">-- Pilih Produk --</option>
                                 @foreach ($allProducts as $p)
                                     <option value="{{ $p->id }}">
                                         {{ $p->name }} (Sisa: {{ $p->stock }} pcs | SKU: {{ $p->sku }})
@@ -283,33 +298,34 @@
 
                         <!-- Adjustment Type -->
                         <div class="form-group mb-3">
-                            <label class="form-label font-semibold">Tipe Penyesuaian <span class="text-danger">*</span></label>
-                            <div style="display: flex; gap: 16px; margin-top: 4px;">
-                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                                    <input type="radio" name="type" value="in" x-model="adjustType" required>
-                                    <span style="font-weight: 600; color: #15803d;">
-                                        <i class="fa-solid fa-square-plus"></i> Tambah Stok (+)
-                                    </span>
+                            <label class="form-label font-semibold text-sm">Jenis Perubahan Stok <span class="text-danger">*</span></label>
+                            <div class="adjust-type-grid">
+                                <label class="adjust-type-option" :class="{ 'active-in': adjustType === 'in' }">
+                                    <input type="radio" name="type" value="in" x-model="adjustType" class="sr-only">
+                                    <i class="fa-solid fa-circle-plus"></i>
+                                    <span>Tambah Stok (+)</span>
                                 </label>
-                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                                    <input type="radio" name="type" value="out" x-model="adjustType" required>
-                                    <span style="font-weight: 600; color: #b91c1c;">
-                                        <i class="fa-solid fa-square-minus"></i> Kurangi Stok (-)
-                                    </span>
+                                <label class="adjust-type-option" :class="{ 'active-out': adjustType === 'out' }">
+                                    <input type="radio" name="type" value="out" x-model="adjustType" class="sr-only">
+                                    <i class="fa-solid fa-circle-minus"></i>
+                                    <span>Kurangi Stok (-)</span>
                                 </label>
                             </div>
                         </div>
 
                         <!-- Quantity -->
                         <div class="form-group mb-3">
-                            <label class="form-label font-semibold">Jumlah / Quantity (pcs) <span class="text-danger">*</span></label>
-                            <input type="number" name="quantity" x-model="quantity" class="form-control" required min="1" placeholder="Contoh: 10">
+                            <label class="form-label font-semibold text-sm">Jumlah Barang <span class="text-danger">*</span></label>
+                            <div class="input-addon-wrap">
+                                <input type="number" name="quantity" x-model="quantity" class="form-control" required min="1" placeholder="Contoh: 10">
+                                <span class="input-addon-text">pcs</span>
+                            </div>
                         </div>
 
                         <!-- Description / Reason -->
                         <div class="form-group mb-2">
-                            <label class="form-label font-semibold">Keterangan / Alasan Penyesuaian <span class="text-danger">*</span></label>
-                            <textarea name="description" x-model="description" class="form-control" rows="3" required placeholder="Contoh: Barang masuk dari supplier, Stock opname, Barang rusak/cacat, dll"></textarea>
+                            <label class="form-label font-semibold text-sm">Keterangan / Alasan Perubahan <span class="text-danger">*</span></label>
+                            <textarea name="description" x-model="description" class="form-control" rows="2" required placeholder="Contoh: Stok masuk dari supplier, Stock opname rutin, Barang rusak/cacat..."></textarea>
                         </div>
                     </div>
 
@@ -318,7 +334,7 @@
                             Batal
                         </button>
                         <button type="submit" class="btn btn-primary">
-                            <i class="fa-solid fa-floppy-disk"></i> Simpan Penyesuaian
+                            <i class="fa-solid fa-floppy-disk me-1"></i> Simpan Penyesuaian
                         </button>
                     </div>
                 </form>
