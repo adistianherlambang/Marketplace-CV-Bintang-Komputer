@@ -689,7 +689,100 @@
 }
 
 /* ==========================================================================
-   7. Responsive adjustments
+   7. Pagination Styling (Previous, Next, and Page Numbers)
+   ========================================================================== */
+.stocks-pagination-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    border-top: 1px solid var(--border, #e2e8f0);
+    background-color: #ffffff;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.stocks-pagination-info {
+    font-size: 0.8125rem;
+    color: var(--secondary, #64748b);
+}
+
+.stocks-pagination-info strong {
+    color: var(--dark, #0f172a);
+}
+
+.stocks-pagination-links nav {
+    margin: 0;
+    padding: 0;
+}
+
+.stocks-pagination-links .pagination,
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.stocks-pagination-links .page-item,
+.pagination .page-item {
+    margin: 0;
+    list-style: none;
+    display: inline-block;
+}
+
+.stocks-pagination-links .page-link,
+.pagination .page-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 10px;
+    border-radius: var(--radius-sm, 6px);
+    border: 1px solid var(--border, #e2e8f0);
+    background-color: #ffffff;
+    color: var(--dark, #0f172a);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.15s ease;
+    line-height: 1;
+    user-select: none;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.stocks-pagination-links .page-link:hover,
+.pagination .page-link:hover {
+    background-color: #f1f5f9;
+    border-color: #cbd5e1;
+    color: var(--primary, #2563eb);
+}
+
+.stocks-pagination-links .page-item.active .page-link,
+.pagination .page-item.active .page-link {
+    background-color: var(--primary, #2563eb);
+    color: #ffffff;
+    border-color: var(--primary, #2563eb);
+    box-shadow: 0 1px 3px rgba(37, 99, 235, 0.3);
+    cursor: default;
+}
+
+.stocks-pagination-links .page-item.disabled .page-link,
+.pagination .page-item.disabled .page-link {
+    background-color: #f8fafc;
+    color: #94a3b8;
+    border-color: #e2e8f0;
+    cursor: not-allowed;
+    opacity: 0.65;
+    pointer-events: none;
+    box-shadow: none;
+}
+
+/* ==========================================================================
+   8. Responsive adjustments
    ========================================================================== */
 @media (max-width: 992px) {
     .stocks-stats-grid {

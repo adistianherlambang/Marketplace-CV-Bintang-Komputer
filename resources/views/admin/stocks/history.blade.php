@@ -154,9 +154,14 @@
                 </tbody>
             </table>
 
-            @if(method_exists($histories, 'links'))
-                <div style="padding: 16px 20px; border-top: 1px solid var(--border);">
-                    {{ $histories->links() }}
+            @if(method_exists($histories, 'links') && $histories->hasPages())
+                <div class="stocks-pagination-wrapper">
+                    <div class="stocks-pagination-info">
+                        Menampilkan <strong>{{ $histories->firstItem() ?? 0 }}</strong> - <strong>{{ $histories->lastItem() ?? 0 }}</strong> dari <strong>{{ $histories->total() }}</strong> riwayat
+                    </div>
+                    <div class="stocks-pagination-links">
+                        {{ $histories->links() }}
+                    </div>
                 </div>
             @endif
         </div>

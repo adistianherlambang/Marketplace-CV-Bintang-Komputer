@@ -241,9 +241,14 @@
                 </tbody>
             </table>
 
-            @if(method_exists($products, 'links'))
-                <div style="padding: 16px 20px; border-top: 1px solid var(--border);">
-                    {{ $products->links() }}
+            @if(method_exists($products, 'links') && $products->hasPages())
+                <div class="stocks-pagination-wrapper">
+                    <div class="stocks-pagination-info">
+                        Menampilkan <strong>{{ $products->firstItem() ?? 0 }}</strong> - <strong>{{ $products->lastItem() ?? 0 }}</strong> dari <strong>{{ $products->total() }}</strong> produk
+                    </div>
+                    <div class="stocks-pagination-links">
+                        {{ $products->links() }}
+                    </div>
                 </div>
             @endif
         </div>
