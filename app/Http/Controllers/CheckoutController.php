@@ -45,7 +45,7 @@ class CheckoutController extends Controller
 
         $buktiTransferPath = null;
         if ($request->hasFile('bukti_transfer')) {
-            $buktiTransferPath = $request->file('bukti_t∫ransfer')->store('bukti_transfer', 'public');
+            $buktiTransferPath = $request->file('bukti_transfer')->store('bukti_transfer', 'public');
         }
 
         // Tentukan status berdasarkan ada tidaknya bukti transfer
