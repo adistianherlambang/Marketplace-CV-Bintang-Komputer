@@ -9,10 +9,43 @@ use Illuminate\Http\Request;
 
 class ComplaintController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $complaints = Complaint::with(['order.items.product'])->latest()->paginate(10);
-        return view('admin.complaints.index', compact('complaints'));
+        $query = Complaint::with(['order.items.product']);
+
+        if ($request->filled('search')) {
+            $search = trim($request->search);
+            $query->where(function ($q) use ($search) {
+                $q->where('customer_name', 'like', "%{$search}%")
+                  ->orWhere('customer_phone', 'like', "%{$search}%")
+                  ->orWhere('complaint_type', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%")
+                  ->orWhereHas('order', function ($oq) use ($search) {
+                      $oq->where('invoice_number', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        if ($request->filled('status')) {
+            $status = $request->status;
+            if ($status === 'Pending') {
+                $query->whereIn('status', ['Pending', 'Menunggu']);
+            } else {
+                $query->where('status', $status);
+            }
+        }
+
+        $counts = [
+            'all' => Complaint::count(),
+            'pending' => Complaint::whereIn('status', ['Pending', 'Menunggu'])->count(),
+            'diproses' => Complaint::where('status', 'Diproses')->count(),
+            'selesai' => Complaint::where('status', 'Selesai')->count(),
+            'ditolak' => Complaint::where('status', 'Ditolak')->count(),
+        ];
+
+        $complaints = $query->latest()->paginate(10)->withQueryString();
+
+        return view('admin.complaints.index', compact('complaints', 'counts'));
     }
 
     public function store(Request $request)
