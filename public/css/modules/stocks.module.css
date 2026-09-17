@@ -1,30 +1,31 @@
-/* ============================================================
-   Stocks Module
-   stocks.module.css
-   Clean, solid layout for stock management and history
-   ============================================================ */
+/**
+ * Stocks Module Stylesheet
+ * CV Bintang Jaya Komputer Admin Dashboard
+ */
 
-/* --- Header --- */
+/* ==========================================================================
+   1. Stocks Header & Action Buttons
+   ========================================================================== */
 .stocks-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 24px;
-    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 20px;
     gap: 16px;
 }
 
 .stocks-title {
     font-size: 1.5rem;
     font-weight: 800;
-    color: var(--dark);
+    color: var(--dark, #0f172a);
     margin-bottom: 4px;
     letter-spacing: -0.02em;
+    line-height: 1.2;
 }
 
 .stocks-subtitle {
     font-size: 0.875rem;
-    color: var(--secondary);
+    color: var(--secondary, #64748b);
     margin-bottom: 0;
 }
 
@@ -32,117 +33,133 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    flex-shrink: 0;
 }
 
-/* --- Low Stock Alert Banner --- */
+.stocks-header-actions .btn {
+    width: auto !important;
+    white-space: nowrap !important;
+    height: 40px;
+    padding: 0 16px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: var(--radius-sm, 6px);
+    box-shadow: var(--shadow-sm, 0 1px 2px rgba(0,0,0,0.05));
+    transition: all 0.15s ease;
+}
+
+/* ==========================================================================
+   2. Alert Banner (Sleek Warning)
+   ========================================================================== */
 .stocks-alert-banner {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
-    padding: 14px 18px;
-    border-radius: var(--radius);
+    padding: 12px 18px;
+    margin-bottom: 20px;
+    border-radius: var(--radius, 8px);
     background-color: #fffbeb;
     border: 1px solid #fde68a;
     border-left: 4px solid #f59e0b;
-    box-shadow: var(--shadow-sm);
-    flex-wrap: wrap;
-    gap: 12px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    gap: 16px;
 }
 
 .stocks-alert-left {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
 }
 
 .stocks-alert-icon {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     color: #d97706;
+    flex-shrink: 0;
 }
 
-.stocks-alert-title {
-    font-size: 0.9rem;
-    font-weight: 700;
+.stocks-alert-text {
+    font-size: 0.875rem;
     color: #92400e;
-    margin: 0;
-}
-
-.stocks-alert-desc {
-    font-size: 0.825rem;
-    color: #b45309;
-    margin: 2px 0 0 0;
+    line-height: 1.4;
 }
 
 .stocks-alert-btn {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 0.8rem;
+    padding: 6px 14px;
+    font-size: 0.8125rem;
     font-weight: 700;
     color: #92400e;
-    background: #fef3c7;
-    border: 1px solid #fcd34d;
-    padding: 7px 14px;
-    border-radius: var(--radius-sm);
+    background-color: rgba(245, 158, 11, 0.15);
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    border-radius: var(--radius-sm, 6px);
     text-decoration: none;
     white-space: nowrap;
-    transition: var(--transition);
+    transition: all 0.15s ease;
+    flex-shrink: 0;
 }
 
 .stocks-alert-btn:hover {
-    background: #fde68a;
-    color: #78350f;
+    background-color: #f59e0b;
+    color: #ffffff;
+    border-color: #f59e0b;
 }
 
-/* --- Status Metric Cards (Grid 4 Kolom) --- */
+/* ==========================================================================
+   3. Interactive Metric Cards
+   ========================================================================== */
 .stocks-stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 14px;
-    margin-bottom: 24px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
 }
 
 .stat-card {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px 18px;
+    background: var(--white, #ffffff);
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: var(--radius, 8px);
+    padding: 14px 18px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: var(--transition);
+    transition: all 0.2s ease;
     text-decoration: none;
     cursor: pointer;
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
 }
 
 .stat-card:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
     border-color: #cbd5e1;
 }
 
 .stat-card-label {
-    font-size: 0.8rem;
+    font-size: 0.8125rem;
     font-weight: 600;
-    color: var(--secondary);
+    color: var(--secondary, #64748b);
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     margin-bottom: 8px;
 }
 
 .stat-card-value {
     font-size: 1.6rem;
     font-weight: 800;
-    color: var(--dark);
+    color: var(--dark, #0f172a);
     line-height: 1;
 }
 
 .stat-card.active {
-    border: 2px solid var(--primary);
-    background-color: var(--primary-light);
+    border: 2px solid var(--primary, #2563eb);
+    background-color: #f0f7ff;
 }
 
 .stat-card-success .stat-card-label,
@@ -150,13 +167,13 @@
     color: #059669;
 }
 .stat-card.active-success {
-    border: 2px solid var(--success);
+    border: 2px solid #10b981;
     background-color: #ecfdf5;
 }
 
 .stat-card-warning .stat-card-label,
 .stat-card-warning .stat-card-value {
-    color: #b45309;
+    color: #d97706;
 }
 .stat-card.active-warning {
     border: 2px solid #f59e0b;
@@ -172,25 +189,32 @@
     color: #dc2626;
 }
 .stat-card.active-danger {
-    border: 2px solid var(--danger);
+    border: 2px solid #ef4444;
     background-color: #fef2f2;
 }
 
-/* --- Filter Bar --- */
+.stat-card-primary .stat-card-label,
+.stat-card-primary .stat-card-value {
+    color: var(--primary, #2563eb);
+}
+
+/* ==========================================================================
+   4. Filter & Search Bar (Strict 1-Row Desktop Layout)
+   ========================================================================== */
 .stocks-filter-card {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 14px 18px;
-    margin-bottom: 24px;
-    box-shadow: var(--shadow-sm);
+    background: var(--white, #ffffff);
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: var(--radius, 8px);
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
 .stocks-filter-row {
     display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
     align-items: center;
+    gap: 12px;
+    flex-wrap: nowrap;
 }
 
 .filter-search-box {
@@ -204,7 +228,7 @@
     left: 14px;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--secondary);
+    color: var(--secondary, #64748b);
     pointer-events: none;
 }
 
@@ -213,23 +237,22 @@
     height: 40px;
     padding: 0 14px 0 38px;
     font-size: 0.875rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: var(--radius-sm, 6px);
     outline: none;
     background-color: #ffffff;
-    transition: var(--transition);
+    transition: var(--transition, all 0.2s ease);
 }
 
 .filter-search-box input:focus {
-    border-color: var(--primary);
+    border-color: var(--primary, #2563eb);
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
 .filter-select-wrapper {
     position: relative;
-    width: auto;
-    min-width: 190px;
-    max-width: 230px;
+    width: 210px;
+    flex-shrink: 0;
 }
 
 .filter-select-wrapper select,
@@ -244,23 +267,50 @@
 
 .filter-submit-btn,
 .filter-reset-btn {
+    width: auto !important;
+    white-space: nowrap !important;
+    flex-shrink: 0;
     height: 40px;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 6px;
-    padding: 0 16px;
-    border-radius: var(--radius-sm);
+    padding: 0 18px;
+    border-radius: var(--radius-sm, 6px);
     font-size: 0.875rem;
     font-weight: 600;
     box-sizing: border-box;
+    cursor: pointer;
+    transition: all 0.15s ease;
 }
 
-/* --- Table Container --- */
+.filter-submit-btn {
+    background-color: var(--primary, #2563eb);
+    color: #ffffff;
+    border: 1px solid var(--primary, #2563eb);
+}
+.filter-submit-btn:hover {
+    background-color: var(--primary-hover, #1d4ed8);
+}
+
+.filter-reset-btn {
+    background-color: #f8fafc;
+    color: var(--dark, #0f172a);
+    border: 1px solid var(--border, #e2e8f0);
+    text-decoration: none;
+}
+.filter-reset-btn:hover {
+    background-color: #e2e8f0;
+}
+
+/* ==========================================================================
+   5. Stock Table & Rows
+   ========================================================================== */
 .stocks-table-container {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-sm);
+    background: var(--white, #ffffff);
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: var(--radius, 8px);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
     overflow-x: auto;
     margin-bottom: 24px;
 }
@@ -268,36 +318,38 @@
 .stocks-table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: auto;
 }
 
 .stocks-table th {
     background-color: #f8fafc;
-    color: var(--secondary);
+    color: var(--secondary, #64748b);
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.05em;
     padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--border, #e2e8f0);
+    white-space: nowrap;
 }
 
 .stocks-table td {
-    padding: 14px 16px;
+    padding: 12px 16px;
     border-bottom: 1px solid #f1f5f9;
     vertical-align: middle;
     font-size: 0.875rem;
-    color: var(--dark);
+    color: var(--dark, #0f172a);
 }
 
 .stocks-table tr:last-child td {
     border-bottom: none;
 }
 
-.stocks-table tr:hover td {
-    background-color: #f8fafc;
+.stocks-table tbody tr:hover {
+    background-color: #fcfcfd;
 }
 
-/* --- Product Cell --- */
+/* Product Info Cell */
 .stocks-product-cell {
     display: flex;
     align-items: center;
@@ -305,162 +357,245 @@
 }
 
 .stocks-product-img {
-    width: 44px;
-    height: 44px;
-    border-radius: var(--radius-sm);
+    width: 42px;
+    height: 42px;
     object-fit: cover;
-    border: 1px solid var(--border);
-    background: #f8fafc;
+    border-radius: var(--radius-sm, 6px);
+    border: 1px solid var(--border, #e2e8f0);
     flex-shrink: 0;
+    background-color: #f8fafc;
 }
 
 .stocks-product-img-fallback {
-    width: 44px;
-    height: 44px;
-    border-radius: var(--radius-sm);
-    background: #f1f5f9;
+    width: 42px;
+    height: 42px;
+    border-radius: var(--radius-sm, 6px);
+    background-color: #f1f5f9;
+    border: 1px solid var(--border, #e2e8f0);
     display: flex;
     align-items: center;
     justify-content: center;
     color: #94a3b8;
-    font-size: 1.1rem;
-    border: 1px solid var(--border);
+    font-size: 1rem;
     flex-shrink: 0;
 }
 
 .stocks-product-name {
     font-weight: 700;
-    color: var(--dark);
-    line-height: 1.35;
+    color: var(--dark, #0f172a);
     font-size: 0.875rem;
+    line-height: 1.35;
+    margin-bottom: 2px;
 }
 
 .stocks-sku-pill {
     display: inline-block;
+    padding: 2px 7px;
+    background-color: #eff6ff;
+    color: var(--primary, #2563eb);
+    border-radius: 4px;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-size: 0.72rem;
     font-weight: 700;
-    color: var(--primary);
-    background: #eff6ff;
-    padding: 2px 6px;
-    border-radius: 4px;
+    letter-spacing: 0.02em;
     border: 1px solid #dbeafe;
 }
 
 .stocks-meta-text {
-    font-size: 0.72rem;
-    color: var(--secondary);
+    font-size: 0.75rem;
+    color: var(--secondary, #64748b);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
 }
 
-/* --- Status Badges (Standard CV Bintang) --- */
-.badge-status {
+/* Numbers & Pricing */
+.stocks-price-modal {
+    font-weight: 700;
+    color: var(--dark, #0f172a);
+    font-size: 0.875rem;
+    line-height: 1.2;
+}
+
+.stocks-price-jual {
+    font-size: 0.75rem;
+    color: var(--secondary, #64748b);
+    margin-top: 2px;
+}
+
+.stocks-min-stock {
+    font-weight: 600;
+    color: var(--secondary, #64748b);
+    font-size: 0.85rem;
+}
+
+.stock-num {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    display: inline-block;
+}
+
+.stock-safe {
+    color: #059669;
+}
+
+.stock-low {
+    color: #d97706;
+}
+
+.stock-empty {
+    color: #dc2626;
+}
+
+/* Status Badges */
+.badge-stock {
     display: inline-flex;
     align-items: center;
     gap: 5px;
     padding: 4px 10px;
-    border-radius: 999px;
-    font-size: 0.72rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
     font-weight: 700;
+    line-height: 1;
     white-space: nowrap;
 }
 
-.badge-status-selesai {
-    background-color: #dcfce7;
-    color: #15803d;
-    border: 1px solid #86efac;
+.badge-stock-safe {
+    background-color: #ecfdf5;
+    color: #059669;
+    border: 1px solid #a7f3d0;
 }
 
-.badge-status-diproses {
+.badge-stock-low {
     background-color: #fffbeb;
-    color: #b45309;
+    color: #d97706;
     border: 1px solid #fde68a;
 }
 
-.badge-status-ditolak {
-    background-color: #fee2e2;
-    color: #b91c1c;
-    border: 1px solid #fca5a5;
+.badge-stock-empty {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
 }
 
-/* --- Stock Quantity Typography --- */
-.stock-num-bold {
-    font-weight: 800;
-    font-size: 1rem;
-    line-height: 1;
+/* Mutation Type Badges (for History page) */
+.badge-type-in {
+    background-color: #ecfdf5;
+    color: #059669;
+    border: 1px solid #a7f3d0;
 }
 
-.stock-num-safe {
-    color: #15803d;
+.badge-type-out {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
 }
 
-.stock-num-low {
-    color: #b45309;
+.badge-type-return {
+    background-color: #eff6ff;
+    color: #2563eb;
+    border: 1px solid #bfdbfe;
 }
 
-.stock-num-empty {
-    color: #b91c1c;
+/* Action Button in Table */
+.btn-table-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background-color: #ffffff;
+    color: var(--dark, #0f172a);
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: var(--radius-sm, 6px);
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
 }
 
-/* --- Modal Styles (Alpine.js) --- */
+.btn-table-action:hover {
+    background-color: #f1f5f9;
+    border-color: #cbd5e1;
+    color: var(--primary, #2563eb);
+}
+
+.btn-table-action i {
+    color: var(--primary, #2563eb);
+}
+
+/* ==========================================================================
+   6. Stock Adjustment Modal (Alpine.js)
+   ========================================================================== */
 .stocks-modal-backdrop {
     position: fixed;
     inset: 0;
-    z-index: 99999;
-    background: rgba(15, 23, 42, 0.6);
+    background-color: rgba(15, 23, 42, 0.55);
     backdrop-filter: blur(4px);
+    z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 16px;
+    padding: 20px;
 }
 
 .stocks-modal-box {
-    background: var(--white);
-    border-radius: var(--radius);
+    background: var(--white, #ffffff);
+    border-radius: var(--radius, 12px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 480px;
-    box-shadow: var(--shadow-lg);
+    max-width: 520px;
     overflow: hidden;
-    animation: modalFadeIn 0.15s ease-out;
+    animation: modalPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid var(--border, #e2e8f0);
 }
 
-@keyframes modalFadeIn {
-    from { opacity: 0; transform: scale(0.96); }
-    to { opacity: 1; transform: scale(1); }
+@keyframes modalPop {
+    from {
+        opacity: 0;
+        transform: scale(0.96) translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
 
 .stocks-modal-header {
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--border);
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border, #e2e8f0);
+    background-color: #f8fafc;
 }
 
 .stocks-modal-title {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     font-weight: 700;
-    color: var(--dark);
-    margin: 0;
+    color: var(--dark, #0f172a);
     display: flex;
     align-items: center;
     gap: 8px;
+    margin: 0;
 }
 
 .stocks-modal-close {
-    background: none;
+    background: transparent;
     border: none;
-    font-size: 1.2rem;
-    color: var(--secondary);
+    font-size: 1.15rem;
+    color: var(--secondary, #64748b);
     cursor: pointer;
     padding: 4px;
     border-radius: 4px;
-    transition: var(--transition);
+    line-height: 1;
+    transition: var(--transition, all 0.15s ease);
 }
 
 .stocks-modal-close:hover {
-    color: var(--dark);
-    background: #f1f5f9;
+    color: var(--dark, #0f172a);
+    background-color: #e2e8f0;
 }
 
 .stocks-modal-body {
@@ -468,55 +603,53 @@
 }
 
 .selected-product-box {
-    background: #f8fafc;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
+    background-color: #f8fafc;
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: var(--radius-sm, 6px);
     padding: 12px 14px;
     margin-bottom: 16px;
 }
 
-/* Type Toggle Buttons */
+/* Segmented Adjustment Radio Grid */
 .adjust-type-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
-    margin-top: 6px;
 }
 
 .adjust-type-option {
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 10px 12px;
-    text-align: center;
-    cursor: pointer;
-    transition: var(--transition);
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    font-size: 0.825rem;
-    font-weight: 700;
-    color: var(--secondary);
-    background: var(--white);
+    padding: 10px 14px;
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: var(--radius-sm, 6px);
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--secondary, #64748b);
+    background-color: #ffffff;
+    transition: all 0.15s ease;
 }
 
 .adjust-type-option:hover {
     border-color: #cbd5e1;
+    background-color: #f8fafc;
 }
 
 .adjust-type-option.active-in {
-    border-color: #16a34a;
+    border-color: #10b981;
     background-color: #ecfdf5;
-    color: #15803d;
+    color: #059669;
 }
 
 .adjust-type-option.active-out {
-    border-color: #dc2626;
+    border-color: #ef4444;
     background-color: #fef2f2;
-    color: #b91c1c;
+    color: #dc2626;
 }
 
-/* Input with Addon */
 .input-addon-wrap {
     position: relative;
     display: flex;
@@ -529,39 +662,64 @@
 
 .input-addon-text {
     position: absolute;
-    right: 12px;
-    font-size: 0.8rem;
+    right: 14px;
+    color: var(--secondary, #64748b);
+    font-size: 0.85rem;
     font-weight: 600;
-    color: var(--secondary);
     pointer-events: none;
 }
 
 .stocks-modal-footer {
-    padding: 14px 20px;
-    border-top: 1px solid var(--border);
-    background: #f8fafc;
     display: flex;
+    align-items: center;
     justify-content: flex-end;
     gap: 10px;
+    padding: 14px 20px;
+    border-top: 1px solid var(--border, #e2e8f0);
+    background-color: #f8fafc;
 }
 
-/* History Audit Log Specific Styles */
-.history-type-badge-in {
-    background-color: #dcfce7;
-    color: #15803d;
-    border: 1px solid #86efac;
+.stocks-modal-footer .btn {
+    width: auto !important;
+    white-space: nowrap !important;
+    height: 38px;
+    padding: 0 16px;
+    font-size: 0.875rem;
+    font-weight: 600;
 }
 
-.history-type-badge-out {
-    background-color: #fee2e2;
-    color: #b91c1c;
-    border: 1px solid #fca5a5;
+/* ==========================================================================
+   7. Responsive adjustments
+   ========================================================================== */
+@media (max-width: 992px) {
+    .stocks-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
-.history-type-badge-return {
-    background-color: #eff6ff;
-    color: #1d4ed8;
-    border: 1px solid #93c5fd;
+@media (max-width: 768px) {
+    .stocks-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .stocks-header-actions {
+        width: 100%;
+    }
+    .stocks-header-actions .btn {
+        flex: 1;
+    }
+    .stocks-filter-row {
+        flex-wrap: wrap;
+    }
+    .filter-select-wrapper {
+        width: 100%;
+    }
+    .filter-submit-btn,
+    .filter-reset-btn {
+        width: 100% !important;
+    }
+    .stocks-alert-banner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
-
-

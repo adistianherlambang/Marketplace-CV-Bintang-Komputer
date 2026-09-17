@@ -40,11 +40,13 @@
                 <p class="stocks-subtitle">Pantau ketersediaan stok fisik produk gudang dan deteksi stok yang menipis secara real-time.</p>
             </div>
             <div class="stocks-header-actions">
-                <a href="{{ route('admin.stocks.history') }}" class="btn btn-secondary" style="height: 40px; display: inline-flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-clock-rotate-left"></i> Riwayat Stok
+                <a href="{{ route('admin.stocks.history') }}" class="btn btn-secondary">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>Riwayat Stok</span>
                 </a>
-                <button type="button" @click="openModal()" class="btn btn-primary" style="height: 40px; display: inline-flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-plus-minus"></i> Penyesuaian Stok
+                <button type="button" @click="openModal()" class="btn btn-primary">
+                    <i class="fa-solid fa-plus-minus"></i>
+                    <span>Penyesuaian Stok</span>
                 </button>
             </div>
         </div>
@@ -54,20 +56,19 @@
             <div class="stocks-alert-banner">
                 <div class="stocks-alert-left">
                     <i class="fa-solid fa-triangle-exclamation stocks-alert-icon"></i>
-                    <div>
-                        <h4 class="stocks-alert-title">Peringatan Ketersediaan Stok!</h4>
-                        <p class="stocks-alert-desc">
-                            Terdapat <strong>{{ $counts['low'] }} produk</strong> dengan stok menipis (di bawah batas minimum) 
-                            @if(($counts['empty'] ?? 0) > 0)
-                                dan <strong>{{ $counts['empty'] }} produk habis</strong>
-                            @endif
-                            yang perlu segera dilakukan pengadaan ulang.
-                        </p>
+                    <div class="stocks-alert-text">
+                        <strong>Perhatian Ketersediaan Stok:</strong>
+                        Terdapat <b>{{ $counts['low'] }} produk stok menipis</b>
+                        @if(($counts['empty'] ?? 0) > 0)
+                            dan <b>{{ $counts['empty'] }} produk habis</b>
+                        @endif
+                        yang membutuhkan pengadaan ulang segera.
                     </div>
                 </div>
                 @if(request('status') !== 'low')
                     <a href="{{ route('admin.stocks.index', ['status' => 'low']) }}" class="stocks-alert-btn">
-                        <i class="fa-solid fa-filter"></i> Tampilkan Stok Menipis
+                        <i class="fa-solid fa-filter"></i>
+                        <span>Lihat Stok Menipis</span>
                     </a>
                 @endif
             </div>
@@ -121,13 +122,15 @@
                     </select>
                 </div>
 
-                <button type="submit" class="btn btn-primary filter-submit-btn">
-                    <i class="fa-solid fa-filter"></i> Filter
+                <button type="submit" class="filter-submit-btn">
+                    <i class="fa-solid fa-filter"></i>
+                    <span>Filter</span>
                 </button>
 
                 @if(request()->anyFilled(['search', 'status']))
-                    <a href="{{ route('admin.stocks.index') }}" class="btn btn-secondary filter-reset-btn">
-                        <i class="fa-solid fa-rotate-left"></i> Reset
+                    <a href="{{ route('admin.stocks.index') }}" class="filter-reset-btn">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>Reset</span>
                     </a>
                 @endif
             </div>
@@ -138,30 +141,30 @@
             <table class="stocks-table">
                 <thead>
                     <tr>
-                        <th style="width: 5%; text-align: center;">No</th>
+                        <th style="width: 4%; text-align: center;">No</th>
                         <th style="width: 36%;">Produk &amp; SKU</th>
-                        <th style="width: 16%;">Harga Modal &amp; Jual</th>
+                        <th style="width: 17%;">Harga Modal &amp; Jual</th>
                         <th style="width: 10%; text-align: center;">Batas Min.</th>
-                        <th style="width: 12%; text-align: center;">Sisa Stok</th>
-                        <th style="width: 10%; text-align: center;">Status</th>
+                        <th style="width: 11%; text-align: center;">Sisa Stok</th>
+                        <th style="width: 11%; text-align: center;">Status</th>
                         <th style="width: 11%; text-align: center;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($products as $product)
                         @php
-                            $isLow = $product->stock > 0 && $product->stock <= $product->min_stock;
                             $isEmpty = $product->stock <= 0;
+                            $isLow   = !$isEmpty && $product->stock <= $product->min_stock;
                         @endphp
                         <tr>
-                            <td style="text-align: center; color: var(--secondary); font-size: 0.8rem;">
+                            <td style="text-align: center; color: var(--secondary); font-size: 0.8125rem;">
                                 {{ $loop->iteration + ($products->currentPage() - 1) * $products->perPage() }}
                             </td>
 
                             <td>
                                 <div class="stocks-product-cell">
-                                    @if($product->primaryImage && file_exists(public_path('storage/' . $product->primaryImage->image_path)))
-                                        <img src="{{ asset('storage/' . $product->primaryImage->image_path) }}" alt="{{ $product->name }}" class="stocks-product-img">
+                                    @if($product->primaryImage && file_exists(public_path('storage/' . $product->primaryImage->path)))
+                                        <img src="{{ asset('storage/' . $product->primaryImage->path) }}" alt="{{ $product->name }}" class="stocks-product-img">
                                     @else
                                         <div class="stocks-product-img-fallback">
                                             <i class="fa-solid fa-box"></i>
@@ -169,7 +172,7 @@
                                     @endif
                                     <div>
                                         <div class="stocks-product-name">{{ $product->name }}</div>
-                                        <div class="stocks-meta-text" style="margin-top: 3px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                                        <div class="stocks-meta-text">
                                             <span class="stocks-sku-pill">SKU: {{ $product->sku }}</span>
                                             @if($product->brand)
                                                 <span>• {{ $product->brand->name }}</span>
@@ -183,35 +186,35 @@
                             </td>
 
                             <td>
-                                <div style="font-weight: 700; color: var(--dark); font-size: 0.875rem;">
+                                <div class="stocks-price-modal">
                                     Rp {{ number_format($product->price_modal, 0, ',', '.') }}
                                 </div>
-                                <div style="font-size: 0.75rem; color: var(--secondary); margin-top: 1px;">
+                                <div class="stocks-price-jual">
                                     Jual: Rp {{ number_format($product->price_jual, 0, ',', '.') }}
                                 </div>
                             </td>
 
-                            <td style="text-align: center; color: var(--secondary); font-weight: 600; font-size: 0.85rem;">
-                                {{ $product->min_stock }} pcs
+                            <td style="text-align: center;">
+                                <span class="stocks-min-stock">{{ $product->min_stock }} pcs</span>
                             </td>
 
                             <td style="text-align: center;">
-                                <div class="stock-num-bold {{ $isEmpty ? 'stock-num-empty' : ($isLow ? 'stock-num-low' : 'stock-num-safe') }}">
+                                <span class="stock-num {{ $isEmpty ? 'stock-empty' : ($isLow ? 'stock-low' : 'stock-safe') }}">
                                     {{ $product->stock }} pcs
-                                </div>
+                                </span>
                             </td>
 
                             <td style="text-align: center;">
                                 @if ($isEmpty)
-                                    <span class="badge-status badge-status-ditolak">
+                                    <span class="badge-stock badge-stock-empty">
                                         <i class="fa-solid fa-circle-xmark"></i> Habis
                                     </span>
                                 @elseif ($isLow)
-                                    <span class="badge-status badge-status-diproses">
+                                    <span class="badge-stock badge-stock-low">
                                         <i class="fa-solid fa-triangle-exclamation"></i> Menipis
                                     </span>
                                 @else
-                                    <span class="badge-status badge-status-selesai">
+                                    <span class="badge-stock badge-stock-safe">
                                         <i class="fa-solid fa-circle-check"></i> Aman
                                     </span>
                                 @endif
@@ -220,9 +223,9 @@
                             <td style="text-align: center;">
                                 <button type="button" 
                                         @click="openModal({{ $product->id }}, '{{ addslashes($product->name) }}', '{{ $product->sku }}', {{ $product->stock }}, {{ $product->min_stock }})"
-                                        class="btn btn-secondary btn-sm"
-                                        style="padding: 6px 12px; font-size: 0.78rem; font-weight: 600; white-space: nowrap;">
-                                    <i class="fa-solid fa-sliders text-primary"></i> Sesuaikan
+                                        class="btn-table-action">
+                                    <i class="fa-solid fa-sliders"></i>
+                                    <span>Sesuaikan</span>
                                 </button>
                             </td>
                         </tr>
@@ -230,7 +233,7 @@
                         <tr>
                             <td colspan="7" style="text-align: center; padding: 48px 20px; color: var(--secondary);">
                                 <i class="fa-solid fa-boxes-stacked" style="font-size: 2.5rem; opacity: 0.35; margin-bottom: 12px; display: block;"></i>
-                                <div style="font-weight: 700; color: var(--dark); margin-bottom: 4px;">Tidak Ada Data Produk</div>
+                                <div style="font-weight: 700; color: var(--dark); margin-bottom: 4px; font-size: 1rem;">Tidak Ada Data Produk</div>
                                 <div style="font-size: 0.85rem;">Tidak ada produk yang cocok dengan pencarian atau status filter yang dipilih.</div>
                             </td>
                         </tr>
@@ -343,4 +346,3 @@
 
     </div>
 </x-admin-layout>
-

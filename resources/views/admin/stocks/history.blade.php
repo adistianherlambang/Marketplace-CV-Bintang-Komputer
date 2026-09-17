@@ -13,8 +13,9 @@
                 <p class="stocks-subtitle">Audit log pencatatan mutasi stok barang masuk, keluar, dan retur pembelian.</p>
             </div>
             <div class="stocks-header-actions">
-                <a href="{{ route('admin.stocks.index') }}" class="btn btn-secondary" style="height: 40px; display: inline-flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-arrow-left"></i> Kembali ke Kelola Stok
+                <a href="{{ route('admin.stocks.index') }}" class="btn btn-secondary">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Kembali ke Kelola Stok</span>
                 </a>
             </div>
         </div>
@@ -67,13 +68,15 @@
                     </select>
                 </div>
 
-                <button type="submit" class="btn btn-primary filter-submit-btn">
-                    <i class="fa-solid fa-filter"></i> Filter
+                <button type="submit" class="filter-submit-btn">
+                    <i class="fa-solid fa-filter"></i>
+                    <span>Filter</span>
                 </button>
 
                 @if(request()->anyFilled(['search', 'type']))
-                    <a href="{{ route('admin.stocks.history') }}" class="btn btn-secondary filter-reset-btn">
-                        <i class="fa-solid fa-rotate-left"></i> Reset
+                    <a href="{{ route('admin.stocks.history') }}" class="filter-reset-btn">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>Reset</span>
                     </a>
                 @endif
             </div>
@@ -84,50 +87,50 @@
             <table class="stocks-table">
                 <thead>
                     <tr>
-                        <th style="width: 5%; text-align: center;">No</th>
+                        <th style="width: 4%; text-align: center;">No</th>
                         <th style="width: 14%;">Tanggal</th>
                         <th style="width: 32%;">Produk &amp; SKU</th>
-                        <th style="width: 11%; text-align: center;">Tipe Mutasi</th>
+                        <th style="width: 12%; text-align: center;">Tipe Mutasi</th>
                         <th style="width: 12%; text-align: center;">Perubahan Qty</th>
-                        <th style="width: 12%;">Admin / Petugas</th>
+                        <th style="width: 12%;">Petugas</th>
                         <th style="width: 14%;">Keterangan</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($histories as $history)
                         <tr>
-                            <td style="text-align: center; color: var(--secondary); font-size: 0.8rem;">
+                            <td style="text-align: center; color: var(--secondary); font-size: 0.8125rem;">
                                 {{ $loop->iteration + ($histories->currentPage() - 1) * $histories->perPage() }}
                             </td>
-                            <td style="white-space: nowrap; color: var(--secondary); font-size: 0.8rem;">
+                            <td style="white-space: nowrap; color: var(--secondary); font-size: 0.8125rem;">
                                 {{ $history->date ? $history->date->format('d/m/Y H:i') : '-' }} WIB
                             </td>
                             <td>
                                 <div class="stocks-product-name">{{ optional($history->product)->name ?? 'Produk Dihapus / Tidak Tersedia' }}</div>
-                                <div class="stocks-meta-text" style="margin-top: 3px;">
+                                <div class="stocks-meta-text">
                                     <span class="stocks-sku-pill">SKU: {{ optional($history->product)->sku ?? '-' }}</span>
                                 </div>
                             </td>
                             <td style="text-align: center;">
                                 @if ($history->type === 'in')
-                                    <span class="badge-status badge-status-selesai">
+                                    <span class="badge-stock badge-type-in">
                                         <i class="fa-solid fa-arrow-down"></i> Masuk
                                     </span>
                                 @elseif ($history->type === 'out')
-                                    <span class="badge-status badge-status-ditolak">
+                                    <span class="badge-stock badge-type-out">
                                         <i class="fa-solid fa-arrow-up"></i> Keluar
                                     </span>
                                 @elseif ($history->type === 'return')
-                                    <span class="badge-status badge-status-diproses" style="background:#eff6ff; color:#1d4ed8; border-color:#93c5fd;">
+                                    <span class="badge-stock badge-type-return">
                                         <i class="fa-solid fa-rotate-left"></i> Retur
                                     </span>
                                 @else
-                                    <span class="badge-status" style="background: #f1f5f9; color: var(--secondary); border: 1px solid var(--border);">
+                                    <span class="badge-stock" style="background: #f1f5f9; color: var(--secondary); border: 1px solid var(--border);">
                                         {{ ucfirst($history->type) }}
                                     </span>
                                 @endif
                             </td>
-                            <td style="text-align: center; font-weight: 800; font-size: 0.95rem; color: {{ in_array($history->type, ['in', 'return']) ? '#15803d' : '#b91c1c' }};">
+                            <td style="text-align: center; font-weight: 800; font-size: 0.9375rem; color: {{ in_array($history->type, ['in', 'return']) ? '#059669' : '#dc2626' }};">
                                 {{ in_array($history->type, ['in', 'return']) ? '+' : '-' }}{{ $history->quantity }} pcs
                             </td>
                             <td>
@@ -135,15 +138,15 @@
                                     {{ optional($history->user)->name ?? 'Sistem' }}
                                 </span>
                             </td>
-                            <td style="font-size: 0.8rem; color: var(--secondary); line-height: 1.35;" title="{{ $history->description }}">
-                                {{ Str::limit($history->description, 55) }}
+                            <td style="font-size: 0.8125rem; color: var(--secondary); line-height: 1.35;" title="{{ $history->description }}">
+                                {{ Str::limit($history->description, 50) }}
                             </td>
                         </tr>
                     @empty
                         <tr>
                             <td colspan="7" style="text-align: center; padding: 48px 20px; color: var(--secondary);">
                                 <i class="fa-solid fa-clock-rotate-left" style="font-size: 2.5rem; opacity: 0.35; margin-bottom: 12px; display: block;"></i>
-                                <div style="font-weight: 700; color: var(--dark); margin-bottom: 4px;">Belum Ada Riwayat Penyesuaian</div>
+                                <div style="font-weight: 700; color: var(--dark); margin-bottom: 4px; font-size: 1rem;">Belum Ada Riwayat Penyesuaian</div>
                                 <div style="font-size: 0.85rem;">Belum ada catatan mutasi stok yang tersimpan atau cocok dengan filter yang dipilih.</div>
                             </td>
                         </tr>
