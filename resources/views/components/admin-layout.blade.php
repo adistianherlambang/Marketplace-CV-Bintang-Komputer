@@ -36,12 +36,8 @@
             <!-- Sidebar -->
             <aside class="admin-sidebar" :class="{ 'open': sidebarOpen }">
                 <div class="admin-sidebar-header">
-                    <a href="{{ route('admin.dashboard') }}" class="brand-logo sidebar-brand-logo" style="display: flex; align-items: center; gap: 10px;">
-                        <img src="{{ asset('img/logo.png') }}" alt="Logo" style="height: 38px; width: 38px; object-fit: contain; border-radius: 8px; box-shadow: var(--shadow-sm);">
-                        <div style="display: flex; flex-direction: column;">
-                            <span style="font-weight: 800; font-size: 0.95rem; color: var(--dark); line-height: 1.2;">Bintang Jaya</span>
-                            <span style="font-size: 0.68rem; color: var(--primary); font-weight: 600; letter-spacing: 0.5px;">KOMPUTER</span>
-                        </div>
+                    <a href="{{ route('admin.dashboard') }}" class="brand-logo sidebar-brand-logo" style="display: flex; align-items: center;">
+                        <img src="{{ asset('img/logo/logoKesamping.jpg') }}" alt="CV Bintang Jaya Komputer" style="height: 38px; width: auto; max-width: 200px; object-fit: contain; border-radius: 6px;">
                     </a>
                 </div>
                 

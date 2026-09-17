@@ -20,9 +20,8 @@
     <!-- Header -->
     <header class="guest-header">
         <div class="container guest-navbar">
-            <a href="{{ route('catalog.index') }}" class="brand-logo" style="display: flex; align-items: center; gap: 10px;">
-                <img src="{{ asset('img/logo.png') }}" alt="Logo" style="height: 38px; width: 38px; object-fit: contain; border-radius: 8px;">
-                <span style="font-weight: 800; font-size: 1.05rem; color: var(--dark);">CV Bintang Jaya Komputer</span>
+            <a href="{{ route('catalog.index') }}" class="brand-logo" style="display: flex; align-items: center;">
+                <img src="{{ asset('img/logo/logoKesamping.jpg') }}" alt="CV Bintang Jaya Komputer" style="height: 38px; width: auto; object-fit: contain; border-radius: 6px;">
             </a>
             
             <div class="flex items-center gap-3">

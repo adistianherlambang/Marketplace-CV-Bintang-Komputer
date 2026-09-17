@@ -15,7 +15,7 @@
                     <i class="fa-solid fa-arrow-left"></i> Kembali ke Katalog
                 </a>
                 <div class="d-flex align-items-center gap-3 mt-3">
-                    <img src="{{ asset('img/logo.png') }}" alt="Logo" style="height: 48px; width: 48px; object-fit: contain; border-radius: 10px;">
+                    <img src="{{ asset('img/logo/logoKesamping.jpg') }}" alt="CV Bintang Jaya Komputer" style="height: 48px; width: auto; object-fit: contain; border-radius: 8px;">
                     <div>
                         <h2 class="fw-bold mb-0">Checkout Pengiriman</h2>
                         <span class="text-muted small">CV Bintang Jaya Komputer</span>

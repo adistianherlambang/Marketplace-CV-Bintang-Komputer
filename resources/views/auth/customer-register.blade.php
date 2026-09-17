@@ -11,7 +11,9 @@
     <div class="container" style="max-width: 450px;">
         <div class="card shadow-sm border-0 p-4 rounded-4">
             <div class="text-center mb-4">
-                <h3 class="fw-bold text-success">Daftar Akun Baru</h3>
+                <a href="{{ route('catalog.index') }}">
+                    <img src="{{ asset('img/logo/logoKesamping.jpg') }}" alt="CV Bintang Jaya Komputer" style="height: 48px; width: auto; max-width: 100%; object-fit: contain;" class="mb-2">
+                </a>
                 <p class="text-muted small">Buat akun untuk mulai berbelanja di Bintang Komputer.</p>
             </div>
 

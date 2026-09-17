@@ -14,9 +14,8 @@
 
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold text-primary d-flex align-items-center gap-2" href="{{ route('catalog.index') }}">
-                <img src="{{ asset('img/logo.png') }}" alt="Logo" style="height: 36px; width: 36px; object-fit: contain; border-radius: 6px;">
-                <span class="text-dark">CV Bintang Jaya Komputer</span>
+            <a class="navbar-brand d-flex align-items-center" href="{{ route('catalog.index') }}">
+                <img src="{{ asset('img/logo/logoKesamping.jpg') }}" alt="CV Bintang Jaya Komputer" style="height: 38px; width: auto; object-fit: contain; border-radius: 6px;">
             </a>
 
             <div class="ms-auto d-flex align-items-center gap-2">
