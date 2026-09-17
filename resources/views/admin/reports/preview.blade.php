@@ -23,14 +23,15 @@
         </div>
 
         <div class="preview-box">
-            <!-- Header -->
+            <!-- Header Kop Surat -->
             <div class="preview-header-section">
-                <div>
-                    <h1 class="font-bold preview-company-name">CV BINTANG JAYA KOMPUTER</h1>
-                    <p class="preview-company-address">Jl. Ahmad Yani No.68, Iringmulyo, Kota Metro, Lampung | Telp: (0725) 45678</p>
+                <div style="display: flex; align-items: center; gap: 14px;">
+                    <img src="{{ asset('img/logo/logoKesamping.jpg') }}" alt="CV Bintang Jaya Komputer" style="height: 40px; max-width: 170px; object-fit: contain;">
                 </div>
-                <div class="td-right">
-                    <span class="badge badge-info preview-badge-lg">Laporan Preview</span>
+                <div style="text-align: right;">
+                    <h2 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin: 0;">CV. BINTANG JAYA KOMPUTER</h2>
+                    <p style="font-size: 0.78rem; color: #475569; margin: 2px 0 0 0;">Pusat Penjualan Komputer, Laptop, Sparepart &amp; Layanan Servis Resmi</p>
+                    <p style="font-size: 0.75rem; color: #64748b; margin: 2px 0 0 0;">Jl. Ahmad Yani No.68, Iringmulyo, Metro Timur, Kota Metro, Lampung | Telp: (0725) 45678</p>
                 </div>
             </div>
 
@@ -99,62 +100,114 @@
 
             <!-- 2. Monthly Report -->
             @if ($data['type'] === 'monthly')
-                <div class="preview-report-section">
-                    <h3 class="font-bold text-center preview-report-title">LAPORAN PENJUALAN BULANAN</h3>
-                    <p class="text-center text-secondary text-sm">Bulan Laporan: {{ $data['month'] }}</p>
+                <div class="preview-report-section" style="margin-bottom: 16px;">
+                    <h3 class="font-bold text-center preview-report-title" style="letter-spacing: 0.5px;">LAPORAN PENJUALAN BULANAN</h3>
+                    <p class="text-center text-secondary text-sm" style="margin-top: 4px;">
+                        Bulan Periode: <strong>{{ $data['month'] }}</strong> &nbsp;•&nbsp; Tanggal Cetak: {{ now()->format('d/m/Y H:i') }} WIB
+                    </p>
                 </div>
 
-                <div class="table-container preview-table-container">
-                    <table>
+                <div class="table-responsive" style="margin-bottom: 20px;">
+                    <table class="preview-table-compact">
                         <thead>
                             <tr>
-                                <th>No. Invoice</th>
-                                <th>Tanggal</th>
-                                <th>Pelanggan & Rincian Produk</th>
-                                <th>Kasir</th>
-                                <th class="th-center">Status</th>
-                                <th class="th-right">Total Belanja</th>
+                                <th style="width: 4%; text-align: center;">No</th>
+                                <th style="width: 16%;">No. Invoice</th>
+                                <th style="width: 12%;">Tanggal</th>
+                                <th style="width: 16%;">Nama Pelanggan</th>
+                                <th style="width: 32%;">Rincian Barang &amp; Qty</th>
+                                <th style="width: 10%; text-align: center;">Status</th>
+                                <th style="width: 10%; text-align: right;">Total</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse ($data['orders'] as $order)
+                                @php
+                                    $st = strtolower(trim($order->status));
+                                @endphp
                                 <tr>
-                                    <td><strong>{{ $order->invoice_number }}</strong></td>
-                                    <td>{{ $order->created_at->format('d/m/Y') }}</td>
+                                    <td style="text-align: center; color: var(--secondary);">{{ $loop->iteration }}</td>
                                     <td>
-                                        <div class="font-semibold mb-1">{{ $order->customer_display_name }}</div>
-                                        <ul style="margin: 0; padding-left: 15px; font-size: 11px; color: #475569;">
+                                        <span class="preview-invoice-no">{{ $order->invoice_number }}</span>
+                                    </td>
+                                    <td style="white-space: nowrap; color: var(--dark);">
+                                        {{ $order->created_at->format('d/m/Y H:i') }}
+                                    </td>
+                                    <td>
+                                        <div style="font-weight: 700; color: var(--dark);">{{ $order->customer_display_name }}</div>
+                                        @if ($order->customer_phone)
+                                            <div style="font-size: 0.7rem; color: var(--secondary); margin-top: 1px;">
+                                                <i class="fa-solid fa-phone me-1" style="font-size: 0.65rem;"></i>{{ $order->customer_phone }}
+                                            </div>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($order->items && $order->items->count() > 0)
                                             @foreach ($order->items as $item)
-                                                <li>{{ $item->item_name ?? optional($item->product)->name }} ({{ $item->quantity }}x @ Rp {{ number_format($item->price, 0, ',', '.') }})</li>
+                                                <div class="preview-item-row">
+                                                    • {{ $item->item_name ?? optional($item->product)->name }}
+                                                    <span class="preview-item-qty">({{ $item->quantity }}x @ Rp {{ number_format($item->price, 0, ',', '.') }})</span>
+                                                </div>
                                             @endforeach
-                                        </ul>
+                                        @else
+                                            <span style="color: var(--secondary); font-style: italic;">Tidak ada rincian item</span>
+                                        @endif
                                     </td>
-                                    <td>{{ $order->cashier_display_name }}</td>
-                                    <td class="td-center">
-                                        <span class="badge {{ in_array($order->status, ['Lunas', 'Selesai']) ? 'badge-success' : (in_array($order->status, ['Diproses', 'Dikirim']) ? 'badge-info' : 'badge-warning') }}">{{ $order->status }}</span>
+                                    <td style="text-align: center;">
+                                        @if (in_array($st, ['selesai', 'lunas']))
+                                            <span class="preview-status-badge preview-status-selesai">Selesai</span>
+                                        @elseif ($st === 'diproses')
+                                            <span class="preview-status-badge preview-status-diproses">Diproses</span>
+                                        @elseif ($st === 'dikirim')
+                                            <span class="preview-status-badge preview-status-dikirim">Dikirim</span>
+                                        @elseif (in_array($st, ['menunggu konfirmasi', 'belum dibayar']))
+                                            <span class="preview-status-badge preview-status-menunggu">Menunggu</span>
+                                        @elseif (in_array($st, ['batal', 'dibatalkan']))
+                                            <span class="preview-status-badge preview-status-batal">Batal</span>
+                                        @else
+                                            <span class="preview-status-badge">{{ $order->status }}</span>
+                                        @endif
                                     </td>
-                                    <td class="preview-td-amount">
+                                    <td style="text-align: right; font-weight: 700; color: var(--dark); white-space: nowrap;">
                                         Rp {{ number_format($order->total_amount, 0, ',', '.') }}
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="td-empty">Tidak ada transaksi pada bulan ini.</td>
+                                    <td colspan="7" style="text-align: center; padding: 24px; color: var(--secondary);">
+                                        Tidak ada transaksi pada bulan ini.
+                                    </td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
 
-                <div class="preview-summary-wrap">
-                    <div class="preview-summary-inner">
-                        <div class="flex justify-between mb-2">
-                            <span>Jml Transaksi:</span>
-                            <span class="font-semibold">{{ $data['total_transactions'] }}</span>
-                        </div>
-                        <div class="flex justify-between mb-2 preview-summary-total-row">
-                            <span>Total Penjualan:</span>
-                            <span class="preview-summary-total-val">Rp {{ number_format($data['total_sales'], 0, ',', '.') }}</span>
+                {{-- Summary & Catatan Laporan --}}
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; margin-top: 24px;">
+                    <div style="flex: 1; font-size: 0.75rem; color: var(--secondary); line-height: 1.5;">
+                        <strong style="color: var(--dark);">Catatan Laporan:</strong><br>
+                        • Laporan ini memuat rekapitulasi data penjualan resmi CV Bintang Jaya Komputer.<br>
+                        • Seluruh data terintegrasi langsung dengan database transaksi kasir dan pesanan online.<br>
+                        • Dicetak secara otomatis oleh sistem pada {{ now()->format('d/m/Y H:i:s') }} WIB.
+                    </div>
+                    <div style="width: 320px;">
+                        <table style="width: 100%; border-collapse: collapse; border: 1px solid #cbd5e1; border-radius: 6px; overflow: hidden;">
+                            <tr style="background-color: #f8fafc;">
+                                <td style="padding: 8px 12px; border: 1px solid #cbd5e1; font-size: 0.8rem; color: #475569;">Total Transaksi:</td>
+                                <td style="padding: 8px 12px; border: 1px solid #cbd5e1; font-size: 0.8rem; font-weight: 700; text-align: right;">{{ $data['total_transactions'] }} Transaksi</td>
+                            </tr>
+                            <tr style="background-color: #eff6ff;">
+                                <td style="padding: 10px 12px; border: 1px solid #cbd5e1; font-size: 0.85rem; font-weight: 700; color: #1e3a8a;">Total Penjualan:</td>
+                                <td style="padding: 10px 12px; border: 1px solid #cbd5e1; font-size: 0.95rem; font-weight: 800; color: #1d4ed8; text-align: right;">Rp {{ number_format($data['total_sales'], 0, ',', '.') }}</td>
+                            </tr>
+                        </table>
+
+                        <div style="text-align: center; margin-top: 24px; font-size: 0.75rem; color: #334155;">
+                            Kota Metro, {{ now()->translatedFormat('d F Y') }}<br>
+                            <strong>Pimpinan CV. Bintang Jaya Komputer</strong>
+                            <br><br><br><br>
+                            <u>( ___________________________ )</u>
                         </div>
                     </div>
                 </div>

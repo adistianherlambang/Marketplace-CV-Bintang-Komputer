@@ -14,16 +14,16 @@
     background-color: var(--white);
     border-radius: var(--radius-lg);
     border: 1px solid var(--border);
-    padding: 40px;
-    max-width: 900px;
+    padding: 36px 40px;
+    max-width: 1040px;
     margin: 0 auto;
 }
 
 /* --- Header Section --- */
 .preview-header-section {
-    border-bottom: 2px solid var(--dark);
-    padding-bottom: 20px;
-    margin-bottom: 30px;
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 16px;
+    margin-bottom: 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -31,7 +31,7 @@
 
 /* --- Preview Toolbar --- */
 .preview-toolbar {
-    max-width: 900px;
+    max-width: 1040px;
     margin: 0 auto 20px auto;
     display: flex;
     justify-content: space-between;
@@ -132,4 +132,95 @@
 
 .preview-th-rank {
     width: 80px;
+}
+
+/* --- Compact Monthly Report Table & Badges --- */
+.preview-table-compact {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.78rem;
+}
+
+.preview-table-compact th {
+    background-color: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    padding: 6px 8px;
+    font-weight: 700;
+    font-size: 0.72rem;
+    color: #1e293b;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.preview-table-compact td {
+    border: 1px solid #cbd5e1;
+    padding: 6px 8px;
+    font-size: 0.75rem;
+    vertical-align: top;
+    line-height: 1.35;
+}
+
+.preview-table-compact tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+
+.preview-table-compact tr:hover td {
+    background-color: #f1f5f9;
+}
+
+.preview-invoice-no {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+
+.preview-item-row {
+    margin-bottom: 3px;
+    line-height: 1.3;
+}
+
+.preview-item-qty {
+    color: var(--secondary);
+    font-size: 0.72rem;
+}
+
+.preview-status-badge {
+    display: inline-block;
+    padding: 2px 7px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.preview-status-selesai {
+    background-color: #dcfce7;
+    color: #15803d;
+    border: 1px solid #86efac;
+}
+
+.preview-status-diproses {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #93c5fd;
+}
+
+.preview-status-dikirim {
+    background-color: #f5f3ff;
+    color: #6d28d9;
+    border: 1px solid #c4b5fd;
+}
+
+.preview-status-menunggu {
+    background-color: #fef3c7;
+    color: #b45309;
+    border: 1px solid #fde68a;
+}
+
+.preview-status-batal {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fca5a5;
 }
