@@ -59,18 +59,18 @@ class ReportController extends Controller
 
     public function preview(Request $request)
     {
-        $type = $request->input('type');
+        $type = $request->input('type') ?: 'monthly';
         $data = [];
 
         switch ($type) {
             case 'daily':
-                $date = $request->input('date', now()->toDateString());
+                $date = $request->input('date') ?: now()->toDateString();
                 $data = $this->reportService->getDailyReportData($date);
                 $data['type'] = 'daily';
                 $data['param'] = $date;
                 break;
             case 'monthly':
-                $month = $request->input('month', now()->format('Y-m'));
+                $month = $request->input('month') ?: now()->format('Y-m');
                 $data = $this->reportService->getMonthlyReportData($month);
                 $data['type'] = 'monthly';
                 $data['param'] = $month;

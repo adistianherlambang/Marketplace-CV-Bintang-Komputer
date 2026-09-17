@@ -1,140 +1,181 @@
-/* ============================
+/* ============================================================
    Reports Preview Module
    reports-preview.module.css
-   ============================ */
+   Clean, professional document sheet layout for report previews
+   ============================================================ */
 
-/* --- Preview Page Body --- */
+/* --- Fonts & Base Setup --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+
 .preview-body {
-    background-color: #f1f5f9;
-    padding: 40px 0;
+    background-color: #eef2f6;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #1e293b;
+    margin: 0;
+    padding: 24px 16px 48px 16px;
+    min-height: 100vh;
 }
 
-/* --- Preview Box --- */
+/* --- Preview Navigation Bar / Toolbar --- */
+.preview-toolbar {
+    max-width: 1060px;
+    margin: 0 auto 20px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    padding: 12px 20px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+.preview-toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.preview-toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.preview-nav-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #475569;
+    padding: 4px 10px;
+    background: #f1f5f9;
+    border-radius: 6px;
+}
+
+/* --- Action Buttons --- */
+.preview-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.15s ease-in-out;
+    border: 1px solid transparent;
+}
+
+.preview-btn-back {
+    background: #f8fafc;
+    color: #334155;
+    border-color: #cbd5e1;
+}
+
+.preview-btn-back:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+}
+
+.preview-btn-print {
+    background: #f8fafc;
+    color: #334155;
+    border-color: #cbd5e1;
+}
+
+.preview-btn-print:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+}
+
+.preview-btn-download {
+    background: #2563eb;
+    color: #ffffff;
+    border-color: #1d4ed8;
+}
+
+.preview-btn-download:hover {
+    background: #1d4ed8;
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+}
+
+/* --- Preview Document Sheet --- */
 .preview-box {
-    background-color: var(--white);
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--border);
-    padding: 36px 40px;
-    max-width: 1040px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    padding: 40px 48px;
+    max-width: 1060px;
     margin: 0 auto;
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
 }
 
-/* --- Header Section --- */
+/* --- Official Header (Kop Surat) --- */
 .preview-header-section {
-    border-bottom: 2px solid var(--primary);
+    border-bottom: 2.5px solid #2563eb;
     padding-bottom: 16px;
-    margin-bottom: 24px;
+    margin-bottom: 22px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-/* --- Preview Toolbar --- */
-.preview-toolbar {
-    max-width: 1040px;
-    margin: 0 auto 20px auto;
-    display: flex;
-    justify-content: space-between;
+.preview-logo-wrapper img {
+    height: 42px;
+    max-width: 180px;
+    object-fit: contain;
 }
 
-/* --- Report Title --- */
-.preview-report-title {
-    font-size: 1.25rem;
+.preview-company-info {
+    text-align: right;
 }
 
-/* --- Report Subtitle Section --- */
-.preview-report-section {
-    margin-bottom: 24px;
+.preview-company-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0;
+    letter-spacing: 0.2px;
 }
 
-/* --- Company Title --- */
-.preview-company-name {
-    font-size: 1.5rem;
-    text-transform: uppercase;
+.preview-company-sub {
+    font-size: 0.78rem;
+    color: #475569;
+    margin: 2px 0 0 0;
 }
 
 .preview-company-address {
-    font-size: 0.85rem;
-    color: var(--secondary);
+    font-size: 0.74rem;
+    color: #64748b;
+    margin: 2px 0 0 0;
 }
 
-.preview-badge-lg {
-    font-size: 0.875rem;
+/* --- Report Subheader Section --- */
+.preview-report-section {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-/* --- Table in preview --- */
-.preview-table-container {
-    box-shadow: none;
-    border-radius: var(--radius-sm);
-}
-
-/* --- Summary Footer --- */
-.preview-summary-wrap {
-    margin-top: 30px;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.preview-summary-inner {
-    width: 320px;
-    border-top: 1px solid var(--border);
-    padding-top: 16px;
-}
-
-.preview-summary-total-row {
+.preview-report-title {
     font-size: 1.15rem;
-    font-weight: 700;
-}
-
-.preview-summary-total-val {
-    color: var(--primary);
-}
-
-/* --- Report cell helpers --- */
-.preview-td-amount {
-    text-align: right;
-    font-weight: 600;
-    color: var(--primary);
-}
-
-.preview-td-reason {
-    font-size: 0.85rem;
-}
-
-.preview-td-rank {
-    text-align: center;
     font-weight: 800;
-    color: var(--primary);
+    color: #0f172a;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 4px 0;
 }
 
-.preview-td-qty {
-    text-align: center;
-    font-weight: 700;
+.preview-report-meta {
+    font-size: 0.78rem;
+    color: #64748b;
+    margin: 0;
 }
 
-.preview-td-sales {
-    text-align: right;
-    font-weight: 700;
-    color: var(--success);
-}
-
-.preview-td-stock-danger {
-    text-align: center;
-    font-weight: 700;
-    color: var(--danger);
-}
-
-.preview-td-stock-normal {
-    text-align: center;
-    font-weight: 700;
-    color: var(--dark);
-}
-
-.preview-th-rank {
-    width: 80px;
-}
-
-/* --- Compact Monthly Report Table & Badges --- */
+/* --- Table Styles --- */
 .preview-table-compact {
     width: 100%;
     border-collapse: collapse;
@@ -144,20 +185,21 @@
 .preview-table-compact th {
     background-color: #f1f5f9;
     border: 1px solid #cbd5e1;
-    padding: 6px 8px;
+    padding: 7px 10px;
     font-weight: 700;
     font-size: 0.72rem;
     color: #1e293b;
     text-transform: uppercase;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.03em;
 }
 
 .preview-table-compact td {
     border: 1px solid #cbd5e1;
-    padding: 6px 8px;
+    padding: 7px 10px;
     font-size: 0.75rem;
     vertical-align: top;
-    line-height: 1.35;
+    line-height: 1.4;
+    color: #1e293b;
 }
 
 .preview-table-compact tr:nth-child(even) {
@@ -168,59 +210,150 @@
     background-color: #f1f5f9;
 }
 
+/* --- Cell Typography --- */
 .preview-invoice-no {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-weight: 700;
-    color: var(--primary);
+    color: #1d4ed8;
     font-size: 0.75rem;
     white-space: nowrap;
 }
 
+.preview-customer-name {
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.preview-customer-phone {
+    font-size: 0.7rem;
+    color: #64748b;
+    margin-top: 1px;
+}
+
 .preview-item-row {
-    margin-bottom: 3px;
+    margin-bottom: 2px;
     line-height: 1.3;
 }
 
 .preview-item-qty {
-    color: var(--secondary);
+    color: #64748b;
     font-size: 0.72rem;
 }
 
-.preview-status-badge {
-    display: inline-block;
-    padding: 2px 7px;
-    font-size: 0.7rem;
-    font-weight: 700;
-    border-radius: 4px;
+/* Status: Plain text, centered, no badge */
+.td-status-text {
+    text-align: center;
+    font-weight: 500;
+    color: #1e293b;
+    font-size: 0.75rem;
     white-space: nowrap;
 }
 
-.preview-status-selesai {
-    background-color: #dcfce7;
-    color: #15803d;
-    border: 1px solid #86efac;
+.td-amount-text {
+    text-align: right;
+    font-weight: 700;
+    color: #0f172a;
+    white-space: nowrap;
+    font-size: 0.78rem;
 }
 
-.preview-status-diproses {
-    background-color: #eff6ff;
+/* --- Footer & Ringkasan --- */
+.preview-footer-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    margin-top: 24px;
+}
+
+.preview-notes-box {
+    flex: 1;
+    font-size: 0.74rem;
+    color: #64748b;
+    line-height: 1.5;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 12px 16px;
+}
+
+.preview-notes-box strong {
+    color: #334155;
+}
+
+.preview-summary-container {
+    width: 330px;
+}
+
+.preview-summary-card {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.preview-summary-card td {
+    padding: 7px 12px;
+    border: 1px solid #cbd5e1;
+    font-size: 0.78rem;
+}
+
+.preview-summary-label {
+    color: #475569;
+}
+
+.preview-summary-val {
+    text-align: right;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.preview-summary-total-label {
+    color: #1e3a8a;
+    font-weight: 700;
+    font-size: 0.82rem;
+}
+
+.preview-summary-total-val {
+    text-align: right;
+    font-weight: 800;
     color: #1d4ed8;
-    border: 1px solid #93c5fd;
+    font-size: 0.92rem;
 }
 
-.preview-status-dikirim {
-    background-color: #f5f3ff;
-    color: #6d28d9;
-    border: 1px solid #c4b5fd;
+.preview-signature-box {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 0.75rem;
+    color: #334155;
+    line-height: 1.4;
 }
 
-.preview-status-menunggu {
-    background-color: #fef3c7;
-    color: #b45309;
-    border: 1px solid #fde68a;
-}
+/* --- Print Styles --- */
+@media print {
+    .preview-toolbar,
+    .preview-toolbar * {
+        display: none !important;
+    }
 
-.preview-status-batal {
-    background-color: #fee2e2;
-    color: #b91c1c;
-    border: 1px solid #fca5a5;
+    body.preview-body {
+        background: #ffffff !important;
+        padding: 0 !important;
+        font-size: 8pt;
+    }
+
+    .preview-box {
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+    }
+
+    .preview-table-compact th,
+    .preview-table-compact td {
+        padding: 4px 6px !important;
+        font-size: 7.5pt !important;
+    }
 }

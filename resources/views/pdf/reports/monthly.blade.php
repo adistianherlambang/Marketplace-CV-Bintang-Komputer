@@ -78,39 +78,10 @@
             color: #475569;
             font-size: 7pt;
         }
-        .status-badge {
-            display: inline-block;
-            padding: 2px 5px;
-            font-size: 6.8pt;
-            font-weight: bold;
-            border-radius: 3px;
+        .status-text {
             text-align: center;
-            white-space: nowrap;
-        }
-        .status-selesai {
-            background-color: #dcfce7;
-            color: #15803d;
-            border: 0.5px solid #86efac;
-        }
-        .status-diproses {
-            background-color: #eff6ff;
-            color: #1d4ed8;
-            border: 0.5px solid #93c5fd;
-        }
-        .status-dikirim {
-            background-color: #f5f3ff;
-            color: #6d28d9;
-            border: 0.5px solid #c4b5fd;
-        }
-        .status-menunggu {
-            background-color: #fef3c7;
-            color: #b45309;
-            border: 0.5px solid #fde68a;
-        }
-        .status-batal {
-            background-color: #fee2e2;
-            color: #b91c1c;
-            border: 0.5px solid #fca5a5;
+            font-size: 7.5pt;
+            color: #1e293b;
         }
         .amount-col {
             text-align: right;
@@ -213,19 +184,19 @@
                             <span style="color: #94a3b8; font-style: italic;">Tidak ada rincian item</span>
                         @endif
                     </td>
-                    <td style="text-align: center;">
+                    <td class="status-text">
                         @if (in_array($st, ['selesai', 'lunas']))
-                            <span class="status-badge status-selesai">Selesai</span>
+                            Selesai
                         @elseif ($st === 'diproses')
-                            <span class="status-badge status-diproses">Diproses</span>
+                            Diproses
                         @elseif ($st === 'dikirim')
-                            <span class="status-badge status-dikirim">Dikirim</span>
+                            Dikirim
                         @elseif (in_array($st, ['menunggu konfirmasi', 'belum dibayar']))
-                            <span class="status-badge status-menunggu">Menunggu</span>
+                            Menunggu
                         @elseif (in_array($st, ['batal', 'dibatalkan']))
-                            <span class="status-badge status-batal">Batal</span>
+                            Batal
                         @else
-                            <span class="status-badge">{{ $order->status }}</span>
+                            {{ ucfirst($order->status) }}
                         @endif
                     </td>
                     <td class="amount-col">
