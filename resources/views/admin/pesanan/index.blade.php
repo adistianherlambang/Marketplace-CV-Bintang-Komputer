@@ -58,14 +58,17 @@
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nomor invoice, nama pembeli, no HP...">
             </div>
 
-            <select name="status" class="filter-select" onchange="this.form.submit()">
-                <option value="">Semua Status</option>
-                <option value="Menunggu Konfirmasi" {{ request('status') === 'Menunggu Konfirmasi' ? 'selected' : '' }}>Menunggu Konfirmasi</option>
-                <option value="Diproses" {{ request('status') === 'Diproses' ? 'selected' : '' }}>Diproses</option>
-                <option value="Dikirim" {{ request('status') === 'Dikirim' ? 'selected' : '' }}>Dikirim</option>
-                <option value="Selesai" {{ request('status') === 'Selesai' ? 'selected' : '' }}>Selesai</option>
-                <option value="Belum Dibayar" {{ request('status') === 'Belum Dibayar' ? 'selected' : '' }}>Belum Dibayar</option>
-            </select>
+            <div class="filter-select-wrapper">
+                <i class="fa-solid fa-tag filter-select-icon"></i>
+                <select name="status" class="filter-select" onchange="this.form.submit()">
+                    <option value="">Semua Status</option>
+                    <option value="Menunggu Konfirmasi" {{ request('status') === 'Menunggu Konfirmasi' ? 'selected' : '' }}>Menunggu Konfirmasi</option>
+                    <option value="Diproses" {{ request('status') === 'Diproses' ? 'selected' : '' }}>Diproses</option>
+                    <option value="Dikirim" {{ request('status') === 'Dikirim' ? 'selected' : '' }}>Dikirim</option>
+                    <option value="Selesai" {{ request('status') === 'Selesai' ? 'selected' : '' }}>Selesai</option>
+                    <option value="Belum Dibayar" {{ request('status') === 'Belum Dibayar' ? 'selected' : '' }}>Belum Dibayar</option>
+                </select>
+            </div>
 
             <button type="submit" class="btn btn-primary" style="height: 38px;">
                 <i class="fa-solid fa-filter"></i> Filter
@@ -204,23 +207,30 @@
                                         @endif
 
                                         {{-- Dropdown Ubah Status Manual & Cetak Nota --}}
-                                        <div class="action-subgroup">
-                                            <form action="{{ route('admin.pesanan.update', $item->id) }}" method="POST" style="flex: 1;">
-                                                @csrf
-                                                @method('PUT')
-                                                <select name="status" class="action-select-status" onchange="this.form.submit()">
-                                                    <option value="Belum Dibayar" {{ $item->status == 'Belum Dibayar' ? 'selected' : '' }}>Belum Dibayar</option>
-                                                    <option value="Menunggu Konfirmasi" {{ $item->status == 'Menunggu Konfirmasi' ? 'selected' : '' }}>Menunggu Konfirmasi</option>
-                                                    <option value="Diproses" {{ $item->status == 'Diproses' ? 'selected' : '' }}>Diproses</option>
-                                                    <option value="Dikirim" {{ $item->status == 'Dikirim' ? 'selected' : '' }}>Dikirim</option>
-                                                    <option value="Selesai" {{ in_array($item->status, ['Selesai', 'Lunas']) ? 'selected' : '' }}>Selesai</option>
-                                                    <option value="Dibatalkan" {{ in_array($item->status, ['Dibatalkan', 'Batal']) ? 'selected' : '' }}>Dibatalkan</option>
-                                                </select>
-                                            </form>
+                                        <div style="width: 100%; text-align: left; margin-top: 4px;">
+                                            <div style="font-size: 0.72rem; color: var(--secondary); font-weight: 600; margin-bottom: 3px; display: flex; align-items: center; gap: 4px;">
+                                                <i class="fa-solid fa-pen-to-square"></i> Ubah Status:
+                                            </div>
+                                            <div class="action-subgroup">
+                                                <form action="{{ route('admin.pesanan.update', $item->id) }}" method="POST" class="action-select-form">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="action-select-wrapper">
+                                                        <select name="status" class="action-select-status" onchange="this.form.submit()" title="Pilih status baru untuk mengubah pesanan">
+                                                            <option value="Belum Dibayar" {{ $item->status == 'Belum Dibayar' ? 'selected' : '' }}>Belum Dibayar</option>
+                                                            <option value="Menunggu Konfirmasi" {{ $item->status == 'Menunggu Konfirmasi' ? 'selected' : '' }}>Menunggu Konfirmasi</option>
+                                                            <option value="Diproses" {{ $item->status == 'Diproses' ? 'selected' : '' }}>Diproses</option>
+                                                            <option value="Dikirim" {{ $item->status == 'Dikirim' ? 'selected' : '' }}>Dikirim</option>
+                                                            <option value="Selesai" {{ in_array($item->status, ['Selesai', 'Lunas']) ? 'selected' : '' }}>Selesai</option>
+                                                            <option value="Dibatalkan" {{ in_array($item->status, ['Dibatalkan', 'Batal']) ? 'selected' : '' }}>Dibatalkan</option>
+                                                        </select>
+                                                    </div>
+                                                </form>
 
-                                            <a href="{{ route('admin.transactions.nota', $item->id) }}" target="_blank" class="action-btn-nota" title="Download Nota Cetak">
-                                                <i class="fa-solid fa-receipt"></i> Nota
-                                            </a>
+                                                <a href="{{ route('admin.transactions.nota', $item->id) }}" target="_blank" class="action-btn-nota" title="Download Nota Cetak">
+                                                    <i class="fa-solid fa-receipt"></i> Nota
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </td>
