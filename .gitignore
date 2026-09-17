@@ -31,3 +31,6 @@ Thumbs.db
 
 # Ignore skripsi images
 gambarSkripsi/
+
+# Ignore cpanel export folder
+cpanel/
