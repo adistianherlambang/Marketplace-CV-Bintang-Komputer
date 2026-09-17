@@ -153,14 +153,15 @@ class CustomSelect {
 
         if (selectedOption && selectedOption.value !== "") {
             textEl.innerText = selectedOption.text;
-            textEl.classList.remove('placeholder');
+            textEl.classList.remove('is-placeholder', 'placeholder');
         } else {
             // Show placeholder if any, or default text
             const firstOpt = this.select.options[0];
             const placeholderAttr = this.select.getAttribute('data-placeholder') || this.select.getAttribute('placeholder');
             const placeholderText = placeholderAttr || (firstOpt && firstOpt.value === "" ? firstOpt.text : 'Pilih opsi...');
             textEl.innerText = placeholderText;
-            textEl.classList.add('placeholder');
+            textEl.classList.add('is-placeholder');
+            textEl.classList.remove('placeholder');
         }
     }
 

@@ -54,8 +54,15 @@
     text-overflow: ellipsis;
 }
 
-.custom-select-text.placeholder {
-    color: var(--secondary);
+.custom-select-text.is-placeholder,
+.custom-select-text.placeholder,
+.custom-select-container .placeholder {
+    color: var(--secondary) !important;
+    background-color: transparent !important;
+    opacity: 1 !important;
+    cursor: pointer !important;
+    animation: none !important;
+    min-height: auto !important;
 }
 
 .custom-select-arrow {
