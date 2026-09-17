@@ -582,7 +582,7 @@
                         {{-- Action Buttons --}}
                         <div class="d-flex flex-wrap gap-2">
                             {{-- Download Nota --}}
-                            <a href="{{ route('admin.transactions.nota', $item->id) }}" target="_blank" class="btn-action-secondary" title="Unduh Nota PDF">
+                            <a href="{{ route('customer.orders.nota', $item->id) }}" target="_blank" class="btn-action-secondary" title="Unduh Nota PDF">
                                 <i class="fa-solid fa-file-invoice text-danger"></i> Download Nota
                             </a>
 

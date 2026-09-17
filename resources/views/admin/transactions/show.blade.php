@@ -43,9 +43,9 @@
                             <tr>
                                 <td>
                                     <strong>{{ $item->item_name }}</strong>
-                                    @if ($item->product_id)
+                                    @if ($item->product_id && $item->product)
                                         <div class="text-xs text-secondary">SKU: {{ $item->product->sku }}</div>
-                                    @else
+                                    @elseif (!$item->product_id)
                                         <span class="badge badge-warning text-xs pos-item-badge-sm">Manual</span>
                                     @endif
                                 </td>

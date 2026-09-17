@@ -116,8 +116,15 @@
     <table class="header-table">
         <tr>
             <td style="width: 25%; vertical-align: middle;">
-                @if(file_exists(public_path('img/logo/logoKesamping.jpg')))
-                    <img src="{{ public_path('img/logo/logoKesamping.jpg') }}" alt="CV Bintang Jaya Komputer" style="height: 34px; max-width: 160px; object-fit: contain;">
+                @php
+                    $logoFile = public_path('img/logo/logoKesamping.jpg');
+                    if (!file_exists($logoFile)) {
+                        $logoFile = base_path('../public_html/img/logo/logoKesamping.jpg');
+                    }
+                    $logoSrc = file_exists($logoFile) ? 'data:image/jpeg;base64,' . base64_encode(file_get_contents($logoFile)) : null;
+                @endphp
+                @if($logoSrc)
+                    <img src="{{ $logoSrc }}" alt="CV Bintang Jaya Komputer" style="height: 34px; max-width: 160px; object-fit: contain;">
                 @else
                     <strong style="font-size: 11pt; color: #2563eb;">BINTANG JAYA</strong>
                 @endif

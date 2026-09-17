@@ -35,6 +35,7 @@ Route::middleware(['auth'])->group(function () {
     
     // Riwayat & Pelacakan Pesanan Pelanggan
     Route::get('/riwayat-pesanan', [CustomerOrderController::class, 'index'])->name('customer.orders.index');
+    Route::get('/riwayat-pesanan/{id}/nota', [CustomerOrderController::class, 'downloadNota'])->name('customer.orders.nota');
     
     // --- TAMBAHKAN RUTE KOMPLAIN PELANGGAN DI SINI ---
     Route::get('/riwayat-pesanan/{id}/komplain', [CustomerComplaintController::class, 'create'])->name('customer.complaints.create');
@@ -63,6 +64,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     // POS cashier and Invoice actions
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+    Route::post('/transactions/clear-all', [TransactionController::class, 'clearAllTransactions'])->name('transactions.clearAll');
+    Route::get('/transactions/clear-all', [TransactionController::class, 'clearAllTransactions']);
     Route::get('/transactions/create', [TransactionController::class, 'create'])->name('transactions.create');
     Route::post('/transactions', [TransactionController::class, 'store'])->name('transactions.store');
     Route::get('/transactions/{order}', [TransactionController::class, 'show'])->name('transactions.show');

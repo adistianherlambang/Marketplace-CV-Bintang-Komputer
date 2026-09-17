@@ -107,8 +107,9 @@ class ReportService
     /**
      * Get report data for a specific date (Daily).
      */
-    public function getDailyReportData(string $date): array
+    public function getDailyReportData(?string $date = null): array
     {
+        $date = !empty($date) ? $date : now()->toDateString();
         $orders = Order::with(['customer', 'customerUser', 'user', 'items.product'])
             ->whereDate('created_at', $date)
             ->orderByDesc('created_at')
@@ -128,8 +129,9 @@ class ReportService
     /**
      * Get report data for a specific month (e.g. 2026-06).
      */
-    public function getMonthlyReportData(string $yearMonth): array
+    public function getMonthlyReportData(?string $yearMonth = null): array
     {
+        $yearMonth = !empty($yearMonth) ? $yearMonth : now()->format('Y-m');
         $startOfMonth = Carbon::parse($yearMonth . '-01')->startOfMonth();
         $endOfMonth = Carbon::parse($yearMonth . '-01')->endOfMonth();
 
@@ -152,8 +154,9 @@ class ReportService
     /**
      * Get report data for a specific year (e.g. 2026).
      */
-    public function getYearlyReportData(string $year): array
+    public function getYearlyReportData(?string $year = null): array
     {
+        $year = !empty($year) ? $year : now()->format('Y');
         $startOfYear = Carbon::parse($year . '-01-01')->startOfYear();
         $endOfYear = Carbon::parse($year . '-01-01')->endOfYear();
 

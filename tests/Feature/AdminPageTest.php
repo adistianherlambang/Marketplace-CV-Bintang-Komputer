@@ -157,4 +157,66 @@ class AdminPageTest extends TestCase
             'description' => 'Restocked'
         ]);
     }
+
+    public function test_transaction_detail_page_can_be_rendered(): void
+    {
+        $order = Order::create([
+            'invoice_number' => 'INV-DETAIL-TEST',
+            'user_id' => $this->admin->id,
+            'status' => 'Lunas',
+            'total_amount' => 100000,
+        ]);
+
+        $response = $this->actingAs($this->admin)->get("/admin/transactions/{$order->id}");
+        $response->assertStatus(200);
+        $response->assertSee('Detail Invoice Transaksi');
+    }
+
+    public function test_monthly_report_pdf_can_be_downloaded(): void
+    {
+        $response = $this->actingAs($this->admin)->get('/admin/reports/download?type=monthly&month=' . date('Y-m'));
+        $response->assertStatus(200);
+        $this->assertStringContainsString('application/pdf', $response->headers->get('content-type'));
+    }
+
+    public function test_customer_order_history_and_nota_download(): void
+    {
+        $customerUser = User::factory()->create();
+
+        $order = Order::create([
+            'invoice_number' => 'INV-TEST-CUST',
+            'customer_user_id' => $customerUser->id,
+            'customer_name' => $customerUser->name,
+            'status' => 'Lunas',
+            'total_amount' => 500000,
+        ]);
+
+        $response = $this->actingAs($customerUser)->get('/riwayat-pesanan');
+        $response->assertStatus(200);
+        $response->assertSee('INV-TEST-CUST');
+
+        $notaResponse = $this->actingAs($customerUser)->get("/riwayat-pesanan/{$order->id}/nota");
+        $notaResponse->assertStatus(200);
+        $this->assertStringContainsString('application/pdf', $notaResponse->headers->get('content-type'));
+    }
+
+    public function test_clear_all_transactions(): void
+    {
+        Order::create([
+            'invoice_number' => 'INV-CLEAR-TEST',
+            'user_id' => $this->admin->id,
+            'status' => 'Lunas',
+            'total_amount' => 250000,
+        ]);
+
+        $this->assertGreaterThan(0, Order::count());
+
+        $response = $this->actingAs($this->admin)->post('/admin/transactions/clear-all');
+        $response->assertRedirect('/admin/transactions');
+        $response->assertSessionHas('success');
+
+        $this->assertEquals(0, Order::count());
+        $this->assertEquals(0, OrderItem::count());
+    }
 }
+

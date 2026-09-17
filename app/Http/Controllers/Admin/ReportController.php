@@ -96,28 +96,33 @@ class ReportController extends Controller
 
     public function downloadPdf(Request $request)
     {
-        $type = $request->input('type');
-        $param = $request->input('param');
+        $type = $request->input('type') ?: 'monthly';
+        $param = $request->input('param') ?: $request->input('month') ?: $request->input('date');
 
         switch ($type) {
             case 'daily':
+                $param = !empty($param) ? $param : now()->toDateString();
                 $data = $this->reportService->getDailyReportData($param);
                 $pdf = Pdf::loadView('pdf.reports.daily', compact('data'))->setPaper('a4', 'portrait');
                 return $pdf->download("laporan-harian-{$param}.pdf");
 
             case 'monthly':
+                $param = !empty($param) ? $param : now()->format('Y-m');
                 $data = $this->reportService->getMonthlyReportData($param);
                 
-                // Record to monthly_reports table when downloading/generating
-                MonthlyReport::updateOrCreate(
-                    ['report_month' => $param],
-                    [
-                        'total_sales' => $data['total_sales'],
-                        'total_earnings' => $data['total_sales'] * 0.20, // Example profit estimation (e.g. 20% margin)
-                        'total_transactions' => $data['total_transactions'],
-                        'generated_at' => now(),
-                    ]
-                );
+                try {
+                    MonthlyReport::updateOrCreate(
+                        ['report_month' => $param],
+                        [
+                            'total_sales' => $data['total_sales'],
+                            'total_earnings' => $data['total_sales'] * 0.20,
+                            'total_transactions' => $data['total_transactions'],
+                            'generated_at' => now(),
+                        ]
+                    );
+                } catch (\Throwable $e) {
+                    // Gracefully continue even if table update fails
+                }
 
                 $pdf = Pdf::loadView('pdf.reports.monthly', compact('data'))->setPaper('a4', 'portrait');
                 return $pdf->download("laporan-bulanan-{$param}.pdf");

@@ -87,7 +87,7 @@ class TransactionController extends Controller
 
     public function show(Order $order)
     {
-        $order->load(['customer', 'user', 'items', 'payments']);
+        $order->load(['customer', 'user', 'items.product', 'payments', 'kecamatan', 'kelurahan']);
         return view('admin.transactions.show', compact('order'));
     }
 
@@ -151,5 +151,31 @@ class TransactionController extends Controller
         $safeInvoiceNumber = str_replace('/', '-', $order->invoice_number);
         
         return $pdf->download("Nota-Online-{$safeInvoiceNumber}.pdf");
+    }
+
+    /**
+     * Clear all transaction history (orders, order items, payments, complaints, returns) for clean testing
+     */
+    public function clearAllTransactions(Request $request)
+    {
+        \Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
+        try {
+            \Illuminate\Support\Facades\DB::table('order_items')->truncate();
+            \Illuminate\Support\Facades\DB::table('payments')->truncate();
+            \Illuminate\Support\Facades\DB::table('complaints')->truncate();
+            \Illuminate\Support\Facades\DB::table('returns')->truncate();
+            \Illuminate\Support\Facades\DB::table('orders')->truncate();
+            if (\Illuminate\Support\Facades\Schema::hasTable('monthly_reports')) {
+                \Illuminate\Support\Facades\DB::table('monthly_reports')->truncate();
+            }
+            if (\Illuminate\Support\Facades\Schema::hasTable('stock_histories')) {
+                \Illuminate\Support\Facades\DB::table('stock_histories')->whereIn('type', ['out', 'return'])->delete();
+            }
+            return redirect()->route('admin.transactions.index')->with('success', 'Semua riwayat transaksi berhasil dikosongkan. Sistem siap untuk pengujian!');
+        } catch (\Throwable $e) {
+            return redirect()->back()->with('error', 'Gagal mengosongkan transaksi: ' . $e->getMessage());
+        } finally {
+            \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
+        }
     }
 }

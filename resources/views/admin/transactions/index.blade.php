@@ -12,9 +12,18 @@
             <p class="text-secondary text-sm">Cari, cetak, batalkan, atau ubah status pembayaran transaksi toko.</p>
         </div>
 
-        <a href="{{ route('admin.transactions.create') }}" class="btn btn-primary button">
-            POS Penjualan Baru
-        </a>
+        <div class="flex items-center gap-2">
+            <form action="{{ route('admin.transactions.clearAll') }}" method="POST" onsubmit="return confirm('PERINGATAN: Apakah Anda yakin ingin MENGHAPUS SEMUA riwayat transaksi? Tindakan ini akan mengosongkan seluruh pesanan, detail item, pembayaran, dan komplain untuk keperluan pengujian.')">
+                @csrf
+                <button type="submit" class="btn btn-secondary button" style="color: #dc2626; border-color: #fca5a5; background-color: #fef2f2; display: inline-flex; align-items: center; gap: 6px;">
+                    <i class="fa-solid fa-trash-can"></i>
+                    <span>Kosongkan Riwayat Transaksi</span>
+                </button>
+            </form>
+            <a href="{{ route('admin.transactions.create') }}" class="btn btn-primary button">
+                POS Penjualan Baru
+            </a>
+        </div>
     </div>
 
     <!-- Filter Bar -->

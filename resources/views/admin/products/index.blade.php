@@ -105,22 +105,22 @@
                                 </td>
                                 <td class="td-center">
                                     <div class="flex justify-center gap-2">
-                                        <button @click="currentProduct = {
-                                            id: '{{ $product->id }}',
-                                            name: '{{ addslashes($product->name) }}',
-                                            sku: '{{ $product->sku }}',
-                                            barcode: '{{ $product->barcode }}',
-                                            category_id: '{{ $product->category_id }}',
-                                            brand_id: '{{ $product->brand_id }}',
-                                            supplier_id: '{{ $product->supplier_id }}',
-                                            price_modal: '{{ (float)$product->price_modal }}',
-                                            price_jual: '{{ (float)$product->price_jual }}',
-                                            stock: '{{ $product->stock }}',
-                                            min_stock: '{{ $product->min_stock }}',
-                                            description: '{{ addslashes($product->description) }}',
-                                            specs: '{{ addslashes($product->specs) }}',
-                                            is_active: '{{ $product->is_active ? 1 : 0 }}'
-                                        }; openEditModal = true" class="btn btn-secondary btn-sm">
+                                        <button @click="currentProduct = {{ Illuminate\Support\Js::from([
+                                            'id' => (string)$product->id,
+                                            'name' => $product->name,
+                                            'sku' => $product->sku,
+                                            'barcode' => $product->barcode ?? '',
+                                            'category_id' => (string)$product->category_id,
+                                            'brand_id' => (string)$product->brand_id,
+                                            'supplier_id' => (string)$product->supplier_id,
+                                            'price_modal' => (float)$product->price_modal,
+                                            'price_jual' => (float)$product->price_jual,
+                                            'stock' => (int)$product->stock,
+                                            'min_stock' => (int)$product->min_stock,
+                                            'description' => (string)($product->description ?? ''),
+                                            'specs' => (string)($product->specs ?? ''),
+                                            'is_active' => $product->is_active ? '1' : '0',
+                                        ]) }}; openEditModal = true" class="btn btn-secondary btn-sm">
                                             <i class="fa-solid fa-pen"></i> Edit
                                         </button>
                                         
