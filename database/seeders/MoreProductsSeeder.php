@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\StockHistory;
 use App\Models\Supplier;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -23,6 +24,9 @@ class MoreProductsSeeder extends Seeder
             'email' => 'sales@bintangdistribusindo.co.id',
             'address' => 'Kawasan Industri Jababeka Blok C-12, Cikarang, Bekasi',
         ]);
+
+        $admin = User::first();
+        $adminId = $admin ? $admin->id : 1;
 
         $items = [
             [
@@ -192,8 +196,9 @@ class MoreProductsSeeder extends Seeder
                     'product_id' => $product->id,
                     'type' => 'in',
                     'quantity' => $product->stock,
-                    'reference' => 'Initial Stock Import',
-                    'notes' => 'Stok awal produk katalog CV Bintang Jaya Komputer',
+                    'user_id' => $adminId,
+                    'date' => now(),
+                    'description' => 'Initial Stock Import: Stok awal produk katalog CV Bintang Jaya Komputer',
                 ]);
             }
         }
