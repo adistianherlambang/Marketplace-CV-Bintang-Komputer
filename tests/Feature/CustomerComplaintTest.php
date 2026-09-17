@@ -112,8 +112,8 @@ class CustomerComplaintTest extends TestCase
 
         $complaint = Complaint::where('order_id', $order->id)->first();
         $this->assertNotNull($complaint);
-        Storage::disk('public')->assertExists($complaint->nota_bukti);
-        Storage::disk('public')->assertExists($complaint->product_bukti);
+        $this->assertTrue(Storage::disk('public')->exists($complaint->nota_bukti));
+        $this->assertTrue(Storage::disk('public')->exists($complaint->product_bukti));
     }
 
     public function test_admin_can_view_complaints_and_update_status()
