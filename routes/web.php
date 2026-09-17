@@ -58,6 +58,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     // Stock Management & History
     Route::get('/stocks', [StockController::class, 'index'])->name('stocks.index');
+    Route::get('/stocks/history', [StockController::class, 'history'])->name('stocks.history');
     Route::post('/stocks/adjust', [StockController::class, 'adjust'])->name('stocks.adjust');
 
     // POS cashier and Invoice actions

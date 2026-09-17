@@ -75,6 +75,22 @@ class AdminPageTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_stocks_page_can_be_rendered(): void
+    {
+        $response = $this->actingAs($this->admin)->get('/admin/stocks');
+        $response->assertStatus(200);
+        $response->assertSee('Kelola Stok Barang');
+        $response->assertSee('Riwayat Stok');
+    }
+
+    public function test_stocks_history_page_can_be_rendered(): void
+    {
+        $response = $this->actingAs($this->admin)->get('/admin/stocks/history');
+        $response->assertStatus(200);
+        $response->assertSee('Riwayat Penyesuaian Stok');
+        $response->assertSee('Kembali ke Kelola Stok');
+    }
+
     public function test_invoice_and_nota_pdf_can_be_downloaded_without_header_utils_exception(): void
     {
         // 1. Create a dummy order with typical slashes in the invoice number
