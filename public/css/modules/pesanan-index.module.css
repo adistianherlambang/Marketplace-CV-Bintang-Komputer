@@ -155,47 +155,18 @@
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
-/* Filter Select (Native Fallback) */
-select.filter-select {
-    width: auto;
-    min-width: 180px;
-    height: 40px;
-    padding: 0 12px;
-    font-size: 0.875rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    background-color: var(--white);
-    outline: none;
-    cursor: pointer;
-}
-
-/* Filter Select (CustomSelect Wrapper & Trigger) */
-.custom-select-container.filter-select {
+/* Filter Select Wrapper */
+.filter-select-wrapper {
+    position: relative;
     width: auto;
     min-width: 180px;
     max-width: 230px;
-    border: none !important;
-    padding: 0 !important;
-    background: transparent !important;
-    box-shadow: none !important;
 }
 
-.custom-select-container.filter-select .custom-select-trigger {
+.filter-select-wrapper select,
+.filter-select-wrapper .custom-select-trigger {
     height: 40px;
     min-height: 40px;
-    padding: 0 14px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    background-color: var(--white);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.custom-select-container.filter-select .custom-select-text {
-    font-size: 0.875rem;
-    color: var(--dark);
-    font-weight: 500;
 }
 
 .filter-submit-btn,
@@ -395,68 +366,42 @@ select.filter-select {
     width: 100%;
 }
 
-.action-subgroup form {
+.action-select-form {
     flex: 1;
     min-width: 0;
     margin: 0;
     display: flex;
 }
 
-/* Native select fallback */
-select.action-select-status {
-    width: 100%;
-    height: 32px;
-    padding: 4px 8px;
-    font-size: 0.75rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    background-color: #ffffff;
-    cursor: pointer;
-    outline: none;
-}
-
-/* CustomSelect wrapper in table action */
-.custom-select-container.action-select-status {
-    flex: 1;
+/* Action Select Wrapper */
+.action-select-wrapper {
+    position: relative;
     width: 100%;
     min-width: 120px;
-    height: auto !important;
-    border: none !important;
-    padding: 0 !important;
-    background: transparent !important;
-    box-shadow: none !important;
 }
 
-.custom-select-container.action-select-status .custom-select-trigger {
+.action-select-wrapper select,
+.action-select-wrapper .custom-select-trigger {
     height: 32px;
     min-height: 32px;
+    font-size: 0.75rem;
     padding: 4px 8px;
-    font-size: 0.75rem;
-    border: 1px solid var(--border);
     border-radius: var(--radius-sm);
-    background-color: #ffffff;
 }
 
-.custom-select-container.action-select-status .custom-select-text {
+.action-select-wrapper .custom-select-text {
     font-size: 0.75rem;
-    font-weight: 500;
 }
 
-.custom-select-container.action-select-status .custom-select-arrow {
+.action-select-wrapper .custom-select-arrow {
     font-size: 0.65rem;
 }
 
-.custom-select-container.action-select-status .custom-select-dropdown {
-    min-width: 150px;
-    font-size: 0.75rem;
-    z-index: 1000;
-}
-
-.custom-select-container.action-select-status .custom-select-search-wrapper {
+.action-select-wrapper .custom-select-search-wrapper {
     display: none;
 }
 
-.custom-select-container.action-select-status .custom-select-option {
+.action-select-wrapper .custom-select-option {
     padding: 6px 10px;
     font-size: 0.75rem;
 }

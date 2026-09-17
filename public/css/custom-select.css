@@ -3,11 +3,6 @@
     position: relative;
     width: 100%;
     font-family: var(--font);
-    background: transparent !important;
-    border: none !important;
-    padding: 0 !important;
-    box-shadow: none !important;
-    box-sizing: border-box;
 }
 
 /* Hide native select visually but keep it accessible for form validation */
@@ -169,30 +164,4 @@
 
 .custom-select-container.disabled .custom-select-text {
     color: var(--secondary);
-}
-
-/* Compact / Small Select Variant */
-.custom-select-container.custom-select-sm .custom-select-trigger {
-    min-height: 32px;
-    height: 32px;
-    padding: 4px 10px;
-    border-radius: var(--radius-sm);
-}
-
-.custom-select-container.custom-select-sm .custom-select-text {
-    font-size: 0.75rem;
-    font-weight: 500;
-}
-
-.custom-select-container.custom-select-sm .custom-select-arrow {
-    font-size: 0.65rem;
-}
-
-.custom-select-container.custom-select-sm .custom-select-search-wrapper {
-    display: none;
-}
-
-.custom-select-container.custom-select-sm .custom-select-option {
-    padding: 6px 10px;
-    font-size: 0.75rem;
 }

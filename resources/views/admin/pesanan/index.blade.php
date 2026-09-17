@@ -58,14 +58,16 @@
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nomor invoice, nama pembeli, no HP...">
             </div>
 
-            <select name="status" class="filter-select" onchange="this.form.submit()">
-                <option value="">Semua Status</option>
-                <option value="Menunggu Konfirmasi" {{ request('status') === 'Menunggu Konfirmasi' ? 'selected' : '' }}>Menunggu Konfirmasi</option>
-                <option value="Diproses" {{ request('status') === 'Diproses' ? 'selected' : '' }}>Diproses</option>
-                <option value="Dikirim" {{ request('status') === 'Dikirim' ? 'selected' : '' }}>Dikirim</option>
-                <option value="Selesai" {{ request('status') === 'Selesai' ? 'selected' : '' }}>Selesai</option>
-                <option value="Belum Dibayar" {{ request('status') === 'Belum Dibayar' ? 'selected' : '' }}>Belum Dibayar</option>
-            </select>
+            <div class="filter-select-wrapper">
+                <select name="status" class="form-control" onchange="this.form.submit()">
+                    <option value="">Semua Status</option>
+                    <option value="Menunggu Konfirmasi" {{ request('status') === 'Menunggu Konfirmasi' ? 'selected' : '' }}>Menunggu Konfirmasi</option>
+                    <option value="Diproses" {{ request('status') === 'Diproses' ? 'selected' : '' }}>Diproses</option>
+                    <option value="Dikirim" {{ request('status') === 'Dikirim' ? 'selected' : '' }}>Dikirim</option>
+                    <option value="Selesai" {{ request('status') === 'Selesai' ? 'selected' : '' }}>Selesai</option>
+                    <option value="Belum Dibayar" {{ request('status') === 'Belum Dibayar' ? 'selected' : '' }}>Belum Dibayar</option>
+                </select>
+            </div>
 
             <button type="submit" class="btn btn-primary filter-submit-btn">
                 <i class="fa-solid fa-filter"></i> Filter
@@ -205,17 +207,19 @@
 
                                         {{-- Dropdown Ubah Status Manual & Cetak Nota --}}
                                         <div class="action-subgroup">
-                                            <form action="{{ route('admin.pesanan.update', $item->id) }}" method="POST" style="flex: 1;">
+                                            <form action="{{ route('admin.pesanan.update', $item->id) }}" method="POST" class="action-select-form">
                                                 @csrf
                                                 @method('PUT')
-                                                <select name="status" class="action-select-status" onchange="this.form.submit()">
-                                                    <option value="Belum Dibayar" {{ $item->status == 'Belum Dibayar' ? 'selected' : '' }}>Belum Dibayar</option>
-                                                    <option value="Menunggu Konfirmasi" {{ $item->status == 'Menunggu Konfirmasi' ? 'selected' : '' }}>Menunggu Konfirmasi</option>
-                                                    <option value="Diproses" {{ $item->status == 'Diproses' ? 'selected' : '' }}>Diproses</option>
-                                                    <option value="Dikirim" {{ $item->status == 'Dikirim' ? 'selected' : '' }}>Dikirim</option>
-                                                    <option value="Selesai" {{ in_array($item->status, ['Selesai', 'Lunas']) ? 'selected' : '' }}>Selesai</option>
-                                                    <option value="Dibatalkan" {{ in_array($item->status, ['Dibatalkan', 'Batal']) ? 'selected' : '' }}>Dibatalkan</option>
-                                                </select>
+                                                <div class="action-select-wrapper">
+                                                    <select name="status" class="form-control" onchange="this.form.submit()">
+                                                        <option value="Belum Dibayar" {{ $item->status == 'Belum Dibayar' ? 'selected' : '' }}>Belum Dibayar</option>
+                                                        <option value="Menunggu Konfirmasi" {{ $item->status == 'Menunggu Konfirmasi' ? 'selected' : '' }}>Menunggu Konfirmasi</option>
+                                                        <option value="Diproses" {{ $item->status == 'Diproses' ? 'selected' : '' }}>Diproses</option>
+                                                        <option value="Dikirim" {{ $item->status == 'Dikirim' ? 'selected' : '' }}>Dikirim</option>
+                                                        <option value="Selesai" {{ in_array($item->status, ['Selesai', 'Lunas']) ? 'selected' : '' }}>Selesai</option>
+                                                        <option value="Dibatalkan" {{ in_array($item->status, ['Dibatalkan', 'Batal']) ? 'selected' : '' }}>Dibatalkan</option>
+                                                    </select>
+                                                </div>
                                             </form>
 
                                             <a href="{{ route('admin.transactions.nota', $item->id) }}" target="_blank" class="action-btn-nota" title="Download Nota Cetak">
