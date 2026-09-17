@@ -343,22 +343,22 @@
                     <label class="form-label-custom">
                         Jenis Kendala / Masalah <span class="text-danger">*</span>
                     </label>
-                    <select name="complaint_type" class="form-control tom-select" required>
-                        <option value="">-- Pilih Jenis Kendala --</option>
+                    <select name="complaint_type" class="form-control tom-select" placeholder="Pilih Jenis Kendala / Masalah..." data-placeholder="Pilih Jenis Kendala / Masalah..." data-search-placeholder="Cari jenis kendala..." required>
+                        <option value="" disabled {{ old('complaint_type') ? '' : 'selected' }}>Pilih Jenis Kendala / Masalah...</option>
                         <option value="Barang Rusak / Cacat Fisik Saat Tiba" {{ old('complaint_type') == 'Barang Rusak / Cacat Fisik Saat Tiba' ? 'selected' : '' }}>
-                            🔴 Barang Rusak / Cacat Fisik Saat Tiba
+                            Barang Rusak / Cacat Fisik Saat Tiba
                         </option>
                         <option value="Tidak Berfungsi / Kendala Teknis / Mati Total" {{ old('complaint_type') == 'Tidak Berfungsi / Kendala Teknis / Mati Total' ? 'selected' : '' }}>
-                            ⚙️ Tidak Berfungsi / Kendala Teknis / Mati Total
+                            Tidak Berfungsi / Kendala Teknis / Mati Total
                         </option>
                         <option value="Barang Tidak Sesuai Spesifikasi / Salah Kirim" {{ old('complaint_type') == 'Barang Tidak Sesuai Spesifikasi / Salah Kirim' ? 'selected' : '' }}>
-                            📦 Barang Tidak Sesuai Spesifikasi / Salah Kirim
+                            Barang Tidak Sesuai Spesifikasi / Salah Kirim
                         </option>
                         <option value="Kelengkapan Aksesoris / Kabel / Kardus Kurang" {{ old('complaint_type') == 'Kelengkapan Aksesoris / Kabel / Kardus Kurang' ? 'selected' : '' }}>
-                            🔌 Kelengkapan Aksesoris / Kabel / Kardus Kurang
+                            Kelengkapan Aksesoris / Kabel / Kardus Kurang
                         </option>
                         <option value="Kendala Lainnya" {{ old('complaint_type') == 'Kendala Lainnya' ? 'selected' : '' }}>
-                            💬 Kendala Lainnya
+                            Kendala Lainnya
                         </option>
                     </select>
                 </div>

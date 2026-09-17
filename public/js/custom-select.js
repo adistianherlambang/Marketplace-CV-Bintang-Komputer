@@ -73,7 +73,7 @@ class CustomSelect {
         this.searchInput = document.createElement('input');
         this.searchInput.type = 'text';
         this.searchInput.className = 'custom-select-search-input';
-        this.searchInput.placeholder = 'Cari...';
+        this.searchInput.placeholder = this.select.getAttribute('data-search-placeholder') || 'Cari...';
         this.searchInput.setAttribute('autocomplete', 'off');
         searchWrapper.appendChild(this.searchInput);
 
@@ -115,8 +115,8 @@ class CustomSelect {
         const options = Array.from(this.select.options);
 
         options.forEach((opt, idx) => {
-            // Skip options with both empty value and empty text
-            if (opt.value === "" && opt.text.trim() === "") {
+            // Skip options with both empty value and empty text, or disabled placeholder
+            if (opt.value === "" && (opt.disabled || opt.hidden || opt.text.trim() === "")) {
                 return;
             }
 
@@ -157,7 +157,8 @@ class CustomSelect {
         } else {
             // Show placeholder if any, or default text
             const firstOpt = this.select.options[0];
-            const placeholderText = firstOpt && firstOpt.value === "" ? firstOpt.text : 'Pilih opsi...';
+            const placeholderAttr = this.select.getAttribute('data-placeholder') || this.select.getAttribute('placeholder');
+            const placeholderText = placeholderAttr || (firstOpt && firstOpt.value === "" ? firstOpt.text : 'Pilih opsi...');
             textEl.innerText = placeholderText;
             textEl.classList.add('placeholder');
         }
