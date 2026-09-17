@@ -1,15 +1,15 @@
 <div align="center">
 
-# 🌟 Sistem Informasi Penjualan
+# 🌟 Sistem Informasi Penjualan & E-Commerce
 # CV Bintang Jaya Komputer
 
 [![Laravel](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
-[![PHP](https://img.shields.io/badge/PHP-8.2.12-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
+[![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://mysql.com)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
-**Sistem Informasi Penjualan berbasis web untuk toko komputer dan aksesori elektronik.**
+**Sistem Informasi Penjualan Komputer, Kasir POS Back-Office, dan Marketplace Online Terintegrasi.**
 
 📍 Jl. Ahmad Yani No.68, Iringmulyo, Kota Metro, Lampung &nbsp;|&nbsp; 🗓️ Berdiri 4 September 2025
 
@@ -19,59 +19,64 @@
 
 ## 📋 1. Overview
 
-**CV Bintang Jaya Komputer** adalah platform penjualan berbasis web yang menggabungkan konsep **marketplace publik** dengan **sistem manajemen toko (POS/Back-Office)** dalam satu aplikasi Laravel yang terintegrasi penuh.
+**CV Bintang Jaya Komputer** adalah platform penjualan berbasis web yang menggabungkan konsep **e-commerce publik untuk pelanggan** dengan **sistem manajemen toko (POS & Back-Office)** dalam satu aplikasi Laravel yang terintegrasi penuh.
 
-Sistem ini dirancang untuk memenuhi kebutuhan operasional harian sebuah toko komputer modern, mulai dari manajemen stok, pencatatan transaksi, cetak invoice/laporan PDF, hingga penanganan retur dan komplain pelanggan — semuanya dapat dilakukan dari antarmuka web yang responsif dan intuitif.
+Sistem ini dirancang untuk memenuhi kebutuhan operasional toko komputer modern:
+1. **Sisi Pelanggan (Customer / Publik)**: Menjelajahi katalog produk, memesan laptop/gadget secara online dengan kurir GrabExpress khusus area Kota Metro, melacak status pengiriman secara real-time, mengunduh nota PDF, hingga mengajukan komplain retur barang rusak secara digital.
+2. **Sisi Internal (Admin Toko)**: Kasir Point of Sale (POS) untuk transaksi fisik toko, manajemen master produk dan multi-gambar, manajemen stok otomatis (audit trail), verifikasi pembayaran & pengiriman pesanan online, penanganan komplain & retur (auto-restock), serta cetak laporan PDF harian, bulanan, tahunan.
 
 | Aspek | Detail |
 |---|---|
-| **Pemilik** | Bapak Krisna Irawan, S.Kom. |
-| **Tipe Sistem** | Web-based Sales Information System |
-| **Target Pengguna** | Admin (internal) & Guest (publik) |
-| **Arsitektur** | Monolithic MVC + Service Layer |
-| **Deployment** | Docker Compose (Nginx + PHP-FPM + MySQL) |
+| **Pemilik Usaha** | Bapak Krisna Irawan, S.Kom. |
+| **Tipe Sistem** | Web-based Sales Information System & E-Commerce |
+| **Pengguna Sistem** | Administrator (Internal Toko) & Pelanggan / Guest (Publik) |
+| **Arsitektur** | Monolithic MVC + Service Layer Pattern |
+| **Deployment** | Docker Compose (Nginx + PHP-FPM + MySQL + phpMyAdmin) & Local PHP Server |
 
 ---
 
 ## 🚀 2. Fitur Utama & Keunggulan Sistem
 
-### 🛡️ Fitur Admin
+### 🛡️ Fitur Admin (Back-Office & POS)
 
-| Modul | Fitur |
+| Modul | Fitur & Deskripsi |
 |---|---|
-| **Dashboard** | Statistik real-time, grafik penjualan bulanan, grafik produk terlaris, kartu KPI |
-| **Manajemen Produk** | CRUD produk lengkap dengan foto, SKU, barcode, spesifikasi, multi-gambar |
-| **Manajemen Stok** | Tambah/kurangi stok, riwayat perubahan stok terotomasi dengan audit trail |
-| **Kategori & Merk** | CRUD kategori dan merek dengan slug unik |
-| **Supplier** | Manajemen data supplier dengan informasi kontak |
-| **Pelanggan** | CRUD pelanggan, soft delete untuk keamanan data |
-| **Transaksi** | Buat transaksi via produk database ATAU item manual, manajemen status |
-| **Invoice PDF** | Cetak invoice PDF kapan saja dengan detail lengkap |
-| **Laporan PDF** | Laporan harian/bulanan/tahunan, laporan retur, stok, produk terlaris |
-| **Retur** | Approve/tolak retur, stok dikembalikan otomatis bila disetujui |
-| **Komplain** | Manajemen komplain pelanggan dengan sistem status bertingkat |
+| **Dashboard Analitik** | Statistik pendapatan real-time, tren penjualan bulanan, grafik produk terlaris, indikator stok kritis & habis. |
+| **Kasir POS Toko** | Input transaksi langsung di toko via database stok ATAU barang manual, kalkulator kembalian uang tunai/transfer, cetak Struk Kasir & Invoice PDF. |
+| **Kelola Pesanan Online** | Manajemen pesanan masuk dari checkout website: verifikasi bukti transfer, rincian titik maps penerima, update status pesanan (*Menunggu Konfirmasi* ➔ *Diproses* ➔ *Dalam Pengiriman* ➔ *Selesai* / *Batal*). |
+| **Manajemen Produk** | CRUD produk lengkap dengan SKU unik, barcode, brand, kategori, harga modal, harga jual, stok minimum, spesifikasi teknis, serta multi-gambar produk. |
+| **Manajemen Stok Otomatis** | Penambahan/pengurangan stok terintegrasi, audit trail riwayat pergerakan stok (`in`, `out`, `edit`, `delete`, `return`). |
+| **Komplain Pelanggan** | Manajemen komplain online dari customer, peninjauan bukti fisik kerusakan & nota, serta pembaruan status komplain. |
+| **Manajemen Retur** | Pencatatan retur unit, persetujuan/penolakan retur, otomatis mengembalikan stok (*auto-restock*) ke inventaris saat retur disetujui. |
+| **Laporan & Ekspor PDF** | Laporan berkala (Harian, Bulanan, Tahunan), Laporan Stok Opname, Laporan Retur, dan Produk Terlaris lengkap dengan fitur **Live Preview** dan unduh PDF siap cetak. |
+| **Booking Produk** | Kelola pemesanan/booking unit oleh calon pembeli sebelum transaksi resmi. |
+| **Master Supplier & Pelanggan** | Manajemen data pemasok barang dan basis data pelanggan tetap (dengan perlindungan *Soft Delete*). |
 
-### 🌐 Fitur Guest (Marketplace Publik)
+---
 
-| Fitur | Keterangan |
+### 🛒 Fitur Pelanggan & Publik (Marketplace E-Commerce)
+
+| Modul | Fitur & Deskripsi |
 |---|---|
-| **Katalog Produk** | Tampil semua produk aktif dengan foto, harga, dan stok |
-| **Detail Produk** | Spesifikasi lengkap, deskripsi, status ketersediaan |
-| **Pencarian** | Cari berdasarkan nama produk, merek, atau kategori |
-| **Filter** | Filter berdasarkan kategori, merek, dan rentang harga |
-| **Responsif** | Tampilan optimal di desktop, tablet, dan mobile |
+| **Katalog Produk Publik** | Tampilan katalog modern dengan filter kategori, brand/merek, filter harga, serta pencarian produk interaktif. |
+| **Detail & Spesifikasi** | Galeri foto produk, spesifikasi teknis lengkap, ketersediaan stok, dan tombol beli/booking. |
+| **Autentikasi Satu Pintu** | Login terpusat (Admin & Customer), serta formulir registrasi mandiri untuk pelanggan baru (`/customer/register`). |
+| **Checkout E-Commerce** | Pemesanan produk online dengan integrasi zonasi wilayah pengiriman se-Kota Metro (Metro Pusat, Metro Timur, Metro Barat, Metro Utara, Metro Selatan) dengan perhitungan ongkir GrabExpress otomatis. |
+| **Titik Pengiriman & Bukti Bayar** | Input koordinat/link Google Maps (Shareloc), pilihan metode pembayaran (Transfer Bank / Tunai), dan unggah file bukti transfer langsung saat checkout. |
+| **Riwayat & Pelacakan Pesanan** | Halaman khusus pelanggan (`/riwayat-pesanan`) dengan metrik status interaktif, pemantauan kurir GrabExpress, unduh Nota PDF digital, dan tautan bantuan WhatsApp toko. |
+| **Konfirmasi Penerimaan** | Pelanggan dapat mengonfirmasi barang telah sampai dan diterima dengan baik dengan satu klik. |
+| **Pengajuan Komplain Online** | Formulir klaim komplain kerusakan barang langsung dari riwayat pesanan dengan unggahan foto bukti kerusakan dan nota pembelian. |
 
-### ⚙️ Keunggulan Teknis
+---
 
-- ✅ **Pengurangan stok otomatis** saat transaksi berhasil dibuat
-- ✅ **Pengembalian stok otomatis** saat transaksi dibatalkan atau retur disetujui
-- ✅ **Audit trail lengkap** setiap perubahan stok tercatat di riwayat
-- ✅ **Soft Delete** untuk data pelanggan dan produk (data aman, tidak terhapus permanen)
-- ✅ **Dua metode transaksi**: produk dari database atau item manual
-- ✅ **PDF generation** untuk invoice dan laporan menggunakan DomPDF
-- ✅ **CSRF Protection** dan validasi form di seluruh input
-- ✅ **Eager Loading** untuk performa query yang optimal
-- ✅ **Service Layer** memisahkan business logic dari controller
+### ⚙️ Keunggulan Teknis & Arsitektur
+
+- ✅ **Pengurangan Stok Otomatis**: Stok berkurang seketika saat order kasir POS atau pesanan online diverifikasi.
+- ✅ **Auto-Restock Cerdas**: Pengembalian kuantitas stok otomatis ke katalog ketika pesanan dibatalkan atau retur disetujui admin.
+- ✅ **Audit Trail Lengkap (`StockService`)**: Setiap mutasi stok tercatat lengkap dengan identitas user, tanggal, jenis perubahan, dan deskripsi.
+- ✅ **Zonasi Tarif GrabExpress Kota Metro**: Master tarif ongkos kirim tersimpan per kelurahan di Kota Metro untuk kalkulasi akurat.
+- ✅ **Generasi Dokumen PDF**: Menggunakan `barryvdh/laravel-dompdf` untuk mencetak Nota Kasir, Invoice Resmi, dan Laporan Rekapitulasi.
+- ✅ **Keamanan Data & Soft Deletes**: Menggunakan proteksi CSRF, enkripsi password via Bcrypt/Argon2, serta *soft delete* untuk data pelanggan dan produk.
 
 ---
 
@@ -79,105 +84,56 @@ Sistem ini dirancang untuk memenuhi kebutuhan operasional harian sebuah toko kom
 
 ```
 bintang-jaya-komputer/
-│
-├── 📂 app/
-│   ├── 📂 Http/
-│   │   ├── 📂 Controllers/
-│   │   │   ├── 📂 Admin/                   # Controller area admin
-│   │   │   │   ├── BrandController.php
-│   │   │   │   ├── CategoryController.php
-│   │   │   │   ├── ComplaintController.php
-│   │   │   │   ├── CustomerController.php
-│   │   │   │   ├── DashboardController.php
-│   │   │   │   ├── ProductController.php
-│   │   │   │   ├── ReportController.php
-│   │   │   │   ├── ReturnController.php
-│   │   │   │   ├── StockController.php
-│   │   │   │   ├── SupplierController.php
-│   │   │   │   └── TransactionController.php
-│   │   │   ├── 📂 Auth/                    # Controller autentikasi (Breeze)
-│   │   │   ├── GuestCatalogController.php  # Controller katalog publik
-│   │   │   └── ProfileController.php
-│   │   └── 📂 Requests/                   # Form Request Validation
-│   │
-│   ├── 📂 Models/                          # Eloquent ORM Models
-│   │   ├── Brand.php
-│   │   ├── Category.php
-│   │   ├── Complaint.php
-│   │   ├── Customer.php
-│   │   ├── MonthlyReport.php
-│   │   ├── Order.php
-│   │   ├── OrderItem.php
-│   │   ├── Payment.php
-│   │   ├── Product.php
-│   │   ├── ProductImage.php
-│   │   ├── ReturnLog.php
-│   │   ├── StockHistory.php
-│   │   ├── Supplier.php
-│   │   └── User.php
-│   │
-│   ├── 📂 Services/                        # Business Logic Layer
-│   │   ├── OrderService.php                # Logika transaksi & invoice
-│   │   ├── ReportService.php               # Logika generate laporan
-│   │   └── StockService.php               # Logika manajemen stok
-│   │
-│   ├── 📂 Providers/
-│   └── 📂 View/
-│
-├── 📂 database/
-│   ├── 📂 migrations/
-│   │   ├── 0001_01_01_000000_create_users_table.php
-│   │   ├── 0001_01_01_000001_create_cache_table.php
-│   │   ├── 0001_01_01_000002_create_jobs_table.php
-│   │   └── 2026_06_28_000000_create_bintang_jaya_tables.php
-│   ├── 📂 seeders/
-│   │   └── DatabaseSeeder.php             # Seed data demo lengkap
-│   └── 📂 factories/
-│
-├── 📂 resources/
-│   ├── 📂 views/
-│   │   ├── 📂 admin/                      # View Blade area admin
-│   │   │   ├── 📂 brands/
-│   │   │   ├── 📂 categories/
-│   │   │   ├── 📂 complaints/
-│   │   │   ├── 📂 customers/
-│   │   │   ├── 📂 products/
-│   │   │   ├── 📂 reports/
-│   │   │   ├── 📂 returns/
-│   │   │   ├── 📂 stocks/
-│   │   │   ├── 📂 suppliers/
-│   │   │   ├── 📂 transactions/
-│   │   │   └── dashboard.blade.php
-│   │   ├── 📂 auth/                       # View autentikasi
-│   │   ├── 📂 catalog/                    # View katalog publik (guest)
-│   │   ├── 📂 components/                 # Blade Components reusable
-│   │   ├── 📂 layouts/                    # Layout utama (admin & guest)
-│   │   ├── 📂 pdf/                        # Template PDF (invoice, laporan)
-│   │   └── welcome.blade.php              # Halaman katalog publik
-│   ├── 📂 css/
-│   └── 📂 js/
-│
-├── 📂 routes/
-│   ├── web.php                            # Route web utama
-│   ├── auth.php                           # Route autentikasi
-│   └── console.php
-│
-├── 📂 docker/
-│   ├── Dockerfile                         # PHP-FPM 8.2.12 image
-│   └── nginx.conf                         # Konfigurasi Nginx
-│
-├── docker-compose.yml                     # Orkestrasi container
-├── .env.example                           # Template konfigurasi environment
-├── composer.json                          # Dependensi PHP
-├── package.json                           # Dependensi Node.js
-└── artisan                                # CLI Laravel
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── Admin/
+│   │   │   │   ├── BookingController.php          # Kelola booking produk
+│   │   │   │   ├── BrandController.php            # CRUD merek
+│   │   │   │   ├── CategoryController.php         # CRUD kategori
+│   │   │   │   ├── ComplaintController.php        # Kelola komplain toko
+│   │   │   │   ├── CustomerController.php         # CRUD pelanggan
+│   │   │   │   ├── DashboardController.php        # Statistik & analitik
+│   │   │   │   ├── KelolaPesananController.php    # Manajemen order online
+│   │   │   │   ├── ProductController.php          # CRUD produk & foto
+│   │   │   │   ├── ReportController.php           # Laporan & PDF export
+│   │   │   │   ├── ReturnController.php           # Kelola retur barang
+│   │   │   │   ├── StockController.php            # Penyesuaian stok & audit
+│   │   │   │   ├── SupplierController.php         # CRUD supplier
+│   │   │   │   └── TransactionController.php      # Kasir POS & Nota/Invoice
+│   │   │   ├── CheckoutController.php             # Form checkout online & ongkir
+│   │   │   ├── CustomerAuthController.php         # Auth universal & register
+│   │   │   ├── CustomerComplaintController.php    # Form komplain customer
+│   │   │   ├── CustomerOrderController.php        # Riwayat pesanan customer
+│   │   │   ├── GuestActionController.php          # Aksi booking & kontak
+│   │   │   └── GuestCatalogController.php         # Katalog & detail publik
+│   │   └── Requests/                              # Form Request Validations
+│   ├── Models/                                    # Eloquent Models (14+ model)
+│   └── Services/                                  # Business Logic (StockService, OrderService)
+├── database/
+│   ├── migrations/                                # 14+ migrasi skema tabel
+│   └── seeders/                                   # Data master & demo seeder
+├── docker/
+│   ├── Dockerfile                                 # PHP 8.2-FPM Alpine container
+│   └── nginx.conf                                 # Konfigurasi Nginx reverse proxy
+├── docker-compose.yml                             # Orkestrasi 4 container
+├── public/                                        # Assets, CSS, JS, logo
+├── resources/
+│   └── views/                                     # Blade templates
+│       ├── admin/                                 # Antarmuka panel admin
+│       ├── catalog/                               # Halaman katalog e-commerce
+│       ├── customers/                             # Halaman order & komplain pelanggan
+│       ├── pdf/                                   # Template cetak Nota, Invoice, Laporan
+│       └── layouts/                               # Layout utama aplikasi
+└── routes/
+    └── web.php                                    # Definisi seluruh rute sistem
 ```
 
 ---
 
 ## 🗄️ 4. Arsitektur Database (Skema Relasi)
 
-Sistem menggunakan **14 tabel utama** dengan relasi foreign key yang ketat dan indeks untuk performa optimal.
+Sistem menggunakan database relasional MySQL dengan skema relasi foreign key yang terstruktur:
 
 ```
 ┌─────────────┐     ┌──────────────────┐     ┌──────────────┐
@@ -192,7 +148,7 @@ Sistem menggunakan **14 tabel utama** dengan relasi foreign key yang ketat dan i
        │               │             products               │
        │               │────────────────────────────────────│
        │               │ id (PK)                            │
-       │               │ name, sku (UNIQUE), barcode        │
+       │               │ name, sku, barcode                 │
        │               │ category_id (FK → categories)      │
        │               │ brand_id (FK → brands)             │
        │               │ supplier_id (FK → suppliers)       │
@@ -200,305 +156,316 @@ Sistem menggunakan **14 tabel utama** dengan relasi foreign key yang ketat dan i
        │               │ stock, min_stock                   │
        │               │ description, specs                 │
        │               │ is_active, soft_deletes            │
-       │               └─────────────┬───────────────────────┘
+       │               └─────────────┬──────────────────────┘
        │                             │
-       │           ┌─────────────────┼──────────────────────┐
-       │           │                 │                      │
-       │    ┌──────▼──────┐  ┌───────▼────────┐  ┌─────────▼───────┐
-       │    │product_image│  │ stock_histories│  │    suppliers    │
-       │    │─────────────│  │────────────────│  │─────────────────│
-       │    │ product_id  │  │ product_id     │  │ id (PK)         │
-       │    │ path        │  │ type           │  │ name            │
-       │    │ is_primary  │  │ quantity       │  │ contact_phone   │
-       │    └─────────────┘  │ user_id (FK)   │  │ email, address  │
-       │                     │ date, desc     │  └─────────────────┘
-       │                     └────────────────┘
-       │
-┌──────▼──────────────────────────┐    ┌─────────────────┐
-│             orders              │    │    customers    │
-│─────────────────────────────────│    │─────────────────│
-│ id (PK)                         │    │ id (PK)         │
-│ invoice_number (UNIQUE)         ├────│ name, phone     │
-│ customer_id (FK → customers)    │    │ email, address  │
-│ user_id (FK → users)            │    │ soft_deletes    │
-│ status (Belum Dibayar/Lunas/    │    └─────────────────┘
-│         Dibatalkan)             │
-│ total_amount, notes, soft_del   │
-└──────────────────┬──────────────┘
-                   │
-     ┌─────────────┼─────────────────────┐
-     │             │                     │
-┌────▼────────┐ ┌──▼──────────┐ ┌────────▼───────┐
-│ order_items │ │  payments   │ │   complaints   │
-│─────────────│ │─────────────│ │────────────────│
-│ order_id FK │ │ order_id FK │ │ order_id FK    │
-│ product_id  │ │ payment_    │ │ customer_name  │
-│ item_name   │ │   method    │ │ complaint_text │
-│ price, qty  │ │ amount_paid │ │ status         │
-│ subtotal    │ │ payment_    │ └────────────────┘
-└─────────────┘ │   status    │
-                │ payment_date│ ┌────────────────┐
-                └─────────────┘ │    returns     │
-                                │────────────────│
-                                │ order_id FK    │
-                                │ product_id FK  │
-                                │ quantity       │
-                                │ reason, status │
-                                └────────────────┘
-
-┌──────────────────────────┐
-│     monthly_reports      │
-│──────────────────────────│
-│ id (PK)                  │
-│ report_month (YYYY-MM)   │
-│ total_sales              │
-│ total_earnings           │
-│ total_transactions       │
-│ generated_at             │
-└──────────────────────────┘
+┌──────▼─────────────────────────────▼──────────────────────┐
+│                           orders                          │
+│───────────────────────────────────────────────────────────│
+│ id (PK)                                                   │
+│ invoice_number (UNIQUE: INV/YYYYMMDD/XXXX)                │
+│ user_id (FK → users, Kasir Admin - Nullable)              │
+│ customer_user_id (FK → users, Akun Pelanggan - Nullable)  │
+│ customer_id (FK → customers, Master Pelanggan - Nullable) │
+│ kecamatan_id (FK → kecamatans)                            │
+│ kelurahan_id (FK → kelurahans)                            │
+│ shipping_cost (Tarif ongkir GrabExpress)                  │
+│ payment_method (Transfer / Cash)                          │
+│ customer_name, customer_phone, customer_address           │
+│ shareloc_link (Tautan titik Google Maps)                  │
+│ bukti_transfer (File struk transfer bank)                 │
+│ total_amount, status, notes, timestamps                   │
+└──────┬─────────────────────────────┬──────────────────────┘
+       │                             │
+┌──────▼──────────────┐       ┌──────▼──────────────┐
+│     order_items     │       │       payments      │
+│─────────────────────│       │─────────────────────│
+│ id (PK)             │       │ id (PK)             │
+│ order_id (FK)       │       │ order_id (FK)       │
+│ product_id (FK)     │       │ payment_method      │
+│ item_name           │       │ amount_paid         │
+│ price, quantity     │       │ payment_status      │
+│ subtotal            │       │ payment_date        │
+└─────────────────────┘       └─────────────────────┘
 ```
-
-### Enum Status Per Tabel
-
-| Tabel | Kolom | Nilai |
-|---|---|---|
-| `orders` | `status` | `Belum Dibayar` · `Lunas` · `Dibatalkan` |
-| `payments` | `payment_status` | `Lunas` · `Belum Lunas` |
-| `payments` | `payment_method` | `Cash` · `Transfer` |
-| `returns` | `status` | `Menunggu` · `Disetujui` · `Ditolak` |
-| `complaints` | `status` | `Menunggu` · `Diproses` · `Selesai` |
-| `stock_histories` | `type` | `in` · `out` · `edit` · `delete` · `return` |
 
 ---
 
 ## 🔄 5. Alur Kerja Utama Sistem (System Flow)
 
-### Alur 1 — Transaksi Penjualan
+Sistem CV Bintang Jaya Komputer mengintegrasikan alur operasional toko secara menyeluruh antara pelanggan publik dan staf internal admin:
+
+### 🛒 Alur 1 — Belanja & Checkout Online oleh Pelanggan (E-Commerce)
 
 ```
-Admin Login
-    │
-    ▼
-Buka Form Transaksi
-    │
-    ├──► Metode A: Pilih produk dari database
-    │        │ → sistem ambil harga otomatis
-    │        │ → tambah ke keranjang
-    │
-    └──► Metode B: Input item manual
-             │ → isi nama barang, harga, qty
-             │ → tambah ke keranjang
-    │
-    ▼
-Pilih/Input Data Pelanggan (opsional)
-    │
-    ▼
-Konfirmasi & Simpan Transaksi
-    │
-    ▼
-Sistem Otomatis:
-    ├── Generate Nomor Invoice (INV/YYYYMMDD/XXXX)
-    ├── Kurangi stok produk (jika produk dari database)
-    └── Catat riwayat stok (type: out)
-    │
-    ▼
-Cetak Invoice PDF (kapan saja)
-    │
-    ▼
-Update Status Pembayaran (Belum Dibayar → Lunas)
+[Pengunjung Buka Website]
+           │
+           ▼
+[Jelajah Katalog & Pilih Produk]
+           │
+           ▼
+[Klik "Beli Sekarang" / Checkout] ──► [Belum Login?] ──► [Halaman Login / Register Akun]
+           │                                                       │
+           ▼                                                       ▼
+[Halaman Form Checkout (/checkout)] ◄──────────────────────────────┘
+           │
+           ├── 1. Tinjau Ringkasan Produk & Harga
+           ├── 2. Masukkan Nama Penerima & No. WhatsApp
+           ├── 3. Pilih Wilayah Pengiriman:
+           │        ├── Pilih Kecamatan (Kota Metro)
+           │        └── Pilih Kelurahan ──► (Sistem kalkulasi Ongkir GrabExpress otomatis)
+           ├── 4. Masukkan Link Google Maps / Titik Lokasi
+           ├── 5. Pilih Metode Pembayaran:
+           │        ├── Transfer Bank ──► Unggah file Bukti Transfer
+           │        └── Tunai (Cash on Delivery)
+           │
+           ▼
+[Klik "Konfirmasi & Buat Pesanan"]
+           │
+           ▼
+[Sistem Memproses Transaksi]:
+  ├── Generate Nomor Invoice Unik (INV/YYYYMMDD/XXXX)
+  ├── Simpan data pengiriman & file bukti transfer ke storage
+  ├── Simpan rincian order_items
+  └── Status awal pesanan: "Menunggu Konfirmasi"
+           │
+           ▼
+[Redirect ke Halaman Riwayat Pesanan (/riwayat-pesanan)]
 ```
 
-### Alur 2 — Pembatalan Transaksi
+---
+
+### 📦 Alur 2 — Pemrosesan & Pengiriman Pesanan oleh Admin (`/admin/pesanan`)
 
 ```
-Admin buka detail Invoice
-    │
-    ▼
-Klik Batalkan Transaksi
-    │
-    ▼
-Sistem Otomatis:
-    ├── Ubah status order → "Dibatalkan"
-    ├── Kembalikan stok tiap produk (stock + qty)
-    └── Catat riwayat stok (type: return)
+[Admin Login ke Panel Admin]
+           │
+           ▼
+[Buka Menu: Kelola Pesanan (/admin/pesanan)]
+           │
+           ├── Tab: Pesanan Masuk (Menunggu Konfirmasi)
+           │     │
+           │     ├── Admin memeriksa rincian pesanan, alamat, & link Maps
+           │     ├── Admin memeriksa foto bukti transfer pembayaran
+           │     │
+           │     ├──► Jika Valid:
+           │     │      ├── Klik "Proses Pesanan" (Status: Diproses Toko)
+           │     │      ├── Kurangi stok produk dari inventaris
+           │     │      └── Catat log mutasi stok (type: out)
+           │     │
+           │     └──► Jika Tidak Valid / Dibatalkan:
+           │            └── Klik "Batalkan Pesanan" (Status: Dibatalkan)
+           │
+           ├── Tab: Siap Kirim / Diproses
+           │     │
+           │     └── Staf menyiapkan & packing barang
+           │     └── Menyerahkan paket ke kurir GrabExpress
+           │     └── Klik "Kirim Pesanan" (Status: Dalam Pengiriman)
+           │
+           └── Tab: Pengiriman & Selesai
+                 │
+                 └── Paket diantarkan kurir ke lokasi customer
+                 └── Saat paket diterima: Status berubah menjadi "Selesai"
 ```
 
-### Alur 3 — Proses Retur
+---
+
+### 🛵 Alur 3 — Pelacakan & Konfirmasi Pesanan oleh Pelanggan (`/riwayat-pesanan`)
 
 ```
-Admin terima permintaan retur
-    │
-    ▼
-Buat data Return (order_id, product_id, qty, alasan)
-    │
-    ▼
-Admin Review Retur:
-    │
-    ├──► Setujui Retur:
-    │        ├── Status → "Disetujui"
-    │        ├── Stok produk bertambah (stock + qty)
-    │        └── Catat riwayat stok (type: return)
-    │
-    └──► Tolak Retur:
-             └── Status → "Ditolak"
-                 (stok tidak berubah)
+[Pelanggan Buka Halaman: Riwayat Pesanan (/riwayat-pesanan)]
+           │
+           ├── 📊 Pantau Kartu Metrik:
+           │     (Semua Pesanan, Menunggu, Dalam Pengiriman, Selesai)
+           │
+           ├── 🔍 Filter status pesanan atau cari nomor invoice
+           │
+           ├── 📄 Unduh Nota Digital:
+           │     └── Klik tombol "Download Nota" untuk mengunduh Nota Resmi (PDF)
+           │
+           ├── 🛵 Pantau Status Pengiriman Kurir Toko secara Real-time
+           │
+           ├── 💬 Bantuan Cepat:
+           │     └── Klik tombol "Bantuan CS" untuk chat WhatsApp admin otomatis
+           │
+           └── ✅ Konfirmasi Penerimaan:
+                 └── Saat kurir tiba membawa barang:
+                 └── Pelanggan klik tombol: "Pesanan Diterima"
+                 └── Status pesanan berubah menjadi: "Selesai" (Lunas)
 ```
 
-### Alur 4 — Guest Katalog Publik
+---
+
+### ⚠️ Alur 4 — Pengajuan & Penanganan Komplain Kerusakan Barang
 
 ```
-Pengunjung buka website
-    │
-    ▼
-Melihat Halaman Katalog (welcome.blade.php)
-    │
-    ├── Filter berdasarkan: Kategori / Merek / Harga
-    ├── Cari berdasarkan: Nama Produk / Merek / Kategori
-    │
-    ▼
-Klik Produk → Lihat Detail
-    ├── Foto produk
-    ├── Harga jual
-    ├── Status stok (Tersedia / Habis)
-    └── Spesifikasi lengkap
+[Barang Diterima Pelanggan Mengalami Kendala/Rusak]
+           │
+           ▼
+[Pelanggan Buka /riwayat-pesanan]
+           │
+           ▼
+[Klik Tombol: "Ajukan Komplain" pada Pesanan Terkait]
+           │
+           ▼
+[Formulir Pengajuan Komplain (/riwayat-pesanan/{id}/komplain)]:
+  ├── Rincian invoice dan produk terisi otomatis
+  ├── Pilih Jenis Kendala (Barang Cacat, Aksesori Kurang, Mati Total, dll)
+  ├── Tulis Deskripsi Detail Kerusakan
+  ├── Unggah Foto Nota Pembelian Fisik
+  └── Unggah Foto/Bukti Fisik Kerusakan Produk
+           │
+           ▼
+[Klik "Kirim Laporan Komplain"] ──► Tersimpan dengan status "Menunggu"
+           │
+           ▼
+[Admin Meninjau di Menu: Komplain Toko (/admin/complaints)]:
+  ├── Admin memeriksa keterangan dan foto bukti
+  ├── Menghubungi customer via telepon/WA
+  └── Memperbarui status komplain: "Diproses" ➔ "Selesai" / "Ditolak"
+```
 
-(Guest tidak dapat melakukan transaksi)
+---
+
+### 🏢 Alur 5 — Transaksi Langsung di Toko (Kasir POS Admin)
+
+```
+[Pelanggan Datang ke Toko (Walk-in Customer)]
+           │
+           ▼
+[Admin Buka Menu: Kasir Transaksi (/admin/transactions/create)]
+           │
+           ├── Metode A: Pilih produk dari inventaris (stok & harga otomatis)
+           └── Metode B: Input item manual (jasa servis / barang khusus)
+           │
+           ▼
+[Pilih Data Pelanggan Terdaftar atau Pelanggan Umum (Walk-in)]
+           │
+           ▼
+[Masukkan Pembayaran (Tunai / Transfer) & Hitung Kembalian]
+           │
+           ▼
+[Simpan Transaksi]:
+  ├── Generate Nomor Invoice (INV/YYYYMMDD/XXXX)
+  ├── Potong stok produk dari database otomatis
+  ├── Catat mutasi stok (type: out)
+  └── Cetak Struk Nota Kasir PDF atau Faktur Invoice PDF
+```
+
+---
+
+### 🔄 Alur 6 — Proses Retur Barang & Auto-Restock Inventaris
+
+```
+[Pelanggan Mengajukan Retur Unit ke Toko]
+           │
+           ▼
+[Admin Input Data Retur (/admin/returns)]:
+  ├── Pilih Nomor Invoice & Produk yang diretur
+  ├── Masukkan Jumlah Unit & Alasan Retur
+  └── Status awal: "Menunggu"
+           │
+           ▼
+[Review & Keputusan Admin]:
+  │
+  ├──► [Setujui Retur]:
+  │        ├── Status retur berubah menjadi: "Disetujui"
+  │        ├── Stok produk otomatis bertambah kembali (+Qty)
+  │        └── Sistem mencatat riwayat stok baru (type: return)
+  │
+  └──► [Tolak Retur]:
+           └── Status retur berubah menjadi: "Ditolak" (stok tidak berubah)
+```
+
+---
+
+### 📑 Alur 7 — Pembuatan Laporan & Ekspor Dokumen PDF
+
+```
+[Admin Buka Menu: Laporan Penjualan (/admin/reports)]
+           │
+           ├── 1. Pilih Tipe Laporan:
+           │        ├── Laporan Harian
+           │        ├── Laporan Bulanan (Rekapitulasi Omset & Profit)
+           │        ├── Laporan Tahunan
+           │        ├── Laporan Stok Opname
+           │        ├── Laporan Retur Barang
+           │        └── Laporan Produk Terlaris (Top Selling)
+           │
+           ├── 2. Pilih Periode Tanggal / Bulan / Tahun
+           │
+           ├── 3. Klik "Preview Laporan":
+           │        └── Pratinjau data interaktif langsung di layar web
+           │
+           └── 4. Klik "Download PDF":
+                    └── Sistem men-generate dokumen resmi berkop toko via DomPDF
 ```
 
 ---
 
 ## ✅ 6. Validasi & Logika Teknis Khusus
 
-### Manajemen Stok (StockService)
+### Manajemen Stok Terpusat (`StockService`)
+Setiap mutasi stok produk **wajib** melewati `StockService` untuk menjamin konsistensi data:
+1. Mengubah nilai kolom `stock` pada tabel `products`.
+2. Menulis baris riwayat baru pada tabel `stock_histories` dengan parameter:
+   - `product_id`: ID produk terkait.
+   - `type`: Jenis mutasi (`in`, `out`, `edit`, `delete`, `return`).
+   - `quantity`: Jumlah unit yang bertambah/berkurang.
+   - `user_id`: ID admin yang mengotorisasi perubahan.
+   - `date`: Timestamp waktu transaksi.
+   - `description`: Catatan sumber perubahan (misal: nomor invoice).
 
+### Penomoran Invoice Otomatis
+Nomor invoice di-generate secara unik dan berurutan dengan format baku:
 ```
-Setiap perubahan stok WAJIB:
-1. Update kolom `stock` pada tabel `products`
-2. Insert record baru ke tabel `stock_histories`
-   dengan field: product_id, type, quantity, user_id, date, description
-
-Tipe perubahan stok:
-  - "in"     → Penambahan stok (pembelian dari supplier)
-  - "out"    → Pengurangan stok (terjual)
-  - "edit"   → Koreksi stok manual oleh admin
-  - "delete" → Stok dihapus/dinonaktifkan
-  - "return" → Pengembalian stok dari retur disetujui
-```
-
-### Logika Invoice (OrderService)
-
-```
-Format Nomor Invoice: INV/{YYYYMMDD}/{4-digit-sequence}
-Contoh: INV/20260701/0001
-
-Saat order dibuat:
-  foreach (item as $item):
-    if ($item->product_id !== null):   // produk dari DB
-      Product::decrement('stock', $qty)
-      StockHistory::create(type: 'out', ...)
-
-Saat order dibatalkan:
-  foreach (item as $item):
-    if ($item->product_id !== null):
-      Product::increment('stock', $qty)
-      StockHistory::create(type: 'return', ...)
-```
-
-### Validasi Order Item
-
-```
-Produk dari Database:
-  - product_id wajib valid & aktif di tabel products
-  - stok produk harus mencukupi qty yang diminta
-  - harga diambil dari price_jual di database (tidak bisa diubah manual)
-
-Item Manual:
-  - product_id = null
-  - item_name, price, quantity wajib diisi
-  - stok tidak dikurangi (barang tidak ada di sistem)
-```
-
-### Soft Delete
-
-```
-Tabel dengan Soft Delete: customers, products, orders
-  → Data tidak terhapus permanen dari database
-  → Hanya kolom deleted_at yang diisi
-  → Relasi terjaga untuk keperluan histori transaksi
-```
-
-### Alert Stok Minimum
-
-```
-Dashboard Admin menampilkan peringatan produk hampir habis:
-  WHERE products.stock <= products.min_stock
-  AND products.is_active = true
-  AND products.deleted_at IS NULL
+INV / YYYYMMDD / XXXX
+Contoh: INV/20260917/0001
 ```
 
 ---
 
 ## 📦 7. Dependensi Project
 
-### PHP Dependencies (composer.json)
+### Backend (PHP / Laravel)
+- `laravel/framework`: ^12.x
+- `barryvdh/laravel-dompdf`: ^3.1 (Pembuatan dokumen PDF)
+- `intervention/image`: ^3.x (Manipulasi & kompresi foto produk)
+- `laravel/breeze`: Autentikasi dasar
 
-| Package | Versi | Fungsi |
-|---|---|---|
-| `laravel/framework` | ^13.8 | Core framework Laravel |
-| `barryvdh/laravel-dompdf` | ^3.1 | Generate PDF (invoice & laporan) |
-| `laravel/tinker` | ^3.0 | REPL interaktif untuk debugging |
-| `laravel/breeze` | ^2.4 | Starter kit autentikasi (dev) |
-| `laravel/pail` | ^1.2.5 | Log tailing real-time (dev) |
-| `laravel/pint` | ^1.27 | Code formatter PSR-12 (dev) |
-| `phpunit/phpunit` | ^12.5 | Testing framework (dev) |
-| `fakerphp/faker` | ^1.23 | Generate data dummy (dev) |
-
-### JavaScript Dependencies (package.json)
-
-| Package | Fungsi |
-|---|---|
-| `vite` | Build tool & dev server |
-| `laravel-vite-plugin` | Integrasi Vite dengan Laravel |
-| `chart.js` | Grafik penjualan di dashboard |
-
-### Runtime Environment
-
-| Komponen | Versi |
-|---|---|
-| PHP | 8.2.12 |
-| MySQL | 8.0 |
-| Nginx | Alpine (latest) |
-| Node.js | LTS (untuk build assets) |
-| Composer | 2.x |
+### Frontend
+- Native Responsive CSS & Tailwind Utility
+- `Bootstrap 5.3` & `FontAwesome 6.4` (Iconography)
+- `Chart.js` (Visualisasi grafik analitik dashboard)
+- `Alpine.js` (Interaktivitas dialog & dropdown)
 
 ---
 
-## 🔧 8. Panduan Instalasi
+## 🔧 8. Panduan Instalasi & Menjalankan Aplikasi
 
-### Prasyarat
-
-- Git
-- **Metode A (Docker):** Docker Desktop
-- **Metode B (Manual):** PHP 8.2.12, Composer, MySQL 8, Node.js LTS
+Aplikasi dapat dijalankan melalui **2 metode pilihan**:
+- **Metode A (Docker Compose)**: Sangat direkomendasikan karena lingkungan server (Nginx, PHP-FPM 8.2, MySQL 8, phpMyAdmin) telah terkonfigurasi otomatis dan terisolasi.
+- **Metode B (Tanpa Docker / Manual Lokal)**: Menggunakan PHP built-in server (`php artisan serve`) dan MySQL lokal (XAMPP / Homebrew / MariaDB).
 
 ---
 
-### 🐳 Metode A — Menggunakan Docker (Direkomendasikan)
+### 🐳 Metode A — Menggunakan Docker Compose (Direkomendasikan)
 
-> Metode ini menjalankan seluruh stack (Nginx, PHP-FPM, MySQL, phpMyAdmin) dalam container Docker secara terisolasi.
+#### Prasyarat:
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) telah terpasang dan berjalan di komputer Anda.
 
-**Langkah 1: Clone repository**
+#### Langkah-langkah:
+
+**1. Masuk ke direktori project:**
 ```bash
-git clone https://github.com/your-username/bintang-jaya-komputer.git
-cd bintang-jaya-komputer
+cd /Users/aaaa/Documents/Desain/Client/bayu/code
 ```
 
-**Langkah 2: Salin dan konfigurasi environment**
+**2. Siapkan file environment (`.env`):**
+Salin file `.env.example` menjadi `.env`:
 ```bash
 cp .env.example .env
 ```
-
-Edit file `.env` untuk konfigurasi database Docker:
+Pastikan konfigurasi database pada `.env` diarahkan ke container `db`:
 ```env
 DB_CONNECTION=mysql
 DB_HOST=db
@@ -508,84 +475,100 @@ DB_USERNAME=bintang_jaya_user
 DB_PASSWORD=bintang_jaya_pass
 ```
 
-**Langkah 3: Bangun dan jalankan container**
+**3. Bangun dan jalankan seluruh container:**
 ```bash
 docker compose up -d --build
 ```
+> Perintah ini menyalakan 4 container: `bintang_jaya_app` (PHP-FPM), `bintang_jaya_web` (Nginx), `bintang_jaya_db` (MySQL 8.0), dan `bintang_jaya_phpmyadmin`.
 
-**Langkah 4: Install dependensi PHP**
+**4. Install dependensi composer di dalam container:**
 ```bash
 docker compose exec app composer install
 ```
 
-**Langkah 5: Generate application key**
+**5. Generate App Key Laravel:**
 ```bash
 docker compose exec app php artisan key:generate
 ```
 
-**Langkah 6: Jalankan migrasi dan seeder**
+**6. Jalankan Migrasi Database dan Seeder Data Awal:**
 ```bash
 docker compose exec app php artisan migrate --seed
 ```
+> Perintah ini membuat seluruh tabel, master wilayah se-Kota Metro dengan tarif GrabExpress, akun admin, akun pelanggan demo, data produk, serta riwayat transaksi.
 
-**Langkah 7: Build assets frontend**
+**7. Buat Symbolic Link Storage (Penting untuk foto produk & bukti transfer):**
+```bash
+docker compose exec app php artisan storage:link
+```
+
+**8. Build asset frontend:**
 ```bash
 docker compose exec app npm install
 docker compose exec app npm run build
 ```
 
-**Langkah 8: Set permission storage**
+**9. Atur hak akses direktori storage:**
 ```bash
 docker compose exec app chmod -R 775 storage bootstrap/cache
 docker compose exec app chown -R www-data:www-data storage bootstrap/cache
 ```
 
-**Akses Aplikasi:**
+#### 🌐 URL Akses Docker:
 
-| Layanan | URL | Keterangan |
+| Layanan | URL Akses | Keterangan |
 |---|---|---|
-| 🌐 Aplikasi Web | http://localhost:8083 | Halaman utama & admin |
-| 🗄️ phpMyAdmin | http://localhost:8082 | Manajemen database visual |
+| **Aplikasi Web E-Commerce & POS** | **http://localhost:8083** | Halaman utama, katalog, checkout, & admin panel |
+| **phpMyAdmin Database Visual** | **http://localhost:8082** | Manajemen database visual (User: `root`, Pass: `root_secret_pass`) |
 
-**Menghentikan container:**
+#### Cheat Sheet Perintah Docker:
 ```bash
+# Melihat status container yang aktif
+docker compose ps
+
+# Melihat log aplikasi secara langsung
+docker compose logs -f app
+
+# Menghentikan container tanpa menghapus data database
+docker compose stop
+
+# Menjalankan kembali container
+docker compose start
+
+# Mematikan dan menghapus container
 docker compose down
-```
 
-**Menghapus container + data:**
-```bash
-docker compose down -v
+# Masuk ke terminal bash container app
+docker compose exec app sh
 ```
 
 ---
 
-### 💻 Metode B — Tanpa Docker (Manual)
+### 💻 Metode B — Tanpa Docker (Manual Lokal / XAMPP / PHP Native)
 
-> Metode ini menjalankan aplikasi langsung di mesin lokal menggunakan PHP built-in server atau server web yang sudah ada.
+#### Prasyarat:
+- **PHP**: Versi 8.2 atau lebih baru (dengan ekstensi `pdo_mysql`, `mbstring`, `openssl`, `fileinfo`, `gd`, `curl`)
+- **Composer**: Versi 2.x
+- **Database**: MySQL 8.0 atau MariaDB (misal via XAMPP)
+- **Node.js & npm**: Node.js LTS
 
-**Prasyarat:**
-- PHP 8.2.12+ dengan ekstensi: `pdo_mysql`, `mbstring`, `openssl`, `fileinfo`, `gd`
-- Composer 2.x
-- MySQL 8.0+
-- Node.js LTS + npm
+#### Langkah-langkah:
 
-**Langkah 1: Clone repository**
+**1. Masuk ke direktori project:**
 ```bash
-git clone https://github.com/your-username/bintang-jaya-komputer.git
-cd bintang-jaya-komputer
+cd /Users/aaaa/Documents/Desain/Client/bayu/code
 ```
 
-**Langkah 2: Install dependensi PHP**
+**2. Install dependensi PHP:**
 ```bash
 composer install
 ```
 
-**Langkah 3: Salin dan konfigurasi environment**
+**3. Siapkan file `.env`:**
 ```bash
 cp .env.example .env
 ```
-
-Edit file `.env`:
+Sesuaikan konfigurasi database dengan server MySQL lokal Anda (misal XAMPP):
 ```env
 APP_NAME="CV Bintang Jaya Komputer"
 APP_ENV=local
@@ -597,132 +580,113 @@ DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=bintang_jaya_db
 DB_USERNAME=root
-DB_PASSWORD=your_mysql_password
+DB_PASSWORD=
 ```
 
-**Langkah 4: Buat database MySQL**
+**4. Buat Database di MySQL lokal:**
+Buka MySQL CLI atau phpMyAdmin lokal Anda, lalu buat database baru:
 ```sql
 CREATE DATABASE bintang_jaya_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-**Langkah 5: Generate application key**
+**5. Generate App Key Laravel:**
 ```bash
 php artisan key:generate
 ```
 
-**Langkah 6: Jalankan migrasi dan seeder**
+**6. Jalankan Migrasi & Database Seeder:**
 ```bash
 php artisan migrate --seed
 ```
 
-**Langkah 7: Install dan build assets frontend**
+**7. Buat Symbolic Link Storage:**
+```bash
+php artisan storage:link
+```
+
+**8. Install dependensi JavaScript & Build Asset:**
 ```bash
 npm install
 npm run build
 ```
 
-**Langkah 8: Set permission storage**
+**9. Jalankan Server Pengembangan:**
 ```bash
-chmod -R 775 storage bootstrap/cache
+php artisan serve --port=8000
 ```
 
-**Langkah 9: Jalankan server pengembangan**
-```bash
-php artisan serve
-```
-
-Atau gunakan perintah all-in-one (server + queue + log + vite):
-```bash
-composer run dev
-```
-
-**Akses Aplikasi:** http://localhost:8000
+#### 🌐 URL Akses Non-Docker:
+Akses website melalui browser: **http://localhost:8000**
 
 ---
 
-## 🔑 9. Kredensial Akun Bawaan
+## 🔑 9. Kredensial Akun & Informasi Login
 
-Setelah menjalankan `php artisan migrate --seed`, akun berikut tersedia:
+Setelah perintah `php artisan migrate --seed` dijalankan, sistem menyediakan akun siap pakai untuk pengujian:
 
-### Admin
+### 🛡️ 1. Akun Administrator (Akses Penuh Toko & POS)
 
-| Field | Value |
+| Atribut | Kredensial |
 |---|---|
+| **Halaman Login** | `http://localhost:8083/login` (Docker) atau `http://localhost:8000/login` (Lokal) |
 | **Email** | `admin@bintangkomputer.com` |
 | **Password** | `password` |
-| **Nama** | Krisna Irawan |
-| **Role** | Administrator (akses penuh) |
+| **Nama Pengguna** | Krisna Irawan |
+| **Hak Akses** | Akses penuh: Dashboard analitik, Kasir POS Transaksi, Kelola Pesanan Online, Master Produk, Stok, Retur, Komplain, Laporan PDF. |
 
-> ⚠️ **Penting:** Segera ganti password default ini setelah login pertama di lingkungan produksi!
+---
 
-### Data Demo yang Di-seed
+### 🛒 2. Akun Pelanggan Demo (Customer)
 
-| Data | Jumlah |
+| Atribut | Kredensial |
 |---|---|
-| Kategori Produk | 5 (Laptops, Smartphones, Headphones, Accessories, Smart Home) |
-| Merek | 6 (Apple, Asus, Samsung, Sony, Logitech, Google) |
-| Supplier | 2 (PT. Bintang Distribusi Nusantara, CV. Global Gadget Lampung) |
-| Produk | 7 produk lengkap dengan detail spesifikasi |
-| Pelanggan | 3 pelanggan sample |
-| Riwayat Order | ~40 order (selama 5 bulan terakhir) |
-| Retur | 2 retur (1 pending, 1 disetujui) |
-| Komplain | 1 komplain sample |
+| **Halaman Login** | `http://localhost:8083/login` (Docker) atau `http://localhost:8000/login` (Lokal) |
+| **Email** | `user@bintangkomputer.com` |
+| **Password** | `password` |
+| **Nama Pengguna** | Pelanggan Demo |
+| **Hak Akses** | Akses belanja: Jelajah katalog, Checkout dengan kurir GrabExpress, Pelacakan status di `/riwayat-pesanan`, Download Nota PDF, Konfirmasi barang sampai, Ajukan komplain kerusakan. |
+
+---
+
+### 📝 3. Registrasi Pelanggan Baru
+
+Pengunjung baru juga dapat mendaftarkan akun pribadi secara mandiri melalui menu registrasi:
+- URL Registrasi: `http://localhost:8083/customer/register` (Docker) atau `http://localhost:8000/customer/register` (Lokal)
+- Cukup mengisi Nama Lengkap, Alamat Email, Nomor Telepon/WhatsApp, Alamat Domisili, dan Kata Sandi.
+
+---
+
+### 📊 Ringkasan Data Demo Hasil Seeder
+
+| Entitas Data | Jumlah / Keterangan |
+|---|---|
+| **Akun Pengguna** | 1 Admin (`admin@bintangkomputer.com`), 1 Customer (`user@bintangkomputer.com`) |
+| **Master Wilayah** | 5 Kecamatan & seluruh Kelurahan di Kota Metro lengkap dengan tarif zonasi kurir GrabExpress |
+| **Kategori Produk** | 5 Kategori (Laptops, Smartphones, Headphones, Accessories, Smart Home) |
+| **Merek / Brand** | 6 Brand Resmi (Apple, Asus, Samsung, Sony, Logitech, Google) |
+| **Supplier** | 2 Supplier Resmi (PT. Bintang Distribusi Nusantara, CV. Global Gadget Lampung) |
+| **Katalog Produk** | 10+ Produk komputer, laptop, dan aksesori lengkap spesifikasi & gambar |
+| **Riwayat Transaksi** | ~40 Transaksi penjualan selama 5 bulan terakhir (untuk simulasi grafik omset & rekapitulasi) |
+| **Sample Retur** | 2 Kasus Retur (1 Menunggu Review, 1 Disetujui dengan auto-restock) |
+| **Sample Komplain** | 1 Kasus Komplain Pelanggan |
 
 ---
 
 ## 🛠️ 10. Ringkasan Tech Stack
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    FRONTEND (Client Side)                    │
-│                                                             │
-│  📄 Blade Templates    🎨 Native CSS    ⚡ Alpine.js (opt) │
-│  📊 Chart.js           🔤 Heroicons / Font Awesome          │
-│  ⚙️  Vite (build tool)                                      │
-└────────────────────────────┬────────────────────────────────┘
-                             │  HTTP
-┌────────────────────────────▼────────────────────────────────┐
-│                   APPLICATION LAYER                         │
-│                                                             │
-│  🚀 Laravel 12 (PHP 8.2.12) 🔐 Laravel Breeze (Auth)       │
-│  📋 Eloquent ORM            🛡️  Form Request Validation     │
-│  🏗️  Resource Controllers   📦 Service Layer Pattern        │
-│  📄 DomPDF (PDF Generate)  🖼️  Intervention Image          │
-└────────────────────────────┬────────────────────────────────┘
-                             │
-┌────────────────────────────▼────────────────────────────────┐
-│                    DATA LAYER                               │
-│                                                             │
-│  🗄️  MySQL 8.0             🔄 Eloquent Migrations           │
-│  🌱 Database Seeders        📊 14 Tabel dengan Foreign Key  │
-│  🗑️  Soft Deletes          📈 Database Indexes              │
-└────────────────────────────┬────────────────────────────────┘
-                             │
-┌────────────────────────────▼────────────────────────────────┐
-│                 INFRASTRUCTURE (Docker)                     │
-│                                                             │
-│  🐳 Docker Compose          🌐 Nginx (Web Server)          │
-│  ⚙️  PHP-FPM 8.2.12         🗄️  MySQL 8.0 Container        │
-│  🔧 phpMyAdmin              🔒 Isolated Network Bridge     │
-└─────────────────────────────────────────────────────────────┘
-```
-
-| Layer | Teknologi | Versi |
-|---|---|---|
-| **Language** | PHP | 8.2.12 |
-| **Framework** | Laravel | 12.x |
-| **Template Engine** | Blade | — |
-| **Authentication** | Laravel Breeze | 2.4 |
-| **Database** | MySQL | 8.0 |
-| **ORM** | Eloquent | — |
-| **PDF** | barryvdh/laravel-dompdf | 3.1 |
-| **Charts** | Chart.js | latest |
-| **Icons** | Heroicons + Font Awesome | — |
-| **Build Tool** | Vite | latest |
-| **Web Server** | Nginx Alpine | latest |
-| **Runtime** | PHP-FPM | 8.2.12 |
-| **Containerization** | Docker + Docker Compose | — |
-| **Code Style** | PSR-12 (enforced by Pint) | — |
+| Komponen | Spesifikasi & Teknologi |
+|---|---|
+| **Bahasa Pemrograman** | PHP 8.2+ |
+| **Framework Backend** | Laravel 12.x |
+| **Arsitektur** | Model-View-Controller (MVC) + Service Layer Pattern |
+| **Basis Data** | MySQL 8.0 (InnoDB, Foreign Keys, Soft Deletes) |
+| **Autentikasi** | Laravel Breeze & Custom Universal Auth Guard |
+| **Template Engine** | Blade Templating |
+| **Styling & UI** | Native CSS, Bootstrap 5.3, FontAwesome 6.4, Chart.js |
+| **Pembuatan PDF** | `barryvdh/laravel-dompdf` (Nota Kasir, Invoice, Laporan Berkala) |
+| **Web Server (Docker)**| Nginx Alpine Reverse Proxy |
+| **Orkestrasi Container**| Docker & Docker Compose |
+| **Standar Kode** | PSR-12 (Laravel Pint) |
 
 ---
 
@@ -732,6 +696,6 @@ Setelah menjalankan `php artisan migrate --seed`, akun berikut tersedia:
 
 📍 Jl. Ahmad Yani No.68, Iringmulyo, Kota Metro, Lampung
 
-*Dibuat dengan ❤️ menggunakan Laravel*
+*Sistem Informasi Penjualan & Manajemen Toko Komputer Terintegrasi*
 
 </div>
