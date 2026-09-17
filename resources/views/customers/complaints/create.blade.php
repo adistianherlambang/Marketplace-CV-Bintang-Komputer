@@ -4,8 +4,21 @@
     </x-slot>
 
     @push('styles')
+    <link rel="stylesheet" href="{{ asset('css/custom-select.css') }}">
     <style>
         :root {
+            --font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --border: #e2e8f0;
+            --white: #ffffff;
+            --dark: #0f172a;
+            --secondary: #64748b;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-light: #eff6ff;
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --transition: all 0.2s ease;
             --bj-primary: #dc2626;
             --bj-primary-hover: #b91c1c;
             --bj-primary-light: #fef2f2;
@@ -330,7 +343,7 @@
                     <label class="form-label-custom">
                         Jenis Kendala / Masalah <span class="text-danger">*</span>
                     </label>
-                    <select name="complaint_type" class="form-select-custom" required>
+                    <select name="complaint_type" class="form-control tom-select" required>
                         <option value="">-- Pilih Jenis Kendala --</option>
                         <option value="Barang Rusak / Cacat Fisik Saat Tiba" {{ old('complaint_type') == 'Barang Rusak / Cacat Fisik Saat Tiba' ? 'selected' : '' }}>
                             🔴 Barang Rusak / Cacat Fisik Saat Tiba
@@ -420,6 +433,7 @@
     </div>
 
     @push('scripts')
+    <script src="{{ asset('js/custom-select.js') }}"></script>
     <script>
         function handleImagePreview(input, wrapId, imgId) {
             const file = input.files && input.files[0];
