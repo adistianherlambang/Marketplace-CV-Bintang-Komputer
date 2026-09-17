@@ -27,7 +27,7 @@ class ReturnLog extends Model
 
     public function order()
     {
-        return $this->belongsTo(Order::class)->withTrashed();
+        return $this->belongsTo(Order::class);
     }
 
     public function product()
