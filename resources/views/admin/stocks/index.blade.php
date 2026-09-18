@@ -163,7 +163,7 @@
 
                             <td>
                                 <div class="stocks-product-cell">
-                                    @if($product->primaryImage && file_exists(public_path('storage/' . $product->primaryImage->path)))
+                                    @if($product->primaryImage)
                                         <img src="{{ asset('storage/' . $product->primaryImage->path) }}" alt="{{ $product->name }}" class="stocks-product-img">
                                     @else
                                         <div class="stocks-product-img-fallback">

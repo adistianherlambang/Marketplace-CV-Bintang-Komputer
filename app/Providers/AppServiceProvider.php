@@ -27,6 +27,19 @@ class AppServiceProvider extends ServiceProvider
             @mkdir(storage_path('fonts'), 0775, true);
         }
 
+        // Ensure storage public directories exist for uploads
+        $storageDirs = [
+            storage_path('app/public'),
+            storage_path('app/public/products'),
+            storage_path('app/public/bukti_transfer'),
+            storage_path('app/public/complaints'),
+        ];
+        foreach ($storageDirs as $dir) {
+            if (!file_exists($dir)) {
+                @mkdir($dir, 0775, true);
+            }
+        }
+
         // Ensure dompdf always resolves a valid existing directory for public_path on any hosting environment (cPanel, VPS, etc.)
         $configuredPath = config('dompdf.public_path');
         if (!$configuredPath || !is_dir($configuredPath) || realpath($configuredPath) === false) {

@@ -5,11 +5,20 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\Product;
+use App\Services\StockService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class KelolaPesananController extends Controller
 {
+    protected StockService $stockService;
+
+    public function __construct(StockService $stockService)
+    {
+        $this->stockService = $stockService;
+    }
+
     public function index(Request $request)
     {
         $query = Order::with(['user', 'customerUser', 'items.product', 'kecamatan', 'kelurahan'])
@@ -52,6 +61,7 @@ class KelolaPesananController extends Controller
         ]);
 
         $order = Order::findOrFail($id);
+        $oldStatus = $order->status;
         
         $order->status = $request->status;
         
@@ -61,6 +71,23 @@ class KelolaPesananController extends Controller
         }
         
         $order->save();
+
+        // Jika status diubah menjadi Dibatalkan / Batal, kembalikan stok produk
+        if (in_array($request->status, ['Dibatalkan', 'Batal']) && !in_array($oldStatus, ['Dibatalkan', 'Batal'])) {
+            foreach ($order->items as $item) {
+                if ($item->product_id) {
+                    $product = Product::find($item->product_id);
+                    if ($product) {
+                        $this->stockService->adjustStock(
+                            $product,
+                            $item->quantity,
+                            'return',
+                            "Restored stock from cancelled online order {$order->invoice_number}"
+                        );
+                    }
+                }
+            }
+        }
 
         // Jika status dikonfirmasi diproses/selesai dan belum ada data payment, buat data payment
         if (in_array($request->status, ['Diproses', 'Dikirim', 'Selesai', 'Lunas'])) {

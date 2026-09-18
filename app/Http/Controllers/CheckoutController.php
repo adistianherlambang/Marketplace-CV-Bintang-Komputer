@@ -8,11 +8,20 @@ use App\Models\Kelurahan;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Services\StockService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class CheckoutController extends Controller
 {
+    protected StockService $stockService;
+
+    public function __construct(StockService $stockService)
+    {
+        $this->stockService = $stockService;
+    }
+
     public function index(Request $request)
     {
         $productId = $request->query('product_id');
@@ -22,6 +31,10 @@ class CheckoutController extends Controller
         }
 
         $product = Product::findOrFail($productId);
+        if ($product->stock <= 0) {
+            return redirect()->route('catalog.index')->with('error', 'Maaf, stok produk ini sedang habis.');
+        }
+
         $kecamatans = Kecamatan::with('kelurahans')->get();
         
         return view('checkout', compact('product', 'kecamatans'));
@@ -41,6 +54,10 @@ class CheckoutController extends Controller
         ]);
 
         $product = Product::findOrFail($request->product_id);
+        if ($product->stock < 1) {
+            return redirect()->back()->withInput()->with('error', 'Maaf, stok produk ini tidak mencukupi atau sudah habis.');
+        }
+
         $kelurahan = Kelurahan::findOrFail($request->kelurahan_id);
 
         $buktiTransferPath = null;
@@ -51,35 +68,47 @@ class CheckoutController extends Controller
         // Tentukan status berdasarkan ada tidaknya bukti transfer
         $statusPesanan = $buktiTransferPath ? 'Menunggu Konfirmasi' : 'Belum Dibayar';
 
-        // 1. Buat Header Order
-        // user_id dikosongkan (null) untuk order online dari customer, 
-        // agar tidak keliru tercatat sebagai kasir/admin.
-        // customer_user_id mencatat akun pelanggan yang sedang login.
-        $order = Order::create([
-            'invoice_number' => 'INV/' . date('Ymd') . '/' . sprintf('%04d', rand(1, 9999)),
-            'user_id' => null, 
-            'customer_user_id' => Auth::id(),
-            'customer_name' => $request->customer_name,
-            'customer_phone' => $request->customer_phone,
-            'status' => $statusPesanan,
-            'payment_method' => $request->payment_method,
-            'bukti_transfer' => $buktiTransferPath,
-            'total_amount' => $product->price_jual + $kelurahan->tarif_grab,
-            'kecamatan_id' => $request->kecamatan_id,
-            'kelurahan_id' => $request->kelurahan_id,
-            'shipping_cost' => $kelurahan->tarif_grab,
-            'shareloc_link' => $request->shareloc_link,
-        ]);
+        $order = DB::transaction(function () use ($request, $product, $kelurahan, $buktiTransferPath, $statusPesanan) {
+            // 1. Buat Header Order
+            // user_id dikosongkan (null) untuk order online dari customer, 
+            // agar tidak keliru tercatat sebagai kasir/admin.
+            // customer_user_id mencatat akun pelanggan yang sedang login.
+            $newOrder = Order::create([
+                'invoice_number' => 'INV/' . date('Ymd') . '/' . sprintf('%04d', rand(1, 9999)),
+                'user_id' => null, 
+                'customer_user_id' => Auth::id(),
+                'customer_name' => $request->customer_name,
+                'customer_phone' => $request->customer_phone,
+                'status' => $statusPesanan,
+                'payment_method' => $request->payment_method,
+                'bukti_transfer' => $buktiTransferPath,
+                'total_amount' => $product->price_jual + $kelurahan->tarif_grab,
+                'kecamatan_id' => $request->kecamatan_id,
+                'kelurahan_id' => $request->kelurahan_id,
+                'shipping_cost' => $kelurahan->tarif_grab,
+                'shareloc_link' => $request->shareloc_link,
+            ]);
 
-        // 2. Simpan Item Produk ke OrderItem
-        OrderItem::create([
-            'order_id' => $order->id,
-            'product_id' => $product->id,
-            'item_name' => $product->name,
-            'price' => $product->price_jual,
-            'quantity' => 1,
-            'subtotal' => $product->price_jual,
-        ]);
+            // 2. Simpan Item Produk ke OrderItem
+            OrderItem::create([
+                'order_id' => $newOrder->id,
+                'product_id' => $product->id,
+                'item_name' => $product->name,
+                'price' => $product->price_jual,
+                'quantity' => 1,
+                'subtotal' => $product->price_jual,
+            ]);
+
+            // 3. Kurangi stok produk secara otomatis dan catat histori stok
+            $this->stockService->adjustStock(
+                $product,
+                -1,
+                'out',
+                "Pembelian online pesanan {$newOrder->invoice_number}"
+            );
+
+            return $newOrder;
+        });
 
         // 3. Kirim Notifikasi WhatsApp Otomatis ke Admin
         $this->sendWhatsAppNotificationToAdmin($order, $product);

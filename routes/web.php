@@ -20,7 +20,13 @@ use App\Http\Controllers\Admin\ReturnController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\KelolaPesananController;
 use App\Http\Controllers\Admin\BookingController;
+use App\Http\Controllers\StorageFileController;
 use Illuminate\Support\Facades\Route;
+
+// --- Public Storage Fallback Server (Solusi 403 Forbidden pada Apache / cPanel / Shared Hosting) ---
+Route::get('/storage/{path}', [StorageFileController::class, 'show'])
+    ->where('path', '.*')
+    ->name('storage.show');
 
 // --- Public Guest Catalog ---
 Route::get('/', [GuestCatalogController::class, 'index'])->name('catalog.index');
