@@ -191,9 +191,22 @@ class AdminPageTest extends TestCase
             'total_amount' => 500000,
         ]);
 
+        $orderPending = Order::create([
+            'invoice_number' => 'INV-TEST-PENDING',
+            'customer_user_id' => $customerUser->id,
+            'customer_name' => $customerUser->name,
+            'status' => 'Menunggu Konfirmasi',
+            'total_amount' => 150000,
+        ]);
+
         $response = $this->actingAs($customerUser)->get('/riwayat-pesanan');
         $response->assertStatus(200);
         $response->assertSee('INV-TEST-CUST');
+        $response->assertSee('INV-TEST-PENDING');
+        $response->assertSee('data-status="menunggu"', false);
+        $response->assertSee('data-status="selesai"', false);
+        $response->assertSee('id="orderSearchInput"', false);
+        $response->assertSee('id="currentFilterText"', false);
 
         $notaResponse = $this->actingAs($customerUser)->get("/riwayat-pesanan/{$order->id}/nota");
         $notaResponse->assertStatus(200);

@@ -279,10 +279,10 @@
 
     @php
         $totalOrders = $pesanan->count();
-        $waitingCount = $pesanan->filter(fn($o) => in_array(strtolower(trim($o->status)), ['menunggu konfirmasi', 'belum dibayar']))->count();
-        $processingCount = $pesanan->filter(fn($o) => in_array(strtolower(trim($o->status)), ['diproses']))->count();
-        $shippingCount = $pesanan->filter(fn($o) => in_array(strtolower(trim($o->status)), ['dikirim']))->count();
-        $completedCount = $pesanan->filter(fn($o) => in_array(strtolower(trim($o->status)), ['selesai', 'lunas']))->count();
+        $waitingCount = $pesanan->filter(fn($o) => in_array(strtolower(trim($o->status)), ['menunggu konfirmasi', 'menunggu', 'belum dibayar', 'pending']))->count();
+        $processingCount = $pesanan->filter(fn($o) => in_array(strtolower(trim($o->status)), ['diproses', 'proses']))->count();
+        $shippingCount = $pesanan->filter(fn($o) => in_array(strtolower(trim($o->status)), ['dikirim', 'dalam pengiriman', 'kirim']))->count();
+        $completedCount = $pesanan->filter(fn($o) => in_array(strtolower(trim($o->status)), ['selesai', 'lunas', 'berhasil']))->count();
     @endphp
 
     {{-- Page Header --}}
@@ -365,48 +365,20 @@
             </div>
         </div>
 
-        {{-- Filter Toolbar & Search --}}
-        <!-- <div class="card border-0 shadow-sm rounded-4 p-3 mb-4">
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
-                
-                {{-- Status Pills --}}
-                <div class="d-flex flex-wrap gap-2" id="filterPillContainer">
-                    <button type="button" class="filter-pill active" onclick="selectFilter('all')">
-                        Semua <span class="badge bg-light text-dark rounded-pill">{{ $totalOrders }}</span>
-                    </button>
-                    <button type="button" class="filter-pill" onclick="selectFilter('menunggu')">
-                        <i class="fa-solid fa-clock"></i> Menunggu Konfirmasi 
-                        @if($waitingCount > 0)
-                            <span class="badge bg-warning text-dark rounded-pill">{{ $waitingCount }}</span>
-                        @endif
-                    </button>
-                    <button type="button" class="filter-pill" onclick="selectFilter('diproses')">
-                        <i class="fa-solid fa-box"></i> Diproses 
-                        @if($processingCount > 0)
-                            <span class="badge bg-primary rounded-pill">{{ $processingCount }}</span>
-                        @endif
-                    </button>
-                    <button type="button" class="filter-pill" onclick="selectFilter('dikirim')">
-                        <i class="fa-solid fa-motorcycle"></i> Pengiriman 
-                        @if($shippingCount > 0)
-                            <span class="badge bg-purple rounded-pill" style="background-color: #7e22ce;">{{ $shippingCount }}</span>
-                        @endif
-                    </button>
-                    <button type="button" class="filter-pill" onclick="selectFilter('selesai')">
-                        <i class="fa-solid fa-circle-check"></i> Selesai 
-                        @if($completedCount > 0)
-                            <span class="badge bg-success rounded-pill">{{ $completedCount }}</span>
-                        @endif
-                    </button>
-                </div>
-
-                {{-- Search Box --}}
-                <div class="position-relative" style="min-width: 260px;">
-                    <i class="fa-solid fa-magnifying-glass position-absolute top-50 start-0 translate-middle-y ms-3 text-muted small"></i>
-                    <input type="text" id="orderSearchInput" oninput="filterOrders()" placeholder="Cari invoice atau produk..." class="form-control form-control-sm ps-5 rounded-pill border-secondary-subtle">
+        {{-- Search Box & Filter Status Info --}}
+        <div class="row align-items-center justify-content-between mb-4 g-2">
+            <div class="col-12 col-md-6">
+                <div class="small text-muted fw-semibold" id="activeFilterLabel">
+                    Menampilkan: <span class="text-dark fw-bold" id="currentFilterText">Semua Pesanan</span>
                 </div>
             </div>
-        </div> -->
+            <div class="col-12 col-md-5 col-lg-4">
+                <div class="position-relative">
+                    <i class="fa-solid fa-magnifying-glass position-absolute top-50 start-0 translate-middle-y ms-3 text-muted small"></i>
+                    <input type="text" id="orderSearchInput" oninput="filterOrders()" placeholder="Cari invoice atau nama produk..." class="form-control form-control-sm ps-5 rounded-pill border-secondary-subtle py-2 shadow-sm">
+                </div>
+            </div>
+        </div>
 
         {{-- Order Cards List --}}
         <div id="orderCardsList">
@@ -414,10 +386,17 @@
                 @php
                     $st = strtolower(trim($item->status));
                     $catStatus = 'lainnya';
-                    if (in_array($st, ['menunggu konfirmasi', 'belum dibayar'])) $catStatus = 'menunggu';
-                    elseif ($st === 'diproses') $catStatus = 'diproses';
-                    elseif ($st === 'dikirim') $catStatus = 'dikirim pengiriman';
-                    elseif (in_array($st, ['selesai', 'lunas'])) $catStatus = 'selesai';
+                    if (in_array($st, ['menunggu konfirmasi', 'menunggu', 'belum dibayar', 'pending'])) {
+                        $catStatus = 'menunggu';
+                    } elseif (in_array($st, ['diproses', 'proses'])) {
+                        $catStatus = 'diproses pengiriman';
+                    } elseif (in_array($st, ['dikirim', 'dalam pengiriman', 'kirim'])) {
+                        $catStatus = 'dikirim pengiriman';
+                    } elseif (in_array($st, ['selesai', 'lunas', 'berhasil'])) {
+                        $catStatus = 'selesai';
+                    } elseif (in_array($st, ['batal', 'dibatalkan'])) {
+                        $catStatus = 'batal';
+                    }
 
                     $itemNames = $item->items->pluck('item_name')->join(' ');
                 @endphp
@@ -659,18 +638,21 @@
     <script>
         let currentFilter = 'all';
 
-        function selectFilter(filter, el = null) {
-            currentFilter = filter;
+        const filterLabels = {
+            'all': 'Semua Pesanan',
+            'menunggu': 'Menunggu Konfirmasi & Belum Dibayar',
+            'pengiriman': 'Dalam Pengiriman & Diproses',
+            'selesai': 'Pesanan Selesai / Lunas',
+            'batal': 'Pesanan Dibatalkan'
+        };
 
-            // Update pills
-            document.querySelectorAll('#filterPillContainer .filter-pill').forEach(pill => {
-                pill.classList.remove('active');
-            });
-            const matchingPill = Array.from(document.querySelectorAll('#filterPillContainer .filter-pill')).find(p => p.textContent.toLowerCase().includes(filter.toLowerCase()));
-            if (matchingPill) {
-                matchingPill.classList.add('active');
-            } else if (filter === 'all') {
-                document.querySelector('#filterPillContainer .filter-pill').classList.add('active');
+        function selectFilter(filter, el = null) {
+            currentFilter = (filter || 'all').toLowerCase();
+
+            // Update label teks status aktif
+            const labelEl = document.getElementById('currentFilterText');
+            if (labelEl) {
+                labelEl.textContent = filterLabels[currentFilter] || filter;
             }
 
             // Update metric cards
@@ -678,22 +660,35 @@
             if (el) {
                 el.classList.add('active');
             } else {
-                const card = document.querySelector(`.metric-card[data-filter="${filter}"]`);
+                const card = document.querySelector(`.metric-card[data-filter="${currentFilter}"]`);
                 if (card) card.classList.add('active');
+            }
+
+            // Update pills jika elemen ada di DOM
+            const pills = document.querySelectorAll('#filterPillContainer .filter-pill');
+            if (pills.length > 0) {
+                pills.forEach(pill => pill.classList.remove('active'));
+                const matchingPill = Array.from(pills).find(p => p.textContent.toLowerCase().includes(currentFilter));
+                if (matchingPill) {
+                    matchingPill.classList.add('active');
+                } else if (currentFilter === 'all') {
+                    pills[0]?.classList.add('active');
+                }
             }
 
             filterOrders();
         }
 
         function filterOrders() {
-            const query = (document.getElementById('orderSearchInput').value || '').toLowerCase().trim();
+            const searchInput = document.getElementById('orderSearchInput');
+            const query = searchInput ? (searchInput.value || '').toLowerCase().trim() : '';
             const cards = document.querySelectorAll('.order-card');
             let visibleCount = 0;
 
             cards.forEach(card => {
-                const status = card.getAttribute('data-status') || '';
-                const invoice = card.getAttribute('data-invoice') || '';
-                const items = card.getAttribute('data-items') || '';
+                const status = (card.getAttribute('data-status') || '').toLowerCase();
+                const invoice = (card.getAttribute('data-invoice') || '').toLowerCase();
+                const items = (card.getAttribute('data-items') || '').toLowerCase();
 
                 let matchStatus = false;
                 if (currentFilter === 'all') {
@@ -716,7 +711,7 @@
             });
 
             const noMatchMsg = document.getElementById('noMatchMessage');
-            if (cards.length > 0) {
+            if (noMatchMsg && cards.length > 0) {
                 if (visibleCount === 0) {
                     noMatchMsg.classList.remove('d-none');
                 } else {
@@ -724,6 +719,15 @@
                 }
             }
         }
+
+        // Cek query parameter URL saat halaman dibuka (misal: /riwayat-pesanan?status=menunggu)
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const statusParam = urlParams.get('status');
+            if (statusParam) {
+                selectFilter(statusParam);
+            }
+        });
 
         function copyInvoice(text, btn) {
             navigator.clipboard.writeText(text).then(() => {
