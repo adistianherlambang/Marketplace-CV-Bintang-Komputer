@@ -24,7 +24,8 @@ class CustomerOrderController extends Controller
                             }
                         })
                         ->with(['items.product.primaryImage', 'items.product.brand', 'kecamatan', 'kelurahan'])
-                        ->latest()
+                        ->orderByDesc('created_at')
+                        ->orderByDesc('id')
                         ->get();
 
         return view('customers.orders.index', compact('pesanan'));

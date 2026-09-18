@@ -43,7 +43,7 @@ class TransactionController extends Controller
             $query->where('status', $request->input('status'));
         }
 
-        $orders = $query->latest()->paginate(10)->withQueryString();
+        $orders = $query->orderByDesc('created_at')->orderByDesc('id')->paginate(10)->withQueryString();
         return view('admin.transactions.index', compact('orders'));
     }
 
@@ -154,24 +154,31 @@ class TransactionController extends Controller
     }
 
     /**
-     * Clear all transaction history (orders, order items, payments, complaints, returns) for clean testing
+     * Clear POS cashier transaction history for clean testing.
+     * Riwayat pesanan bagian pelanggan (customer_user_id) TIDAK BISA dihapus.
      */
     public function clearAllTransactions(Request $request)
     {
         \Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
         try {
-            \Illuminate\Support\Facades\DB::table('order_items')->truncate();
-            \Illuminate\Support\Facades\DB::table('payments')->truncate();
-            \Illuminate\Support\Facades\DB::table('complaints')->truncate();
-            \Illuminate\Support\Facades\DB::table('returns')->truncate();
-            \Illuminate\Support\Facades\DB::table('orders')->truncate();
+            // Riwayat pesanan bagian pelanggan (customer_user_id) dilindungi dan TIDAK BISA dihapus
+            $posOrderIds = Order::whereNull('customer_user_id')->pluck('id');
+
+            if ($posOrderIds->isNotEmpty()) {
+                \Illuminate\Support\Facades\DB::table('order_items')->whereIn('order_id', $posOrderIds)->delete();
+                \Illuminate\Support\Facades\DB::table('payments')->whereIn('order_id', $posOrderIds)->delete();
+                \Illuminate\Support\Facades\DB::table('complaints')->whereIn('order_id', $posOrderIds)->delete();
+                \Illuminate\Support\Facades\DB::table('returns')->whereIn('order_id', $posOrderIds)->delete();
+                \Illuminate\Support\Facades\DB::table('orders')->whereIn('id', $posOrderIds)->delete();
+            }
+
             if (\Illuminate\Support\Facades\Schema::hasTable('monthly_reports')) {
                 \Illuminate\Support\Facades\DB::table('monthly_reports')->truncate();
             }
             if (\Illuminate\Support\Facades\Schema::hasTable('stock_histories')) {
                 \Illuminate\Support\Facades\DB::table('stock_histories')->whereIn('type', ['out', 'return'])->delete();
             }
-            return redirect()->route('admin.transactions.index')->with('success', 'Semua riwayat transaksi berhasil dikosongkan. Sistem siap untuk pengujian!');
+            return redirect()->route('admin.transactions.index')->with('success', 'Riwayat transaksi kasir toko berhasil dikosongkan. Riwayat pesanan bagian pelanggan tetap aman dan tidak dapat dihapus!');
         } catch (\Throwable $e) {
             return redirect()->back()->with('error', 'Gagal mengosongkan transaksi: ' . $e->getMessage());
         } finally {

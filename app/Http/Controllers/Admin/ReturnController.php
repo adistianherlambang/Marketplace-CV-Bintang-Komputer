@@ -21,7 +21,7 @@ class ReturnController extends Controller
     public function index()
     {
         $returns = ReturnLog::with(['order', 'product'])->latest()->paginate(10);
-        $orders = Order::with('items.product')->latest()->limit(50)->get();
+        $orders = Order::with('items.product')->orderByDesc('created_at')->orderByDesc('id')->limit(50)->get();
         return view('admin.returns.index', compact('returns', 'orders'));
     }
 

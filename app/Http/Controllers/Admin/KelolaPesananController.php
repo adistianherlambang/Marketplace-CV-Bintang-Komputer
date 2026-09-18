@@ -22,7 +22,8 @@ class KelolaPesananController extends Controller
     public function index(Request $request)
     {
         $query = Order::with(['user', 'customerUser', 'items.product', 'kecamatan', 'kelurahan'])
-                      ->latest();
+                      ->orderByDesc('created_at')
+                      ->orderByDesc('id');
 
         // Filter status jika dipilih
         if ($request->filled('status')) {

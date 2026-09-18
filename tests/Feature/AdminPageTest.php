@@ -215,21 +215,76 @@ class AdminPageTest extends TestCase
 
     public function test_clear_all_transactions(): void
     {
+        // Transaksi kasir offline (POS)
         Order::create([
             'invoice_number' => 'INV-CLEAR-TEST',
             'user_id' => $this->admin->id,
+            'customer_user_id' => null,
             'status' => 'Lunas',
             'total_amount' => 250000,
         ]);
 
-        $this->assertGreaterThan(0, Order::count());
+        // Riwayat pesanan bagian pelanggan online (customer_user_id) - TIDAK BISA dihapus
+        $customer = User::factory()->create();
+        Order::create([
+            'invoice_number' => 'INV-CUST-KEEP',
+            'customer_user_id' => $customer->id,
+            'status' => 'Menunggu Konfirmasi',
+            'total_amount' => 150000,
+        ]);
+
+        $this->assertEquals(2, Order::count());
 
         $response = $this->actingAs($this->admin)->post('/admin/transactions/clear-all');
         $response->assertRedirect('/admin/transactions');
         $response->assertSessionHas('success');
 
-        $this->assertEquals(0, Order::count());
-        $this->assertEquals(0, OrderItem::count());
+        // Pesanan POS kasir terhapus, tetapi riwayat pesanan online pelanggan tetap utuh
+        $this->assertEquals(1, Order::count());
+        $this->assertNotNull(Order::where('invoice_number', 'INV-CUST-KEEP')->first());
+        $this->assertNull(Order::where('invoice_number', 'INV-CLEAR-TEST')->first());
+    }
+
+    public function test_orders_are_sorted_from_newest(): void
+    {
+        $customer = User::factory()->create();
+
+        Order::create([
+            'invoice_number' => 'INV-OLD-ORDER',
+            'customer_user_id' => $customer->id,
+            'status' => 'Selesai',
+            'total_amount' => 100000,
+            'created_at' => now()->subDays(2),
+        ]);
+
+        Order::create([
+            'invoice_number' => 'INV-MID-ORDER',
+            'customer_user_id' => $customer->id,
+            'status' => 'Diproses',
+            'total_amount' => 200000,
+            'created_at' => now()->subDay(),
+        ]);
+
+        Order::create([
+            'invoice_number' => 'INV-NEW-ORDER',
+            'customer_user_id' => $customer->id,
+            'status' => 'Menunggu Konfirmasi',
+            'total_amount' => 300000,
+            'created_at' => now(),
+        ]);
+
+        $response = $this->actingAs($customer)->get('/riwayat-pesanan');
+        $response->assertStatus(200);
+
+        // Verifikasi urutan: INV-NEW-ORDER paling atas, diikuti INV-MID-ORDER, lalu INV-OLD-ORDER
+        $content = $response->getContent();
+        $posNew = strpos($content, 'INV-NEW-ORDER');
+        $posMid = strpos($content, 'INV-MID-ORDER');
+        $posOld = strpos($content, 'INV-OLD-ORDER');
+
+        $this->assertTrue($posNew !== false && $posMid !== false && $posOld !== false);
+        $this->assertTrue($posNew < $posMid);
+        $this->assertTrue($posMid < $posOld);
     }
 }
 

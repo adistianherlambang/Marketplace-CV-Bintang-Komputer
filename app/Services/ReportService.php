@@ -113,6 +113,7 @@ class ReportService
         $orders = Order::with(['customer', 'customerUser', 'user', 'items.product'])
             ->whereDate('created_at', $date)
             ->orderByDesc('created_at')
+            ->orderByDesc('id')
             ->get();
 
         $totalSales = $orders->whereIn('status', ['Lunas', 'Selesai', 'Diproses', 'Dikirim'])->sum('total_amount');
@@ -138,6 +139,7 @@ class ReportService
         $orders = Order::with(['customer', 'customerUser', 'user', 'items.product'])
             ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
             ->orderByDesc('created_at')
+            ->orderByDesc('id')
             ->get();
 
         $totalSales = $orders->whereIn('status', ['Lunas', 'Selesai', 'Diproses', 'Dikirim'])->sum('total_amount');
@@ -162,6 +164,8 @@ class ReportService
 
         $orders = Order::with(['customer', 'user', 'items.product'])
             ->whereBetween('created_at', [$startOfYear, $endOfYear])
+            ->orderByDesc('created_at')
+            ->orderByDesc('id')
             ->get();
             
         $totalSales = $orders->whereIn('status', ['Lunas', 'Selesai'])->sum('total_amount');

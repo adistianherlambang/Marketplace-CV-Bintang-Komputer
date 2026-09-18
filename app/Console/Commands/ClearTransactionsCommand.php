@@ -37,20 +37,25 @@ class ClearTransactionsCommand extends Command
         Schema::disableForeignKeyConstraints();
 
         try {
-            DB::table('order_items')->truncate();
-            $this->line('✓ Tabel order_items dikosongkan.');
+            // Riwayat pesanan bagian pelanggan (customer_user_id) TIDAK BISA dihapus
+            $posOrderIds = DB::table('orders')->whereNull('customer_user_id')->pluck('id');
 
-            DB::table('payments')->truncate();
-            $this->line('✓ Tabel payments dikosongkan.');
+            if ($posOrderIds->isNotEmpty()) {
+                DB::table('order_items')->whereIn('order_id', $posOrderIds)->delete();
+                $this->line('✓ Tabel order_items (POS) dibersihkan.');
 
-            DB::table('complaints')->truncate();
-            $this->line('✓ Tabel complaints dikosongkan.');
+                DB::table('payments')->whereIn('order_id', $posOrderIds)->delete();
+                $this->line('✓ Tabel payments (POS) dibersihkan.');
 
-            DB::table('returns')->truncate();
-            $this->line('✓ Tabel returns dikosongkan.');
+                DB::table('complaints')->whereIn('order_id', $posOrderIds)->delete();
+                $this->line('✓ Tabel complaints (POS) dibersihkan.');
 
-            DB::table('orders')->truncate();
-            $this->line('✓ Tabel orders dikosongkan.');
+                DB::table('returns')->whereIn('order_id', $posOrderIds)->delete();
+                $this->line('✓ Tabel returns (POS) dibersihkan.');
+
+                DB::table('orders')->whereIn('id', $posOrderIds)->delete();
+                $this->line('✓ Tabel orders (POS) dibersihkan.');
+            }
 
             if (Schema::hasTable('monthly_reports')) {
                 DB::table('monthly_reports')->truncate();
@@ -62,7 +67,7 @@ class ClearTransactionsCommand extends Command
                 $this->line('✓ Histori stok transaksi dibersihkan.');
             }
 
-            $this->info('Sukses! Seluruh riwayat transaksi telah bersih dan siap untuk pengetesan.');
+            $this->info('Sukses! Riwayat transaksi kasir toko telah bersih. Riwayat pesanan pelanggan tetap aman!');
         } catch (\Throwable $e) {
             $this->error('Gagal mengosongkan data: ' . $e->getMessage());
         } finally {
