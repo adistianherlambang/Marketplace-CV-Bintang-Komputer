@@ -71,11 +71,13 @@ Sistem ini dirancang untuk memenuhi kebutuhan operasional toko komputer modern:
 
 ### ⚙️ Keunggulan Teknis & Arsitektur
 
-- ✅ **Pengurangan Stok Otomatis**: Stok berkurang seketika saat order kasir POS atau pesanan online diverifikasi.
-- ✅ **Auto-Restock Cerdas**: Pengembalian kuantitas stok otomatis ke katalog ketika pesanan dibatalkan atau retur disetujui admin.
-- ✅ **Audit Trail Lengkap (`StockService`)**: Setiap mutasi stok tercatat lengkap dengan identitas user, tanggal, jenis perubahan, dan deskripsi.
+- ✅ **Pengurangan Stok Otomatis**: Stok produk langsung berkurang seketika saat checkout online berhasil maupun transaksi kasir POS toko disimpan.
+- ✅ **Auto-Restock Cerdas**: Pengembalian kuantitas stok otomatis ke katalog dan POS kasir ketika pesanan dibatalkan admin (`status = 'Dibatalkan'`) atau retur unit disetujui.
+- ✅ **Audit Trail Terintegrasi (`StockService`)**: Setiap mutasi stok tercatat lengkap pada `stock_histories` dengan identitas user, timestamp, tipe mutasi (`in`, `out`, `edit`, `delete`, `return`), dan deskripsi faktur.
+- ✅ **Penyajian File Storage Bebas 403 Forbidden**: Dilengkapi rute dan controller khusus `GET /storage/{path}` (`StorageFileController`) dengan proteksi *path traversal*, menjamin bukti transfer dan foto produk tampil 100% di server mana pun (Localhost, Docker, VPS, hingga shared hosting cPanel tanpa ketergantungan symbolic link).
+- ✅ **Fallback Gambar Produk Tangguh**: Model `Product` mengimplementasikan resolusi cerdas pada `primaryImage()` sehingga foto produk tidak pernah kosong/putih meskipun flag `is_primary` belum diset.
 - ✅ **Zonasi Tarif GrabExpress Kota Metro**: Master tarif ongkos kirim tersimpan per kelurahan di Kota Metro untuk kalkulasi akurat.
-- ✅ **Generasi Dokumen PDF**: Menggunakan `barryvdh/laravel-dompdf` untuk mencetak Nota Kasir, Invoice Resmi, dan Laporan Rekapitulasi.
+- ✅ **Generasi Dokumen PDF**: Menggunakan `barryvdh/laravel-dompdf` untuk mencetak Nota Kasir, Invoice Resmi, dan Laporan Rekapitulasi dengan resolusi path publik otomatis.
 - ✅ **Keamanan Data & Soft Deletes**: Menggunakan proteksi CSRF, enkripsi password via Bcrypt/Argon2, serta *soft delete* untuk data pelanggan dan produk.
 
 ---
@@ -94,22 +96,31 @@ bintang-jaya-komputer/
 │   │   │   │   ├── ComplaintController.php        # Kelola komplain toko
 │   │   │   │   ├── CustomerController.php         # CRUD pelanggan
 │   │   │   │   ├── DashboardController.php        # Statistik & analitik
-│   │   │   │   ├── KelolaPesananController.php    # Manajemen order online
-│   │   │   │   ├── ProductController.php          # CRUD produk & foto
+│   │   │   │   ├── KelolaPesananController.php    # Manajemen order online & auto-restock batal
+│   │   │   │   ├── ProductController.php          # CRUD produk & multi-foto
 │   │   │   │   ├── ReportController.php           # Laporan & PDF export
-│   │   │   │   ├── ReturnController.php           # Kelola retur barang
-│   │   │   │   ├── StockController.php            # Penyesuaian stok & audit
+│   │   │   │   ├── ReturnController.php           # Kelola retur barang & auto-restock
+│   │   │   │   ├── StockController.php            # Penyesuaian stok & audit trail
 │   │   │   │   ├── SupplierController.php         # CRUD supplier
-│   │   │   │   └── TransactionController.php      # Kasir POS & Nota/Invoice
-│   │   │   ├── CheckoutController.php             # Form checkout online & ongkir
-│   │   │   ├── CustomerAuthController.php         # Auth universal & register
-│   │   │   ├── CustomerComplaintController.php    # Form komplain customer
-│   │   │   ├── CustomerOrderController.php        # Riwayat pesanan customer
+│   │   │   │   └── TransactionController.php      # Kasir POS & cetak Nota/Invoice
+│   │   │   ├── CheckoutController.php             # Form checkout online, validasi stok, & ongkir
+│   │   │   ├── CustomerAuthController.php         # Auth universal & registrasi pelanggan
+│   │   │   ├── CustomerComplaintController.php    # Form komplain pelanggan & unggah bukti
+│   │   │   ├── CustomerOrderController.php        # Riwayat pesanan, pelacakan, & nota customer
 │   │   │   ├── GuestActionController.php          # Aksi booking & kontak
-│   │   │   └── GuestCatalogController.php         # Katalog & detail publik
+│   │   │   ├── GuestCatalogController.php         # Katalog publik & detail spesifikasi produk
+│   │   │   └── StorageFileController.php          # File server publik fallback (anti 403 Forbidden)
 │   │   └── Requests/                              # Form Request Validations
-│   ├── Models/                                    # Eloquent Models (14+ model)
-│   └── Services/                                  # Business Logic (StockService, OrderService)
+│   ├── Models/                                    # Eloquent Models (Product, Order, StockHistory, dll)
+│   ├── Providers/
+│   │   └── AppServiceProvider.php                 # Bootloader direktori storage & path DomPDF
+│   └── Services/                                  # Business Logic Layer (StockService, OrderService, dll)
+├── cpanel/                                        # Paket Deployment cPanel Siap Ekstrak
+│   ├── core/                                      # Source code backend Laravel (disimpan di luar public_html)
+│   ├── public_html/                               # Dokumen root web Apache/cPanel
+│   ├── core.zip                                   # Arsip zip core terkompresi (siap upload)
+│   ├── public_html.zip                            # Arsip zip public_html terkompresi (siap upload)
+│   └── cpanel.zip                                 # Arsip bundle lengkap cPanel
 ├── database/
 │   ├── migrations/                                # 14+ migrasi skema tabel
 │   └── seeders/                                   # Data master & demo seeder
@@ -117,16 +128,20 @@ bintang-jaya-komputer/
 │   ├── Dockerfile                                 # PHP 8.2-FPM Alpine container
 │   └── nginx.conf                                 # Konfigurasi Nginx reverse proxy
 ├── docker-compose.yml                             # Orkestrasi 4 container
-├── public/                                        # Assets, CSS, JS, logo
+├── public/                                        # Assets publik, CSS modul, JS, logo toko
 ├── resources/
-│   └── views/                                     # Blade templates
-│       ├── admin/                                 # Antarmuka panel admin
-│       ├── catalog/                               # Halaman katalog e-commerce
-│       ├── customers/                             # Halaman order & komplain pelanggan
-│       ├── pdf/                                   # Template cetak Nota, Invoice, Laporan
-│       └── layouts/                               # Layout utama aplikasi
-└── routes/
-    └── web.php                                    # Definisi seluruh rute sistem
+│   └── views/                                     # Blade template views
+│       ├── admin/                                 # Antarmuka panel admin toko & POS
+│       ├── catalog/                               # Halaman katalog e-commerce publik
+│       ├── customers/                             # Halaman riwayat order & komplain pelanggan
+│       ├── pdf/                                   # Template cetak Nota, Invoice, & Laporan
+│       └── layouts/                               # Layout master aplikasi
+├── routes/
+│   └── web.php                                    # Definisi seluruh rute sistem web & storage
+├── storage/                                       # Direktori penyimpanan file dinamis
+│   └── app/
+│       └── public/                                # Direktori file publik (products, bukti_transfer, complaints)
+└── tests/                                         # Automated Test Suite (AdminPageTest, CheckoutAndStorageTest)
 ```
 
 ---
@@ -202,34 +217,45 @@ Sistem CV Bintang Jaya Komputer mengintegrasikan alur operasional toko secara me
            ▼
 [Jelajah Katalog & Pilih Produk]
            │
+           ├── Cek Ketersediaan Stok (Stok > 0?)
+           │     ├── Tidak ──► Tombol "Stok Habis" dinonaktifkan
+           │     └── Ya    ──► Tombol "Beli Sekarang & Kirim GrabExpress" aktif
+           │
            ▼
 [Klik "Beli Sekarang" / Checkout] ──► [Belum Login?] ──► [Halaman Login / Register Akun]
            │                                                       │
            ▼                                                       ▼
 [Halaman Form Checkout (/checkout)] ◄──────────────────────────────┘
            │
-           ├── 1. Tinjau Ringkasan Produk & Harga
+           ├── 1. Tinjau Ringkasan Produk & Validasi Stok Real-Time (Stock >= 1)
            ├── 2. Masukkan Nama Penerima & No. WhatsApp
            ├── 3. Pilih Wilayah Pengiriman:
            │        ├── Pilih Kecamatan (Kota Metro)
            │        └── Pilih Kelurahan ──► (Sistem kalkulasi Ongkir GrabExpress otomatis)
-           ├── 4. Masukkan Link Google Maps / Titik Lokasi
+           ├── 4. Masukkan Link Google Maps / Titik Lokasi Penerima
            ├── 5. Pilih Metode Pembayaran:
-           │        ├── Transfer Bank ──► Unggah file Bukti Transfer
-           │        └── Tunai (Cash on Delivery)
+           │        ├── Transfer Bank BNI ──► Unggah file Bukti Transfer (JPG/PNG/WEBP max 2MB)
+           │        └── Tunai / Manual
            │
            ▼
-[Klik "Konfirmasi & Buat Pesanan"]
+[Klik "Buat Pesanan Sekarang"]
            │
            ▼
-[Sistem Memproses Transaksi]:
-  ├── Generate Nomor Invoice Unik (INV/YYYYMMDD/XXXX)
-  ├── Simpan data pengiriman & file bukti transfer ke storage
-  ├── Simpan rincian order_items
-  └── Status awal pesanan: "Menunggu Konfirmasi"
+[Sistem Memproses Transaksi di Database (DB::transaction)]:
+  ├── 1. Validasi Keamanan: Pastikan stok produk >= 1 (tolak jika habis)
+  ├── 2. Generate Nomor Invoice Unik (INV/YYYYMMDD/XXXX)
+  ├── 3. Simpan file bukti transfer ke storage/app/public/bukti_transfer
+  ├── 4. Buat record orders (status: "Menunggu Konfirmasi" / "Belum Dibayar")
+  ├── 5. Simpan detail item ke order_items
+  ├── 6. PENGURANGAN STOK OTOMATIS:
+  │        ├── Panggil StockService::adjustStock($product, -1, 'out')
+  │        ├── Nilai kolom products.stock berkurang seketika
+  │        ├── Catat audit trail di stock_histories (type: 'out')
+  │        └── Stok di Katalog Publik & Kasir POS Toko langsung tersinkronisasi berkurang
+  └── 7. Kirim log notifikasi pesanan baru
            │
            ▼
-[Redirect ke Halaman Riwayat Pesanan (/riwayat-pesanan)]
+[Redirect ke Halaman Riwayat Pesanan (/riwayat-pesanan) dengan Pesan Sukses]
 ```
 
 ---
@@ -237,34 +263,43 @@ Sistem CV Bintang Jaya Komputer mengintegrasikan alur operasional toko secara me
 ### 📦 Alur 2 — Pemrosesan & Pengiriman Pesanan oleh Admin (`/admin/pesanan`)
 
 ```
-[Admin Login ke Panel Admin]
+[Admin Login ke Panel Admin Toko]
            │
            ▼
 [Buka Menu: Kelola Pesanan (/admin/pesanan)]
            │
-           ├── Tab: Pesanan Masuk (Menunggu Konfirmasi)
-           │     │
-           │     ├── Admin memeriksa rincian pesanan, alamat, & link Maps
-           │     ├── Admin memeriksa foto bukti transfer pembayaran
-           │     │
-           │     ├──► Jika Valid:
-           │     │      ├── Klik "Proses Pesanan" (Status: Diproses Toko)
-           │     │      ├── Kurangi stok produk dari inventaris
-           │     │      └── Catat log mutasi stok (type: out)
-           │     │
-           │     └──► Jika Tidak Valid / Dibatalkan:
-           │            └── Klik "Batalkan Pesanan" (Status: Dibatalkan)
+           ├── 📊 Pantau Metrik Pesanan:
+           │     (Semua Pesanan, Menunggu Konfirmasi, Diproses Toko, Dikirim Grab, Selesai)
            │
-           ├── Tab: Siap Kirim / Diproses
-           │     │
-           │     └── Staf menyiapkan & packing barang
-           │     └── Menyerahkan paket ke kurir GrabExpress
-           │     └── Klik "Kirim Pesanan" (Status: Dalam Pengiriman)
+           ├── 🔍 Filter status pesanan atau cari nomor invoice / nama pembeli
            │
-           └── Tab: Pengiriman & Selesai
+           ├── Tab: Menunggu Konfirmasi
+           │     │
+           │     ├── Admin memeriksa rincian alamat penerima & link titik Google Maps
+           │     ├── Admin meninjau foto bukti transfer via modal popup / buka tab baru
+           │     │     └── (Dilayani via StorageFileController bebas 403 Forbidden)
+           │     │
+           │     ├──► Jika Pembayaran Valid:
+           │     │      ├── Klik tombol "Konfirmasi & Proses" (Status: Diproses)
+           │     │      └── Sistem otomatis membuat data record payments (Lunas)
+           │     │
+           │     └──► Jika Dibatalkan / Tidak Valid:
+           │            ├── Klik tombol "Batalkan" (Status: Dibatalkan)
+           │            ├── AUTO-RESTOCK OTOMATIS:
+           │            │     ├── Kembalikan kuantitas stok unit (+Qty) ke tabel products
+           │            │     ├── Catat mutasi pengembalian di stock_histories (type: 'return')
+           │            │     └── Stok produk di Katalog & POS Kasir bertambah kembali
+           │
+           ├── Tab: Sedang Diproses Toko
+           │     │
+           │     └── Staf menyiapkan & packing unit laptop / komputer
+           │     └── Menyerahkan paket ke driver kurir GrabExpress
+           │     └── Admin klik "Kirim via Grab" (Status: Dikirim)
+           │
+           └── Tab: Dalam Pengiriman & Selesai
                  │
-                 └── Paket diantarkan kurir ke lokasi customer
-                 └── Saat paket diterima: Status berubah menjadi "Selesai"
+                 └── Driver GrabExpress mengantarkan paket ke titik koordinat pelanggan
+                 └── Admin / Pelanggan menandai pesanan selesai: Status: "Selesai" (Lunas)
 ```
 
 ---
@@ -402,24 +437,98 @@ Sistem CV Bintang Jaya Komputer mengintegrasikan alur operasional toko secara me
 
 ---
 
+### 🛡️ Alur 8 — Arsitektur Penyajian File Storage & Pencegahan Error 403 Forbidden
+
+Diagram ini menunjukkan bagaimana permintaan akses gambar (bukti transfer, foto produk, nota komplain) dilayani secara mulus di berbagai lingkungan hosting:
+
+```
+[Browser / Klien Meminta File Asset: GET /storage/{path}]
+                           │
+                           ▼
+          [Pemeriksaan Web Server (Nginx / Apache)]
+                           │
+         ┌─────────────────┴─────────────────┐
+         ▼                                   ▼
+[Ada Symlink Valid di Disk]        [Tidak Ada Symlink / Symlink Diblokir / cPanel]
+(Misal: Nginx di Docker)           (Misal: Shared Hosting cPanel tanpa akses SSH)
+         │                                   │
+         ▼                                   ▼
+Web server langsung kirim file     Apache me-rewrite request ke Front Controller
+(Static Delivery: Cepat)           └── URL diteruskan ke Laravel: index.php
+                                             │
+                                             ▼
+                                 [Route: GET /storage/{path}]
+                                             │
+                                             ▼
+                             [StorageFileController::show()]
+                                             │
+                                             ├── 1. Validasi Keamanan:
+                                             │      Cegah Path Traversal ("..", null-byte, slash)
+                                             │      └── Jika mencurigakan ──► Abort 403
+                                             │
+                                             ├── 2. Resolusi Jalur Multi-Kandidat:
+                                             │      - storage_path('app/public/' . $path)
+                                             │      - base_path('storage/app/public/' . $path)
+                                             │      - public_path('storage/' . $path)
+                                             │      - base_path('../core/storage/app/public/' . $path)
+                                             │      └── Jika tidak ditemukan ──► Abort 404
+                                             │
+                                             └── 3. Streaming File Responsif:
+                                                    ├── Deteksi otomatis MIME Type (JPG, PNG, WEBP, PDF)
+                                                    ├── Set Header: Cache-Control: public, max-age=86400
+                                                    └── Return BinaryFileResponse (Status 200 OK)
+                                                        └── Bukti transfer & foto produk tampil sempurna!
+```
+
+---
+
 ## ✅ 6. Validasi & Logika Teknis Khusus
 
-### Manajemen Stok Terpusat (`StockService`)
-Setiap mutasi stok produk **wajib** melewati `StockService` untuk menjamin konsistensi data:
-1. Mengubah nilai kolom `stock` pada tabel `products`.
-2. Menulis baris riwayat baru pada tabel `stock_histories` dengan parameter:
+### 6.1. Manajemen Stok Terpusat & Sinkronisasi Multi-Kanal (`StockService`)
+Setiap mutasi kuantitas stok produk **wajib** melewati `StockService` untuk menjamin konsistensi data inventaris di seluruh antarmuka:
+1. **Pencegahan Stok Negatif**: Jika hasil mutasi stok menghasilkan angka < 0, sistem secara otomatis mengoreksinya ke angka `0`.
+2. **Sinkronisasi Katalog & POS**:
+   - Ketika pesanan checkout online tersimpan (`CheckoutController::store`), sistem langsung mengeksekusi `$stockService->adjustStock($product, -1, 'out', "Pembelian online pesanan ...")` dalam `DB::transaction`.
+   - Stok pada katalog publik (`/` dan `/products/{id}`) serta daftar barang kasir POS (`/admin/transactions/create`) langsung berkurang secara *real-time*.
+3. **Pencatatan Audit Trail (`stock_histories`)**:
    - `product_id`: ID produk terkait.
-   - `type`: Jenis mutasi (`in`, `out`, `edit`, `delete`, `return`).
-   - `quantity`: Jumlah unit yang bertambah/berkurang.
-   - `user_id`: ID admin yang mengotorisasi perubahan.
-   - `date`: Timestamp waktu transaksi.
-   - `description`: Catatan sumber perubahan (misal: nomor invoice).
+   - `type`: Tipe pergerakan stok (`in`, `out`, `edit`, `delete`, `return`).
+   - `quantity`: Jumlah unit barang yang bertambah/berkurang.
+   - `user_id`: ID pengguna/admin yang memicu mutasi (fallback ke ID 1 jika tidak ada sesi login).
+   - `date`: Timestamp waktu mutasi terjadi.
+   - `description`: Catatan sumber mutasi (nomor invoice pesanan, nomor transaksi POS, atau koreksi manual).
 
-### Penomoran Invoice Otomatis
-Nomor invoice di-generate secara unik dan berurutan dengan format baku:
+### 6.2. Logika Pengembalian Stok Otomatis (*Auto-Restock*)
+Sistem mengamankan kuantitas inventaris toko agar stok tidak hilang ketika transaksi gagal atau dibatalkan:
+1. **Pembatalan Pesanan Online (`KelolaPesananController`)**:
+   - Jika admin mengubah status pesanan menjadi `Dibatalkan` atau `Batal`, sistem memeriksa status sebelumnya.
+   - Jika status sebelumnya belum batal, sistem melakukan iterasi ke seluruh `order_items` dan mengembalikan kuantitas stok barang (`type: return`).
+2. **Pembatalan Transaksi Kasir POS (`TransactionController::cancel`)**:
+   - Transaksi kasir yang dibatalkan langsung memulihkan seluruh kuantitas item produk yang terjual ke master stok.
+3. **Persetujuan Retur Produk (`OrderService::approveReturn`)**:
+   - Saat klaim retur disetujui (`Disetujui`), kuantitas unit yang dikembalikan pelanggan otomatis masuk kembali ke stok aktif toko.
+
+### 6.3. Arsitektur File Server Storage Bebas 403 Forbidden (`StorageFileController`)
+Pada pembaruan Laravel 11, konfigurasi bawaan `config/filesystems.php` mengaktifkan `'serve' => true` pada disk `local` yang bersifat private. Fitur tersebut membajak rute `/storage` dan menolak seluruh akses file tanpa *signed URL* dengan respon **HTTP 403 Forbidden**. Selain itu, shared hosting cPanel sering kali memblokir *symbolic link* yang mengarah ke luar root dokumen (AH00037).
+
+Solusi komprehensif yang diimplementasikan:
+1. **Nonaktifkan Private Serve**: Mengubah opsi `'serve' => false` pada disk `local` di `config/filesystems.php`.
+2. **Dedicated Fallback Controller**: Rute `GET /storage/{path}` didaftarkan secara eksplisit ke [StorageFileController.php](file:///Users/aaaa/Documents/Desain/Client/bayu/code/app/Http/Controllers/StorageFileController.php).
+3. **Proteksi Path Traversal**: Memvalidasi karakter terlarang (`..`, null-byte `\0`, backslash `\`, leading slash `/`) untuk mencegah peretasan file sistem server.
+4. **Multi-Path Resolution**: Memeriksa kandidat direktori penyimpanan (`app/public`, `public/storage`, serta `core/storage` untuk lingkungan cPanel).
+5. **Auto-Directory Booting**: Di [AppServiceProvider.php](file:///Users/aaaa/Documents/Desain/Client/bayu/code/app/Providers/AppServiceProvider.php), folder publik `products`, `bukti_transfer`, dan `complaints` otomatis dipastikan keberadaannya saat aplikasi *booting*.
+
+### 6.4. Resolusi Fallback Gambar Produk (`Product::primaryImage`)
+Untuk mencegah terjadinya kotak thumbnail putih/kosong saat gambar produk ditampilkan:
+- Relasi `primaryImage()` pada model [Product.php](file:///Users/aaaa/Documents/Desain/Client/bayu/code/app/Models/Product.php) dikonfigurasi dengan `orderByDesc('is_primary')->oldest('id')`.
+- Jika foto produk memiliki flag `is_primary = true`, foto tersebut akan terpilih sebagai gambar utama.
+- Jika tidak ada flag tersebut, sistem secara cerdas memilih foto pertama yang diunggah (`oldest('id')`), sehingga halaman katalog maupun tabel admin selalu menampilkan gambar produk yang valid.
+
+### 6.5. Penomoran Invoice Otomatis
+Nomor invoice di-generate secara unik, rapi, dan berurutan dengan format baku:
 ```
 INV / YYYYMMDD / XXXX
-Contoh: INV/20260917/0001
+Contoh: INV/20260918/0001
 ```
 
 ---
@@ -442,9 +551,10 @@ Contoh: INV/20260917/0001
 
 ## 🔧 8. Panduan Instalasi & Menjalankan Aplikasi
 
-Aplikasi dapat dijalankan melalui **2 metode pilihan**:
-- **Metode A (Docker Compose)**: Sangat direkomendasikan karena lingkungan server (Nginx, PHP-FPM 8.2, MySQL 8, phpMyAdmin) telah terkonfigurasi otomatis dan terisolasi.
+Aplikasi dapat dijalankan melalui **3 metode pilihan**:
+- **Metode A (Docker Compose)**: Sangat direkomendasikan untuk pengembangan lokal terisolasi (Nginx, PHP-FPM 8.2, MySQL 8, phpMyAdmin).
 - **Metode B (Tanpa Docker / Manual Lokal)**: Menggunakan PHP built-in server (`php artisan serve`) dan MySQL lokal (XAMPP / Homebrew / MariaDB).
+- **Metode C (Deployment cPanel / Shared Hosting)**: Panduan upload langsung menggunakan paket siap pakai (`cpanel/core.zip` dan `cpanel/public_html.zip`) tanpa ketergantungan akses SSH atau symbolic link.
 
 ---
 
@@ -617,6 +727,65 @@ php artisan serve --port=8000
 
 #### 🌐 URL Akses Non-Docker:
 Akses website melalui browser: **http://localhost:8000**
+
+---
+
+### 🌐 Metode C — Deployment cPanel / Shared Hosting (Direct / Zip Upload)
+
+Metode ini ditujukan untuk mempublikasikan sistem ke hosting cPanel tanpa memerlukan akses terminal SSH atau instalasi dependensi manual di server. Seluruh dependensi vendor dan aset frontend telah terkompilasi dalam direktori `cpanel/`.
+
+#### Paket Arsip yang Tersedia di Folder `cpanel/`:
+| File Arsip | Ukuran | Tujuan Lokasi di cPanel | Keterangan |
+|---|---|---|---|
+| **`cpanel/core.zip`** | ~32 MB | `/home/username/core/` (Luar `public_html`) | Source code backend Laravel lengkap dengan folder `vendor/` dan `.env` production |
+| **`cpanel/public_html.zip`** | ~3.8 MB | `/home/username/public_html/` | Dokumen root publik Apache, `index.php`, CSS, JS, logo, dan `.htaccess` |
+| **`cpanel/cpanel.zip`** | ~36 MB | `/home/username/` | Paket gabungan (berisi folder `core/` dan `public_html/`) |
+
+#### Langkah-langkah Deployment:
+
+**1. Masuk ke cPanel File Manager:**
+Buka cPanel hosting Anda, lalu buka menu **File Manager**.
+
+**2. Unggah dan Ekstrak Backend (`core.zip`):**
+- Di direktori root user hosting Anda (misal: `/home/username/`), unggah file `core.zip`.
+- Klik kanan file `core.zip` ➔ pilih **Extract**.
+- Pastikan hasilnya berada di folder `/home/username/core/`.
+
+**3. Unggah dan Ekstrak Dokumen Publik (`public_html.zip`):**
+- Masuk ke direktori `/home/username/public_html/`.
+- Unggah file `public_html.zip`, lalu klik kanan ➔ pilih **Extract**.
+- Pastikan file `index.php`, `.htaccess`, dan folder `css/`, `js/`, `img/` berada langsung di dalam `public_html/`.
+
+**4. Konfigurasi Database di file `core/.env`:**
+- Buka file `/home/username/core/.env` via fitur **Edit** di File Manager cPanel.
+- Sesuaikan kredensial basis data sesuai database MySQL yang dibuat di cPanel:
+  ```env
+  APP_NAME="CV Bintang Jaya Komputer"
+  APP_ENV=production
+  APP_DEBUG=false
+  APP_URL=https://namadomainanda.com
+
+  DB_CONNECTION=mysql
+  DB_HOST=127.0.0.1
+  DB_PORT=3306
+  DB_DATABASE=username_bintang_jaya_db
+  DB_USERNAME=username_dbuser
+  DB_PASSWORD=password_db_anda
+  ```
+
+**5. Import Database via phpMyAdmin cPanel:**
+- Buka menu **phpMyAdmin** di cPanel Anda.
+- Pilih database yang telah dibuat.
+- Klik tab **Import** ➔ pilih file skema database atau jalankan import SQL project.
+
+**6. Atur Hak Akses Direktori (Permissions):**
+- Pastikan folder berikut memiliki permission **0775** (atau **0755**):
+  - `/home/username/core/storage/` (dan seluruh subfoldernya)
+  - `/home/username/core/bootstrap/cache/`
+
+> [!TIP]
+> **Bebas Masalah Symlink & Bebas Error 403 Forbidden**:
+> Anda **TIDAK PERLU** menjalankan perintah SSH `php artisan storage:link` di server cPanel. Sistem telah dilengkapi dengan [StorageFileController](file:///Users/aaaa/Documents/Desain/Client/bayu/code/app/Http/Controllers/StorageFileController.php) yang secara otomatis melayani foto produk, bukti transfer, dan nota komplain secara langsung dan aman tanpa tergantung pada symbolic link Apache hosting!
 
 ---
 
