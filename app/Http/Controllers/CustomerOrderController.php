@@ -63,4 +63,46 @@ class CustomerOrderController extends Controller
 
         return back()->with('success', 'Pesanan berhasil dikonfirmasi selesai! Terima kasih telah berbelanja di CV Bintang Jaya Komputer.');
     }
+
+    public function cancel(int|string $id)
+    {
+        $userId = Auth::id();
+        $order = Order::where('id', $id)
+                      ->where(function($q) use ($userId) {
+                          $q->where('customer_user_id', $userId)
+                            ->orWhere('user_id', $userId);
+                      })
+                      ->with('items')
+                      ->firstOrFail();
+
+        $st = strtolower(trim($order->status));
+        if (!in_array($st, ['menunggu konfirmasi', 'belum dibayar', 'menunggu', 'pending'])) {
+            return back()->with('error', 'Pesanan yang sedang diproses, dikirim, atau telah selesai tidak dapat dibatalkan.');
+        }
+
+        $oldStatus = $order->status;
+        $order->update([
+            'status' => 'Dibatalkan'
+        ]);
+
+        // Kembalikan kuantitas stok produk ke inventaris
+        if (!in_array($oldStatus, ['Dibatalkan', 'Batal'])) {
+            $stockService = app(\App\Services\StockService::class);
+            foreach ($order->items as $item) {
+                if ($item->product_id) {
+                    $product = \App\Models\Product::find($item->product_id);
+                    if ($product) {
+                        $stockService->adjustStock(
+                            $product,
+                            $item->quantity,
+                            'return',
+                            "Restored stock from cancelled online order {$order->invoice_number}"
+                        );
+                    }
+                }
+            }
+        }
+
+        return back()->with('success', "Pesanan {$order->invoice_number} berhasil dibatalkan. Riwayat transaksi tetap tercatat di sistem.");
+    }
 }

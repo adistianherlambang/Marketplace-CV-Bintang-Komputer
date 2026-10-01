@@ -24,13 +24,13 @@ class CheckoutController extends Controller
 
     public function index(Request $request)
     {
-        $productId = $request->query('product_id');
+        $productId = $request->query('product_id') ?: old('product_id');
         
         if (!$productId) {
             return redirect()->route('catalog.index')->with('error', 'Silakan pilih produk terlebih dahulu.');
         }
 
-        $product = Product::findOrFail($productId);
+        $product = Product::with(['primaryImage', 'images', 'brand', 'category'])->findOrFail($productId);
         if ($product->stock <= 0) {
             return redirect()->route('catalog.index')->with('error', 'Maaf, stok produk ini sedang habis.');
         }

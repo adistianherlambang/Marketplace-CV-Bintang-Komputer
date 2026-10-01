@@ -48,6 +48,12 @@
             </div>
             <div class="stat-card-value">{{ $counts['selesai'] }}</div>
         </a>
+        <a href="{{ route('admin.pesanan.index', ['status' => 'Dibatalkan']) }}" class="stat-card stat-card-danger {{ request('status') === 'Dibatalkan' ? 'active-danger' : '' }}">
+            <div class="stat-card-label">
+                <i class="fa-solid fa-circle-xmark"></i> Dibatalkan
+            </div>
+            <div class="stat-card-value">{{ $counts['dibatalkan'] ?? 0 }}</div>
+        </a>
     </div>
 
     <!-- Filter & Search Bar -->
@@ -66,6 +72,7 @@
                     <option value="Dikirim" {{ request('status') === 'Dikirim' ? 'selected' : '' }}>Dikirim</option>
                     <option value="Selesai" {{ request('status') === 'Selesai' ? 'selected' : '' }}>Selesai</option>
                     <option value="Belum Dibayar" {{ request('status') === 'Belum Dibayar' ? 'selected' : '' }}>Belum Dibayar</option>
+                    <option value="Dibatalkan" {{ in_array(request('status'), ['Dibatalkan', 'Batal']) ? 'selected' : '' }}>Dibatalkan</option>
                 </select>
             </div>
 
@@ -75,6 +82,10 @@
             @if(request()->anyFilled(['search', 'status']))
                 <a href="{{ route('admin.pesanan.index') }}" class="btn btn-secondary filter-reset-btn">Reset</a>
             @endif
+
+            <a href="{{ route('admin.pesanan.excel', request()->all()) }}" class="btn btn-success" style="background-color: #10b981; border-color: #059669; color: white; display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: var(--radius); font-weight: 600; text-decoration: none;" title="Export data pesanan ke format Excel .xlsx">
+                <i class="fa-solid fa-file-excel"></i> Export Excel
+            </a>
         </div>
     </form>
 

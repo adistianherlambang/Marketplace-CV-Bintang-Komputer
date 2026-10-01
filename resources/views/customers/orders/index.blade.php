@@ -283,6 +283,7 @@
         $processingCount = $pesanan->filter(fn($o) => in_array(strtolower(trim($o->status)), ['diproses', 'proses']))->count();
         $shippingCount = $pesanan->filter(fn($o) => in_array(strtolower(trim($o->status)), ['dikirim', 'dalam pengiriman', 'kirim']))->count();
         $completedCount = $pesanan->filter(fn($o) => in_array(strtolower(trim($o->status)), ['selesai', 'lunas', 'berhasil']))->count();
+        $cancelledCount = $pesanan->filter(fn($o) => in_array(strtolower(trim($o->status)), ['batal', 'dibatalkan']))->count();
     @endphp
 
     {{-- Page Header --}}
@@ -319,11 +320,11 @@
         @endif
 
         {{-- Metric Summary Cards --}}
-        <div class="row g-3 mb-4">
-            <div class="col-6 col-md-3">
+        <div class="row g-2 g-md-3 mb-4">
+            <div class="col-6 col-md-4 col-lg">
                 <div class="metric-card active" data-filter="all" onclick="selectFilter('all', this)">
                     <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span class="small fw-bold text-muted text-uppercase">Semua Pesanan</span>
+                        <span class="small fw-bold text-muted text-uppercase">Semua</span>
                         <i class="fa-solid fa-boxes-stacked text-muted"></i>
                     </div>
                     <div class="fs-3 fw-bold text-dark">{{ $totalOrders }}</div>
@@ -331,18 +332,18 @@
                 </div>
             </div>
 
-            <div class="col-6 col-md-3">
+            <div class="col-6 col-md-4 col-lg">
                 <div class="metric-card" data-filter="menunggu" onclick="selectFilter('menunggu', this)">
                     <div class="d-flex justify-content-between align-items-center mb-1">
                         <span class="small fw-bold text-warning text-uppercase">Menunggu</span>
                         <i class="fa-solid fa-clock text-warning"></i>
                     </div>
                     <div class="fs-3 fw-bold text-warning">{{ $waitingCount }}</div>
-                    <div class="text-warning" style="font-size: 0.72rem;">Menunggu konfirmasi admin</div>
+                    <div class="text-warning" style="font-size: 0.72rem;">Konfirmasi &amp; Belum Bayar</div>
                 </div>
             </div>
 
-            <div class="col-6 col-md-3">
+            <div class="col-6 col-md-4 col-lg">
                 <div class="metric-card" data-filter="pengiriman" onclick="selectFilter('pengiriman', this)">
                     <div class="d-flex justify-content-between align-items-center mb-1">
                         <span class="small fw-bold text-purple text-uppercase" style="color: #7e22ce;">Pengiriman</span>
@@ -353,7 +354,7 @@
                 </div>
             </div>
 
-            <div class="col-6 col-md-3">
+            <div class="col-6 col-md-4 col-lg">
                 <div class="metric-card" data-filter="selesai" onclick="selectFilter('selesai', this)">
                     <div class="d-flex justify-content-between align-items-center mb-1">
                         <span class="small fw-bold text-success text-uppercase">Selesai</span>
@@ -361,6 +362,17 @@
                     </div>
                     <div class="fs-3 fw-bold text-success">{{ $completedCount }}</div>
                     <div class="text-success" style="font-size: 0.72rem;">Barang sukses diterima</div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4 col-lg">
+                <div class="metric-card" data-filter="batal" onclick="selectFilter('batal', this)">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="small fw-bold text-danger text-uppercase">Dibatalkan</span>
+                        <i class="fa-solid fa-circle-xmark text-danger"></i>
+                    </div>
+                    <div class="fs-3 fw-bold text-danger">{{ $cancelledCount }}</div>
+                    <div class="text-danger" style="font-size: 0.72rem;">Pesanan yang dibatalkan</div>
                 </div>
             </div>
         </div>
@@ -434,7 +446,7 @@
                                 <span class="badge-status badge-status-menunggu">
                                     <i class="fa-solid fa-hourglass-half"></i> Menunggu Konfirmasi
                                 </span>
-                            @elseif($st === 'dibatalkan')
+                            @elseif(in_array($st, ['batal', 'dibatalkan']))
                                 <span class="badge-status badge-status-batal">
                                     <i class="fa-solid fa-circle-xmark"></i> Dibatalkan
                                 </span>
@@ -559,7 +571,7 @@
                         </div>
 
                         {{-- Action Buttons --}}
-                        <div class="d-flex flex-wrap gap-2">
+                        <div class="d-flex flex-wrap align-items-center gap-2">
                             {{-- Download Nota --}}
                             <a href="{{ route('customer.orders.nota', $item->id) }}" target="_blank" class="btn-action-secondary" title="Unduh Nota PDF">
                                 <i class="fa-solid fa-file-invoice text-danger"></i> Download Nota
@@ -575,10 +587,27 @@
                                 </form>
                             @endif
 
-                            {{-- Ajukan Komplain --}}
-                            <a href="{{ route('customer.complaints.create', $item->id) }}" class="btn-action-warning" title="Ajukan klaim komplain barang">
-                                <i class="fa-solid fa-triangle-exclamation"></i> Ajukan Komplain
-                            </a>
+                            {{-- Batalkan Pesanan (Jika masih Menunggu Konfirmasi / Belum Dibayar) --}}
+                            @if(in_array($st, ['menunggu konfirmasi', 'belum dibayar', 'menunggu', 'pending']))
+                                <form action="{{ route('customer.orders.cancel', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan pesanan {{ $item->invoice_number }}? Transaksi yang dibatalkan tetap tersimpan dalam riwayat pembelian Anda.')">
+                                    @csrf
+                                    <button type="submit" class="btn btn-outline-danger btn-sm rounded-3 fw-bold d-inline-flex align-items-center gap-1" style="font-size: 0.8rem; padding: 7px 12px;">
+                                        <i class="fa-solid fa-ban"></i> Batalkan Pesanan
+                                    </button>
+                                </form>
+                            @endif
+
+                            {{-- Keterangan / Status Dibatalkan --}}
+                            @if(in_array($st, ['batal', 'dibatalkan']))
+                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2.5 py-1.5 rounded-3 small fw-bold">
+                                    <i class="fa-solid fa-circle-xmark me-1"></i> Transaksi Dibatalkan
+                                </span>
+                            @else
+                                {{-- Ajukan Komplain --}}
+                                <a href="{{ route('customer.complaints.create', $item->id) }}" class="btn-action-warning" title="Ajukan klaim komplain barang">
+                                    <i class="fa-solid fa-triangle-exclamation"></i> Ajukan Komplain
+                                </a>
+                            @endif
 
                             {{-- Chat WhatsApp Bantuan --}}
                             <a href="https://wa.me/6281234567890?text={{ urlencode('Halo CV Bintang Jaya Komputer, saya ingin menanyakan pesanan saya dengan nomor invoice ' . $item->invoice_number) }}" target="_blank" class="btn-action-secondary text-success border-success-subtle" title="Chat CS Toko">

@@ -322,6 +322,20 @@
     font-size: 0.92rem;
 }
 
+.preview-table-compact td.stock-warning,
+td.stock-warning {
+    text-align: center;
+    font-weight: 700;
+    color: #dc2626;
+}
+
+.preview-table-compact td.stock-normal,
+td.stock-normal {
+    text-align: center;
+    font-weight: 700;
+    color: #1e293b;
+}
+
 .preview-signature-box {
     text-align: center;
     margin-top: 24px;

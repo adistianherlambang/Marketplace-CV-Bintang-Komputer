@@ -38,7 +38,11 @@
                     </button>
                     
                     <button type="button" onclick="downloadDirectPdf()" class="btn btn-secondary" style="width: 100%; border-color: #cbd5e1;">
-                        <i class="fa-solid fa-file-arrow-down text-success"></i> Download PDF Langsung
+                        <i class="fa-solid fa-file-arrow-down text-danger"></i> Download PDF Langsung
+                    </button>
+
+                    <button type="button" onclick="downloadDirectExcel()" class="btn btn-secondary" style="width: 100%; border-color: #10b981; color: #047857; background: #ecfdf5; font-weight: 600;">
+                        <i class="fa-solid fa-file-excel text-success"></i> Download Excel (.xlsx)
                     </button>
                 </div>
             </form>
@@ -78,6 +82,9 @@
                                         <a href="{{ route('admin.reports.download', ['type' => 'monthly', 'param' => $rep->report_month]) }}" class="btn btn-primary btn-sm" style="padding: 4px 8px; font-size: 0.75rem;" title="Download PDF">
                                             <i class="fa-solid fa-file-arrow-down"></i> PDF
                                         </a>
+                                        <a href="{{ route('admin.reports.excel', ['type' => 'monthly', 'param' => $rep->report_month]) }}" class="btn btn-sm" style="padding: 4px 8px; font-size: 0.75rem; background: #10b981; border: 1px solid #059669; color: #ffffff;" title="Download Excel (.xlsx)">
+                                            <i class="fa-solid fa-file-excel"></i> Excel
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
@@ -114,6 +121,20 @@
             }
 
             const downloadUrl = `{{ route('admin.reports.download') }}?type=${typeSelect}&param=${paramVal}`;
+            window.location.href = downloadUrl;
+        }
+
+        function downloadDirectExcel() {
+            const typeSelect = document.getElementById('report_type_select').value;
+            let paramVal = '';
+            
+            if (typeSelect === 'daily') {
+                paramVal = document.getElementsByName('date')[0].value;
+            } else if (typeSelect === 'monthly') {
+                paramVal = document.getElementsByName('month')[0].value;
+            }
+
+            const downloadUrl = `{{ route('admin.reports.excel') }}?type=${typeSelect}&param=${paramVal}`;
             window.location.href = downloadUrl;
         }
     </script>

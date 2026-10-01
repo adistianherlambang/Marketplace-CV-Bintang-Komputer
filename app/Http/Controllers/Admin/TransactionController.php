@@ -47,6 +47,40 @@ class TransactionController extends Controller
         return view('admin.transactions.index', compact('orders'));
     }
 
+    public function exportExcel(Request $request, \App\Services\OrderExcelService $excelService)
+    {
+        $query = Order::with(['customer', 'customerUser', 'user', 'items.product'])
+                      ->orderByDesc('created_at')
+                      ->orderByDesc('id');
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('invoice_number', 'like', "%{$search}%")
+                  ->orWhere('customer_name', 'like', "%{$search}%")
+                  ->orWhere('customer_phone', 'like', "%{$search}%")
+                  ->orWhereHas('customer', function($sub) use ($search) {
+                      $sub->where('name', 'like', "%{$search}%");
+                  })
+                  ->orWhereHas('customerUser', function($sub) use ($search) {
+                      $sub->where('name', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        if ($request->filled('status')) {
+            if (in_array(strtolower($request->status), ['batal', 'dibatalkan'])) {
+                $query->whereIn('status', ['Dibatalkan', 'Batal']);
+            } else {
+                $query->where('status', $request->status);
+            }
+        }
+
+        $orders = $query->get();
+        $filename = 'laporan-transaksi-penjualan-' . now()->format('Y-m-d') . '.xlsx';
+        return $excelService->exportOrders($orders, 'Laporan Transaksi Kasir Toko', $filename);
+    }
+
     public function create()
     {
         $products = Product::where('is_active', true)->where('stock', '>', 0)->get();

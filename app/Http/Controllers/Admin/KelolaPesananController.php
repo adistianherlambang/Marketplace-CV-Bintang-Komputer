@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Services\StockService;
+use App\Services\OrderExcelService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,7 +28,11 @@ class KelolaPesananController extends Controller
 
         // Filter status jika dipilih
         if ($request->filled('status')) {
-            $query->where('status', $request->status);
+            if (in_array(strtolower($request->status), ['batal', 'dibatalkan'])) {
+                $query->whereIn('status', ['Dibatalkan', 'Batal']);
+            } else {
+                $query->where('status', $request->status);
+            }
         }
 
         // Pencarian nomor invoice atau nama pembeli
@@ -50,9 +55,38 @@ class KelolaPesananController extends Controller
             'dikirim' => Order::where('status', 'Dikirim')->count(),
             'selesai' => Order::whereIn('status', ['Selesai', 'Lunas'])->count(),
             'belum_bayar' => Order::where('status', 'Belum Dibayar')->count(),
+            'dibatalkan' => Order::whereIn('status', ['Dibatalkan', 'Batal'])->count(),
         ];
 
         return view('admin.pesanan.index', compact('pesanan', 'counts'));
+    }
+
+    public function exportExcel(Request $request, OrderExcelService $excelService)
+    {
+        $query = Order::with(['user', 'customerUser', 'items.product', 'kecamatan', 'kelurahan'])
+                      ->orderByDesc('created_at')
+                      ->orderByDesc('id');
+
+        if ($request->filled('status')) {
+            if (in_array(strtolower($request->status), ['batal', 'dibatalkan'])) {
+                $query->whereIn('status', ['Dibatalkan', 'Batal']);
+            } else {
+                $query->where('status', $request->status);
+            }
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('invoice_number', 'like', "%{$search}%")
+                  ->orWhere('customer_name', 'like', "%{$search}%")
+                  ->orWhere('customer_phone', 'like', "%{$search}%");
+            });
+        }
+
+        $orders = $query->get();
+        $filename = 'laporan-pesanan-online-' . now()->format('Y-m-d') . '.xlsx';
+        return $excelService->exportOrders($orders, 'Laporan Pesanan Masuk Online', $filename);
     }
 
     public function updateStatus(Request $request, int|string $id)

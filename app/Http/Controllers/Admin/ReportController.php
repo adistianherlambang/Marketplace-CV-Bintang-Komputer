@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\MonthlyReport;
 use App\Models\Order;
 use App\Services\ReportService;
+use App\Services\OrderExcelService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -13,10 +14,12 @@ use Illuminate\Support\Facades\DB;
 class ReportController extends Controller
 {
     protected ReportService $reportService;
+    protected OrderExcelService $excelService;
 
-    public function __construct(ReportService $reportService)
+    public function __construct(ReportService $reportService, OrderExcelService $excelService)
     {
         $this->reportService = $reportService;
+        $this->excelService = $excelService;
     }
 
     public function index()
@@ -144,5 +147,31 @@ class ReportController extends Controller
         }
 
         return redirect()->route('admin.reports.index')->with('error', 'Gagal membuat laporan.');
+    }
+
+    /**
+     * Download Report in Excel format (.xlsx)
+     */
+    public function downloadExcel(Request $request)
+    {
+        $type = $request->input('type') ?: 'monthly';
+        $param = $request->input('param') ?: $request->input('month') ?: $request->input('date');
+
+        switch ($type) {
+            case 'daily':
+                $param = !empty($param) ? $param : now()->toDateString();
+                $data = $this->reportService->getDailyReportData($param);
+                $title = "Laporan Penjualan Harian - " . $data['date'];
+                $filename = "laporan-harian-{$param}.xlsx";
+                return $this->excelService->exportOrders($data['orders'], $title, $filename);
+
+            case 'monthly':
+            default:
+                $param = !empty($param) ? $param : now()->format('Y-m');
+                $data = $this->reportService->getMonthlyReportData($param);
+                $title = "Laporan Penjualan Bulanan - " . $data['month'];
+                $filename = "laporan-bulanan-{$param}.xlsx";
+                return $this->excelService->exportOrders($data['orders'], $title, $filename);
+        }
     }
 }

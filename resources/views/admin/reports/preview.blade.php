@@ -31,6 +31,9 @@
             <a href="{{ route('admin.reports.download', ['type' => $data['type'], 'param' => $data['param'] ?? '']) }}" class="preview-btn preview-btn-download">
                 <i class="fa-solid fa-file-pdf"></i> Download PDF
             </a>
+            <a href="{{ route('admin.reports.excel', ['type' => $data['type'], 'param' => $data['param'] ?? '']) }}" class="preview-btn" style="background: #10b981; color: white; border: none; display: inline-flex; align-items: center; gap: 6px;">
+                <i class="fa-solid fa-file-excel"></i> Download Excel (.xlsx)
+            </a>
         </div>
     </div>
 
@@ -278,7 +281,7 @@
                                 <td>{{ optional($product->supplier)->name ?? '-' }}</td>
                                 <td style="text-align: right; font-weight: 600;">Rp {{ number_format($product->price_modal, 0, ',', '.') }}</td>
                                 <td style="text-align: center;">{{ $product->min_stock }}</td>
-                                <td style="text-align: center; font-weight: 700; color: {{ $product->stock <= $product->min_stock ? '#dc2626' : '#1e293b' }};">
+                                <td class="{{ $product->stock <= $product->min_stock ? 'stock-warning' : 'stock-normal' }}">
                                     {{ $product->stock }} pcs
                                 </td>
                             </tr>

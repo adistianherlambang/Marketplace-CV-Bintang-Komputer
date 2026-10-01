@@ -46,6 +46,9 @@
                 @if (request()->anyFilled(['search', 'status']))
                     <a href="{{ route('admin.transactions.index') }}" class="btn btn-secondary">Clear</a>
                 @endif
+                <a href="{{ route('admin.transactions.excel', request()->all()) }}" class="btn btn-secondary" style="background-color: #10b981; border-color: #059669; color: white; display: inline-flex; align-items: center; gap: 6px;" title="Export data transaksi ke Excel">
+                    <i class="fa-solid fa-file-excel"></i> Export Excel
+                </a>
             </div>
         </div>
     </form>

@@ -42,6 +42,7 @@ Route::middleware(['auth'])->group(function () {
     // Riwayat & Pelacakan Pesanan Pelanggan
     Route::get('/riwayat-pesanan', [CustomerOrderController::class, 'index'])->name('customer.orders.index');
     Route::get('/riwayat-pesanan/{id}/nota', [CustomerOrderController::class, 'downloadNota'])->name('customer.orders.nota');
+    Route::post('/riwayat-pesanan/{id}/batal', [CustomerOrderController::class, 'cancel'])->name('customer.orders.cancel');
     
     // --- TAMBAHKAN RUTE KOMPLAIN PELANGGAN DI SINI ---
     Route::get('/riwayat-pesanan/{id}/komplain', [CustomerComplaintController::class, 'create'])->name('customer.complaints.create');
@@ -70,6 +71,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     // POS cashier and Invoice actions
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+    Route::get('/transactions/excel', [TransactionController::class, 'exportExcel'])->name('transactions.excel');
     Route::post('/transactions/clear-all', [TransactionController::class, 'clearAllTransactions'])->name('transactions.clearAll');
     Route::get('/transactions/clear-all', [TransactionController::class, 'clearAllTransactions']);
     Route::get('/transactions/create', [TransactionController::class, 'create'])->name('transactions.create');
@@ -83,6 +85,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     // Kelola Pesanan (E-commerce Order & Shipping Management)
     Route::get('/pesanan', [KelolaPesananController::class, 'index'])->name('pesanan.index');
+    Route::get('/pesanan/excel', [KelolaPesananController::class, 'exportExcel'])->name('pesanan.excel');
     Route::put('/pesanan/{id}', [KelolaPesananController::class, 'updateStatus'])->name('pesanan.update');
 
     // Complaints Log
@@ -96,15 +99,15 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('/returns/{returnLog}/approve', [ReturnController::class, 'approve'])->name('returns.approve');
     Route::post('/returns/{returnLog}/reject', [ReturnController::class, 'reject'])->name('returns.reject');
 
-    // Reports PDF Export
+    // Reports PDF & Excel Export
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/preview', [ReportController::class, 'preview'])->name('reports.preview');
     Route::get('/reports/download', [ReportController::class, 'downloadPdf'])->name('reports.download');
+    Route::get('/reports/excel', [ReportController::class, 'downloadExcel'])->name('reports.excel');
 
     // Product Bookings Management
     Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
     Route::post('/bookings/{booking}/status', [BookingController::class, 'updateStatus'])->name('bookings.status');
-
 });
 
 // Profile Management
