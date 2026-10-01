@@ -55,7 +55,7 @@ class GuestActionsTest extends TestCase
     {
         $response = $this->get("/products/{$this->product->id}");
         $response->assertStatus(200);
-        $response->assertSee('Pesan Sekarang');
+        $response->assertSee('Beli Sekarang');
     }
 
     public function test_guest_can_submit_product_booking(): void

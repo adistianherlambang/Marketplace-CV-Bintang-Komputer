@@ -9,7 +9,7 @@
         </p>
     </header>
 
-    <form method="post" action="{{ route('password.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ Route::has('password.update') ? route('password.update') : '#' }}" class="mt-6 space-y-6">
         @csrf
         @method('put')
 
