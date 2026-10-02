@@ -12,6 +12,7 @@
 /.phpunit.cache
 /.vscode
 /.zed
+/.kilo
 /auth.json
 /node_modules
 /public/build
